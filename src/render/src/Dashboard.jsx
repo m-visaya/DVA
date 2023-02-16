@@ -1,4 +1,5 @@
 import Icon from "../components/icon"
+import Tooltip from "../components/tooltip"
 import liveIcon from "../assets/live.svg"
 import fileIcon from "../assets/file.svg"
 import configureIcon from "../assets/configure.svg"
@@ -9,7 +10,7 @@ function dashboard() {
   return (
     <div className="bg-palette-gray100 h-screen flex flex-col">
       <div className="flex justify-center h-full items-center">
-        <div className="grid grid-cols-4 gap-x-14">
+        <div className="grid grid-cols-4 lg:gap-x-14 md:gap-x-8">
           <div>
             <Icon 
               iconImage={liveIcon}
