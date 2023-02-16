@@ -1,11 +1,11 @@
-import Icon from "../components/Icon"
+import Icon from "../components/icon"
 import liveIcon from "../assets/live.svg"
 import fileIcon from "../assets/file.svg"
 import configureIcon from "../assets/configure.svg"
 import exitIcon from "../assets/exit.svg"
 
 
-function Dashboard() {
+function dashboard() {
   return (
     <div className="bg-palette-gray100 h-screen flex flex-col">
       <div className="flex justify-center h-full items-center">
@@ -36,4 +36,4 @@ function Dashboard() {
   );
 }
 
-export default Dashboard;
+export default dashboard;
