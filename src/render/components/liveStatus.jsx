@@ -1,22 +1,27 @@
-import statusGreen from "../assets/statusGreen.svg"
-import statusRed from "../assets/statusRed.svg"
+import LiveCameraStatus from "./liveCameraStatus";
 
 function liveStatus(){
     return(
         <div>
-            <div className="flex justify-center h-full items-center">
-                <div className="grid grid-cols-4 flex h-full items-center">
-                    <div className="cols-span-1">
-                        <img src={statusGreen} className="lg:w-5 md:w-3"></img>  
-                    </div>
-                    <div className="col-span-3">
-                        <p className="text-white font-roboto lg:text-[10pt] md:text-[8pt] ">Current Status :</p>
-                        <p className="text-palette-gray50 font-roboto lg:text-[10pt] md:text-[7pt]">0 Detected Accident</p>
-                    </div>
+            <div className="flex">
+                <div className="grid grid-rows-5 gap-y-2">
+                <p className="font-roboto text-white lg:text-[16pt] md:text-[12pt]"> Camera Status</p>
+                <LiveCameraStatus
+                    cameraName="CAM 1"
+                />
+                <LiveCameraStatus
+                    cameraName="CAM 2"
+                />
+                <LiveCameraStatus
+                    cameraName="CAM 3"
+                />
+                <LiveCameraStatus
+                    cameraName="CAM 4"
+                />
                 </div>
-            </div>
-        </div>            
+            </div>            
+        </div>
     );
-};
+}
 
-export default liveStatus
+export default liveStatus;
