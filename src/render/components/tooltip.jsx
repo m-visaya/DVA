@@ -2,7 +2,6 @@ import liveIcon from "../assets/live.svg"
 
 function tooltip(){
     return(
-            <div className="2xl:pt-[700px] lg:pt-[500px] md:pt-96">
                 <div className="box-border bg-palette-gray75 lg:h-24 lg:w-72 md:h-16 md:w-56 lg:rounded-3xl md:rounded-2xl">
                     <div className="flex justify-center h-full items-center">
                         <div className="grid grid-cols-4 lg:gap-x-4 md:gap-x-3 flex h-full items-center">
@@ -15,7 +14,6 @@ function tooltip(){
                         </div>
                     </div>
                 </div>
-            </div>
         );
 }
 export default tooltip;
