@@ -3,7 +3,6 @@ import ReactDOM from "react-dom/client";
 import Dashboard from "./Dashboard";
 import File from "./File";
 import Live from "./Live";
-import Test from "./Test";
 import "./index.css";
 
 ReactDOM.createRoot(document.getElementById("root")).render(
