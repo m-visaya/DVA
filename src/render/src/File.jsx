@@ -7,6 +7,7 @@ function file() {
       <div className="place-items-start 2xl:pl-10 lg:pl-8 md:pl-6 mt-5">
         <ReturnButton 
           returnTitle="File"
+          to="/"
           />
       </div>
       <div className="flex justify-center relative">

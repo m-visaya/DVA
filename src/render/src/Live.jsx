@@ -9,6 +9,7 @@ function live(){
                 <div className="place-items-start mt-5">
                     <ReturnButton 
                     returnTitle="Live"
+                    to="/"
                     />
                 </div>
                 <div className="md:pt-4">
