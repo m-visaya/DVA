@@ -23,7 +23,6 @@ function fileDash() {
     navigator.mediaDevices.enumerateDevices().then(handleDevices);
   }, [handleDevices]);
 
-  // Load the model on component mount
   useEffect(() => {
     const loadModel = async () => {
       const model = await tf.loadGraphModel(MODEL_PATH);
@@ -33,7 +32,6 @@ function fileDash() {
     loadModel();
   }, []);
 
-  // Start the prediction loop on webcam feed
   useEffect(() => {
     const predict = async () => {
       if (
@@ -44,7 +42,6 @@ function fileDash() {
         const img = webcamRef.current.video;
         const tensor = tf.browser.fromPixels(img);
         const resized = tf.image.resizeBilinear(tensor, [299, 299]);
-        // const normalized = tf.div(resized, 255.0);
         const reshaped = resized.expandDims(0);
         let prediction = model.predict(reshaped).arraySync()[0];
         prediction = prediction[0] * 100 < 50 ? "Non Accident" : "Accident";
