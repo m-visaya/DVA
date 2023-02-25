@@ -1,6 +1,22 @@
 const { app, ipcMain, BrowserWindow } = require("electron");
 const path = require("path");
 const isDev = require("electron-is-dev");
+const sqlite3 = require('sqlite3').verbose();
+
+// Open database connection
+const dbPath = path.join(__dirname, 'logs.db');
+const db = new sqlite3.Database(dbPath, (err) => {
+  if (err) {
+    console.error(err.message);
+  }
+  console.log('Connected to the database.');
+});
+
+// Create logs table if not exists
+db.run(`CREATE TABLE IF NOT EXISTS logs (
+  id INTEGER PRIMARY KEY AUTOINCREMENT,
+  datetime TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+)`);
 
 // Handle creating/removing shortcuts on Windows when installing/uninstalling.
 if (require("electron-squirrel-startup")) {
@@ -45,7 +61,7 @@ const handleOpenLogs = (event) => {
     minHeight: 400,
     autoHideMenuBar: true,
     parent: parent,
-    modal: false,
+    modal: true,
     show: false,
     frame: true,
     webPreferences: {
@@ -62,10 +78,31 @@ const handleOpenLogs = (event) => {
   });
 };
 
-const handleCloseLogs = (event, prefs) => {
+const handleCloseLogs = (event) => {
   const logsWindow = BrowserWindow.fromWebContents(event.sender);
   logsWindow.hide();
   logsWindow.close();
+};
+
+const handleAddLog = (event) => {
+  // Insert a new log into the logs table
+  db.run(`INSERT INTO logs DEFAULT VALUES`, (err) => {
+    if (err) {
+      console.error(err.message);
+    }
+    console.log('New log added to the database.');
+  });
+};
+
+const handleGetLogs = (event) => {
+  // Select all rows from the logs table
+  db.all(`SELECT * FROM logs`, (err, rows) => {
+    if (err) {
+      console.error(err.message);
+    } else {
+      event.reply("logs-data", rows);
+    }
+  });
 };
 
 // This method will be called when Electron has finished
@@ -75,6 +112,9 @@ const handleCloseLogs = (event, prefs) => {
 app.whenReady().then(() => {
   ipcMain.on("open-logs", handleOpenLogs);
   ipcMain.on("close-logs", handleCloseLogs);
+  ipcMain.on("add-log", handleAddLog);
+  ipcMain.on("get-logs", handleGetLogs);
+  // logDatabaseContents();
 
   createWindow();
 });
