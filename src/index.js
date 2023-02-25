@@ -1,4 +1,4 @@
-const { app, BrowserWindow } = require("electron");
+const { app, ipcMain, BrowserWindow } = require("electron");
 const path = require("path");
 const isDev = require("electron-is-dev");
 
@@ -32,10 +32,53 @@ const createWindow = () => {
   mainWindow.removeMenu();
 };
 
+const handleOpenLogs = (event) => {
+  if (BrowserWindow.getAllWindows().length == 2) {
+    return;
+  }
+
+  const parent = BrowserWindow.fromWebContents(event.sender);
+  const logsWindow = new BrowserWindow({
+    width: 700,
+    height: 500,
+    minWidth: 500,
+    minHeight: 400,
+    autoHideMenuBar: true,
+    parent: parent,
+    modal: false,
+    show: false,
+    frame: true,
+    webPreferences: {
+      preload: path.join(__dirname, "preload.js"),
+    },
+  });
+
+  logsWindow.loadURL("http://localhost:5173/logs");
+
+  logsWindow.once("ready-to-show", () => {
+    setTimeout(() => {
+      logsWindow.show();
+    }, 50);
+  });
+};
+
+const handleCloseLogs = (event, prefs) => {
+  const logsWindow = BrowserWindow.fromWebContents(event.sender);
+  logsWindow.hide();
+  logsWindow.close();
+};
+
 // This method will be called when Electron has finished
 // initialization and is ready to create browser windows.
 // Some APIs can only be used after this event occurs.
-app.on("ready", createWindow);
+
+app.whenReady().then(() => {
+  ipcMain.on("open-logs", handleOpenLogs);
+  ipcMain.on("close-logs", handleCloseLogs);
+
+  createWindow();
+});
+
 
 // Quit when all windows are closed, except on macOS. There, it's common
 // for applications and their menu bar to stay active until the user quits
