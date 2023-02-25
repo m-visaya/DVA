@@ -1,46 +1,73 @@
-import ReturnButton from "../components/returnButton"
-import LiveStatus from "../components/liveStatus"
-import logsIcon from "../assets/logs.svg"
+import ReturnButton from "../components/returnButton";
+import LiveDash from "../components/liveDash";
+import { useRef, useState, useEffect, useCallback } from "react";
+import Webcam from "react-webcam";
+import * as tf from "@tensorflow/tfjs";
+import "@tensorflow/tfjs-backend-webgl";
+
+const MODEL_PATH = "./assets/model/xception_js/model.json";
 
 function live(){
+
+    const webcamRef = useRef(null);
+    const [prediction, setPrediction] = useState("No Accident Detected");
+    const [model, setModel] = useState(null);
+    const [devices, setDevices] = useState([]);
+
+    const handleDevices = useCallback(
+        (mediaDevices) =>
+        setDevices(mediaDevices.filter(({ kind }) => kind === "videoinput")),
+        [setDevices]
+    );
+
+    useEffect(() => {
+        navigator.mediaDevices.enumerateDevices().then(handleDevices);
+    }, [handleDevices]);
+
+    useEffect(() => {
+        const loadModel = async () => {
+        const model = await tf.loadGraphModel(MODEL_PATH);
+        setModel(model);
+        console.log("model loaded");
+        };
+        loadModel();
+    }, []);
+
+    useEffect(() => {
+        const predict = async () => {
+        if (
+            model &&
+            webcamRef.current &&
+            webcamRef.current.video.readyState === 4
+        ) {
+            const img = webcamRef.current.video;
+            const tensor = tf.browser.fromPixels(img);
+            const resized = tf.image.resizeBilinear(tensor, [299, 299]);
+            const reshaped = resized.expandDims(0);
+            let prediction = model.predict(reshaped).arraySync()[0];
+            prediction = prediction[0] * 100 < 50 ? "No Accident Detected" : "Accident Detected";
+            setPrediction(prediction);
+            console.log(prediction);
+        }
+        requestAnimationFrame(predict);
+        };
+        predict();
+  }, [webcamRef, model]);
+
     return(
-        <div className="grid grid-cols-4 grid-rows-2 h-screen flex">
-            <div className="bg-palette-gray100 row-span-2 2xl:px-10 lg:px-8 md:px-6">
-                <div className="place-items-start mt-5">
-                    <ReturnButton 
-                    returnTitle="Live"
-                    to="/"
-                    />
-                </div>
-                <div className="md:pt-4">
-                    <LiveStatus />
-                </div>
-                <div className="md:pt-4">
-                    <div className="box-border bg-palette-gray75 lg:h-24 2xl:w-80 lg:w-full md:h-16 md:w-full lg:rounded-2xl md:rounded-xl">
-                        <div className="flex pl-4 h-full items-center">
-                            <div className="grid grid-cols-4 flex h-full items-center">
-                                <div className="cols-span-1">
-                                    <img src={logsIcon} className="lg:w-6 md:w-4"></img>  
-                                </div>
-                                <div className="col-span-3">
-                                    <p className="text-white font-roboto lg:text-[12pt] md:text-[8pt] ">View Logs</p>
-                                    <p className="text-palette-gray50 font-roboto lg:text-[10pt] md:text-[7pt]">Review detected accidents</p>
-                                </div>
-                            </div>
-                        </div>
-                    </div> 
-                </div>
-                    
-            </div>
-            <div className="col-span-3 row-span-2 bg-black">
-                <div className="grid grid-cols-2 row-span-2 h-full">
-                    <div className="border-b border-r  border-palette-gray75"></div>
-                    <div className="border-b  border-palette-gray75"></div>
-                    <div className="border-r  border-palette-gray75"></div>
-                    <div></div>
-                </div>
-            </div>
+        <div className="bg-black h-screen flex flex-col relative">
+        <Webcam
+        className="absolute h-full w-full"
+        ref={webcamRef}
+        videoConstraints={{ deviceId: devices[2]?.deviceId }}
+        />
+        <div className="absolute z-10 place-items-start 2xl:pl-10 lg:pl-8 md:pl-6 mt-5">
+            <ReturnButton returnTitle="Live" to="/" />
         </div>
+        <LiveDash 
+            detectionStatus={prediction}    
+        />
+      </div>
     );
 }
 export default live;
