@@ -1,22 +1,22 @@
-const { app, ipcMain, BrowserWindow } = require("electron");
+const { app, ipcMain, BrowserWindow, Notification } = require("electron");
 const path = require("path");
 const isDev = require("electron-is-dev");
-const sqlite3 = require('sqlite3').verbose();
+// const sqlite3 = require('sqlite3').verbose();
 
 // Open database connection
-const dbPath = path.join(__dirname, 'logs.db');
-const db = new sqlite3.Database(dbPath, (err) => {
-  if (err) {
-    console.error(err.message);
-  }
-  console.log('Connected to the database.');
-});
+// const dbPath = path.join(__dirname, 'logs.db');
+// const db = new sqlite3.Database(dbPath, (err) => {
+//   if (err) {
+//     console.error(err.message);
+//   }
+//   console.log('Connected to the database.');
+// });
 
-// Create logs table if not exists
-db.run(`CREATE TABLE IF NOT EXISTS logs (
-  id INTEGER PRIMARY KEY AUTOINCREMENT,
-  datetime TIMESTAMP DEFAULT CURRENT_TIMESTAMP
-)`);
+// // Create logs table if not exists
+// db.run(`CREATE TABLE IF NOT EXISTS logs (
+//   id INTEGER PRIMARY KEY AUTOINCREMENT,
+//   datetime TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+// )`);
 
 // Handle creating/removing shortcuts on Windows when installing/uninstalling.
 if (require("electron-squirrel-startup")) {
@@ -90,7 +90,7 @@ const handleAddLog = (event) => {
     if (err) {
       console.error(err.message);
     }
-    console.log('New log added to the database.');
+    console.log("New log added to the database.");
   });
 };
 
@@ -105,6 +105,26 @@ const handleGetLogs = (event) => {
   });
 };
 
+const fireNotification = (event, props) => {
+  const window = BrowserWindow.fromWebContents(event.sender);
+
+  let notification = new Notification({
+    title: props.title,
+    body: props.body,
+    icon: path.join(__dirname, props.icon),
+    timeoutType: props.sound ? "never" : "default",
+  });
+  notification.on("click", () => {
+    window.webContents.send("close-notification");
+    window.isVisible() ? window.focus() : window.show();
+  });
+  notification.on("close", () => {
+    window.webContents.send("close-notification");
+  });
+
+  notification.show();
+};
+
 // This method will be called when Electron has finished
 // initialization and is ready to create browser windows.
 // Some APIs can only be used after this event occurs.
@@ -114,11 +134,11 @@ app.whenReady().then(() => {
   ipcMain.on("close-logs", handleCloseLogs);
   ipcMain.on("add-log", handleAddLog);
   ipcMain.on("get-logs", handleGetLogs);
+  ipcMain.handle("fire-notification", fireNotification);
   // logDatabaseContents();
 
   createWindow();
 });
-
 
 // Quit when all windows are closed, except on macOS. There, it's common
 // for applications and their menu bar to stay active until the user quits
