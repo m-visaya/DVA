@@ -1,9 +1,9 @@
 import { Link } from "react-router-dom";
 import Icon from "../components/icon";
-import liveIcon from "../assets/live.svg";
-import fileIcon from "../assets/file.svg";
-import configureIcon from "../assets/configure.svg";
-import exitIcon from "../assets/exit.svg";
+import liveIcon from "../assets/graphics/live.svg";
+import fileIcon from "../assets/graphics/file.svg";
+import configureIcon from "../assets/graphics/configure.svg";
+import exitIcon from "../assets/graphics/exit.svg";
 
 function Dashboard() {
   return (
