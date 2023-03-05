@@ -52,7 +52,12 @@ function live() {
             prediction = "No Accident Detected";
           } else {
             prediction = "Accident Detected";
-            window.electronAPI.addLog();
+            window.electronAPI.addLog({
+              Channel: "Live",
+              Type: "RTSP",
+              Origin: "rtsp://10.23.12.34:80",
+              "File Path": "/path/to/my/file.png",
+            });
             window.electronAPI.getLogs();
             window.electronAPI.onLogsData((event, rows) => {
               console.log("Contents of the logs table:");
@@ -60,7 +65,6 @@ function live() {
               // Do something with the retrieved rows
             });
           }
-          // prediction = prediction[0] * 100 < 50 ? "No Accident Detected" : "Accident Detected";
 
           setPrediction(prediction);
           console.log(prediction, conf);
