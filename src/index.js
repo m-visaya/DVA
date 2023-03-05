@@ -34,9 +34,18 @@ async function initDatabase() {
 
   // Create the logs table if it doesn't already exist
   db.run(`CREATE TABLE IF NOT EXISTS logs (
-    id INTEGER PRIMARY KEY AUTOINCREMENT,
-    datetime TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+    ID INTEGER PRIMARY KEY AUTOINCREMENT,
+    Channel TEXT,
+    Type TEXT,
+    Origin TEXT,
+    "Date Occurred" TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    "File Path" TEXT
   )`);
+
+  // Print the contents of the 'logs' table
+  const query = `SELECT * FROM logs`;
+  const logs = db.exec(query);
+  console.log(logs);
 }
 
 // Handle creating/removing shortcuts on Windows when installing/uninstalling.
@@ -105,13 +114,33 @@ const handleCloseLogs = (event) => {
   logsWindow.close();
 };
 
-const handleAddLog = (event) => {
-  // Insert a new log into the logs table
-  db.run(`INSERT INTO logs DEFAULT VALUES`);
-  const data = db.export();
-  fs.writeFileSync(dbPath, data);
-  console.log("New log added to the database.");
+const handleAddLog = (event, values) => {
+  // Retrieve the most recent log from the logs table
+  const recentLogQuery = `SELECT MAX("Date Occurred") FROM logs`;
+  const recentLogResult = db.exec(recentLogQuery);
+  const recentLogDate = new Date(recentLogResult[0].values[0][0]);
+
+  // Compare the most recent log's date with the current time
+  const now = new Date();
+  const timeDiff = now - recentLogDate;
+
+  if (!recentLogDate || timeDiff >= 60 * 60 * 1000) { // If the time difference is greater than or equal to 1 hour (in milliseconds)
+    // Insert a new log into the logs table with values from the 'values' dictionary
+    const insertQuery = `INSERT INTO logs (Channel, Type, Origin, "File Path", "Date Occurred")
+                         VALUES (?, ?, ?, ?, ?)`;
+    const insertValues = [values.Channel, values.Type, values.Origin, values["File Path"], now.toISOString()];
+    db.run(insertQuery, insertValues);
+
+    // Export the updated database to the file system
+    const data = db.export();
+    fs.writeFileSync(dbPath, data);
+
+    console.log("New log added to the database.");
+  } else {
+    console.log("Not adding new log - last log occurred less than an hour ago.");
+  }
 };
+
 
 const handleGetLogs = (event) => {
   // Select all rows from the logs table
