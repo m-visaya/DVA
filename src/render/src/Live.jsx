@@ -52,12 +52,20 @@ function live() {
             prediction = "No Accident Detected";
           } else {
             prediction = "Accident Detected";
+
+            const canvas = document.createElement("canvas");
+            canvas.width = img.videoWidth;
+            canvas.height = img.videoHeight;
+            canvas.getContext("2d").drawImage(img, 0, 0, canvas.width, canvas.height);
+            const imageDataURL = canvas.toDataURL();
+
             window.electronAPI.addLog({
-              Channel: "Live",
-              Type: "RTSP",
-              Origin: "rtsp://10.23.12.34:80",
-              "File Path": "/path/to/my/file.png",
+              channel: "Live",
+              type: "RTSP",
+              origin: "rtsp://10.23.12.34:80",
+              imageDataURL: imageDataURL,
             });
+
             window.electronAPI.getLogs();
             window.electronAPI.onLogsData((event, rows) => {
               console.log("Contents of the logs table:");

@@ -44,8 +44,8 @@ async function initDatabase() {
 
   // Print the contents of the 'logs' table
   const query = `SELECT * FROM logs`;
-  const logs = db.exec(query);
-  console.log(logs);
+  const result = db.exec(query);
+  console.log(result[0]);
 }
 
 // Handle creating/removing shortcuts on Windows when installing/uninstalling.
@@ -124,11 +124,26 @@ const handleAddLog = (event, values) => {
   const now = new Date();
   const timeDiff = now - recentLogDate;
 
-  if (!recentLogDate || timeDiff >= 60 * 60 * 1000) { // If the time difference is greater than or equal to 1 hour (in milliseconds)
+  if (!recentLogDate || timeDiff >= 60 * 60 * 1000) {
+
+    // Save accident frame
+    const base64Data = values.imageDataURL.replace(/^data:image\/png;base64,/, "");
+    const buffer = Buffer.from(base64Data, "base64");
+    const dateTimeString = now.toLocaleString().replace(/[/\s:]/g, "-");
+    const filePath = `./saved/${dateTimeString}.png`;
+
+    fs.writeFile(filePath, buffer, (err) => {
+      if (err) {
+        console.error(err);
+      } else {
+        console.log("Image saved successfully");
+      }
+    });
+
     // Insert a new log into the logs table with values from the 'values' dictionary
     const insertQuery = `INSERT INTO logs (Channel, Type, Origin, "File Path", "Date Occurred")
                          VALUES (?, ?, ?, ?, ?)`;
-    const insertValues = [values.Channel, values.Type, values.Origin, values["File Path"], now.toISOString()];
+    const insertValues = [values.channel, values.type, values.origin, filePath, now.toISOString()];
     db.run(insertQuery, insertValues);
 
     // Export the updated database to the file system
