@@ -1,22 +1,43 @@
 const { app, ipcMain, BrowserWindow, Notification } = require("electron");
-const path = require("path");
 const isDev = require("electron-is-dev");
-// const sqlite3 = require('sqlite3').verbose();
+const fs = require('fs');
+const path = require('path');
+const initSqlJs = require('sql.js');
+const dbPath = path.join(__dirname, 'logs.db');
 
-// Open database connection
-// const dbPath = path.join(__dirname, 'logs.db');
-// const db = new sqlite3.Database(dbPath, (err) => {
-//   if (err) {
-//     console.error(err.message);
-//   }
-//   console.log('Connected to the database.');
-// });
+console.log(dbPath);
 
-// // Create logs table if not exists
-// db.run(`CREATE TABLE IF NOT EXISTS logs (
-//   id INTEGER PRIMARY KEY AUTOINCREMENT,
-//   datetime TIMESTAMP DEFAULT CURRENT_TIMESTAMP
-// )`);
+let SQL;
+let db;
+
+async function initDatabase() {
+  // Load the SQL.js library and set up the SQL object
+  SQL = await initSqlJs({
+    // Required to load the wasm binary asynchronously. Of course, you can host it wherever you want
+    // You can omit locateFile completely when running in node
+    locateFile: file => `./node_modules/sql.js/dist/${file}`
+  });
+
+  // Check if the database file already exists
+  if (fs.existsSync(dbPath)) {
+    // If it does, load the database from the file
+    const data = fs.readFileSync(dbPath);
+    db = new SQL.Database(data);
+    console.log('Loaded existing database from file:', dbPath);
+  } else {
+    // If it doesn't, create a new database object
+    db = new SQL.Database();
+    const data = db.export();
+    fs.writeFileSync(dbPath, data);
+    console.log('Created new database object.');
+  }
+
+  // Create the logs table if it doesn't already exist
+  db.run(`CREATE TABLE IF NOT EXISTS logs (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    datetime TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+  )`);
+}
 
 // Handle creating/removing shortcuts on Windows when installing/uninstalling.
 if (require("electron-squirrel-startup")) {
@@ -86,23 +107,17 @@ const handleCloseLogs = (event) => {
 
 const handleAddLog = (event) => {
   // Insert a new log into the logs table
-  db.run(`INSERT INTO logs DEFAULT VALUES`, (err) => {
-    if (err) {
-      console.error(err.message);
-    }
-    console.log("New log added to the database.");
-  });
+  db.run(`INSERT INTO logs DEFAULT VALUES`);
+  const data = db.export();
+  fs.writeFileSync(dbPath, data);
+  console.log("New log added to the database.");
 };
 
 const handleGetLogs = (event) => {
   // Select all rows from the logs table
-  db.all(`SELECT * FROM logs`, (err, rows) => {
-    if (err) {
-      console.error(err.message);
-    } else {
-      event.reply("logs-data", rows);
-    }
-  });
+  const result = db.exec(`SELECT * FROM logs`);
+  const rows = result[0].values;
+  event.reply("logs-data", rows);
 };
 
 const fireNotification = (event, props) => {
@@ -135,8 +150,8 @@ app.whenReady().then(() => {
   ipcMain.on("add-log", handleAddLog);
   ipcMain.on("get-logs", handleGetLogs);
   ipcMain.handle("fire-notification", fireNotification);
-  // logDatabaseContents();
 
+  initDatabase();
   createWindow();
 });
 

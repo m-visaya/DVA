@@ -52,13 +52,13 @@ function live() {
             prediction = "No Accident Detected";
           } else {
             prediction = "Accident Detected";
-            // window.electronAPI.addLog();
-            // window.electronAPI.getLogs();
-            // window.electronAPI.onLogsData((event, rows) => {
-            //   console.log("Contents of the logs table:");
-            //   console.log(rows);
-            //   // Do something with the retrieved rows
-            // });
+            window.electronAPI.addLog();
+            window.electronAPI.getLogs();
+            window.electronAPI.onLogsData((event, rows) => {
+              console.log("Contents of the logs table:");
+              console.log(rows);
+              // Do something with the retrieved rows
+            });
           }
           // prediction = prediction[0] * 100 < 50 ? "No Accident Detected" : "Accident Detected";
 
