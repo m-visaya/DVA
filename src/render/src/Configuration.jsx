@@ -1,5 +1,6 @@
 import ReturnButton from "../components/returnButton";
 import ConfigBtn from "../components/configButton";
+import CameraConfig from "../components/cameraConfig";
 
 function configuration(){
 
@@ -28,7 +29,9 @@ function configuration(){
                     </div>
                     <div className="col-span-4 row-auto">
                         <div className="box-border bg-secondary-gray h-full w-full rounded-2xl m-1 cursor-pointer drop-shadow-lg">
-                            
+                            <div>
+                                <CameraConfig />
+                            </div>
                         </div>
                     </div>
                 </div>
