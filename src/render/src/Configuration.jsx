@@ -1,14 +1,37 @@
 import ReturnButton from "../components/returnButton";
+import ConfigBtn from "../components/configButton";
 
 function configuration(){
 
     return(
         <div className="bg-palette-gray100 h-screen flex flex-col">
-            <div className="absolute z-10 place-items-start 2xl:pl-10 lg:pl-8 md:pl-6 mt-5">
-                <ReturnButton returnTitle="Configuration" to="/" />
+            <div className="flex justify-center pt-7">
+                <div className="relative md:-left-72 lg:-left-80">
+                    <ReturnButton returnTitle="Configure" to="/" />
+                </div>
             </div>
-            <div className="flex justify-center h-full items-center">
-                
+            <div className="flex justify-center pt-10">
+                <div className="grid grid-cols-5 gap-3 md:w-3/4 lg:w-[800px]">
+                    <div className="col-span-1">
+                        <div><ConfigBtn 
+                            iconTitle={"Cameras"}
+                        /></div>
+                        <div><ConfigBtn 
+                            iconTitle={"Appearance"}
+                        /></div>
+                        <div><ConfigBtn 
+                            iconTitle={"Logs"}
+                        /></div>
+                        <div><ConfigBtn 
+                            iconTitle={"Danger Zone"}
+                        /></div>
+                    </div>
+                    <div className="col-span-4 row-auto">
+                        <div className="box-border bg-secondary-gray h-full w-full rounded-2xl m-1 cursor-pointer drop-shadow-lg">
+                            
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
     )
