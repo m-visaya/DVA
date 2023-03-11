@@ -20,7 +20,7 @@ function logs(){
                 </div>
             </div>
             <div className="flex justify-center pt-12">
-                <div className="grid grid-cols-5 gap-x-5 md:w-3/4 lg:w-[800px]">
+                <div className="grid grid-cols-5 gap-x-2 md:w-3/4 lg:w-[800px]">
                     <div className="grid grid-cols-3">
                         <div className="col-span-1 flex justify-center items-center">
                             <label className="text-white font-roboto lg:text-[10pt] md:text-[8pt]">Channel:</label>
@@ -48,15 +48,17 @@ function logs(){
                             <input className="bg-palette-gray75 text-palette-gray50 text-[8pt] h-8 w-full rounded-md m-1 cursor-pointer drop-shadow-lg" type="date"></input>
                         </div>
                     </div>
-                    <div className="px-3">
+                    <div className="grid grid-cols-2 col-span-2 gap-x-2 mx-6">
+                        <div className="w-auto">
                         <SecondaryBtn
                         iconImage={SearchIcon} 
                         iconTitle="Search" />
-                    </div>
-                    <div className="px-3">
+                        </div>
+                        <div className="w-auto">
                         <SecondaryBtn
                         iconImage={ExportIcon} 
                         iconTitle="Export" />
+                        </div>
                     </div>
                 </div>
             </div>
