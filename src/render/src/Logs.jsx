@@ -1,6 +1,5 @@
 import ReturnButton from "../components/returnButton";
 import SecondaryBtn from "../components/secondaryButton";
-import PrimaryBtn from "../components/primaryButton";
 import LogItem from "../components/logItem";
 import ExportIcon from "../assets/graphics/export.svg";
 import SearchIcon from "../assets/graphics/search.svg";
@@ -15,10 +14,12 @@ function logs(){
 
     return(
         <div className="bg-palette-gray100 min-h-screen flex flex-col">
-            <div className="absolute z-10 place-items-start 2xl:pl-10 lg:pl-8 md:pl-6 mt-5">
-                <ReturnButton returnTitle="Logs" to="/" />
+            <div className="flex justify-center pt-7">
+                <div className="relative md:-left-72 lg:-left-80">
+                    <ReturnButton returnTitle="Logs" to="/" />
+                </div>
             </div>
-            <div className="flex justify-center pt-24">
+            <div className="flex justify-center pt-12">
                 <div className="grid grid-cols-5 gap-x-5 md:w-3/4 lg:w-[800px]">
                     <div className="grid grid-cols-3">
                         <div className="col-span-1 flex justify-center items-center">
@@ -48,7 +49,7 @@ function logs(){
                         </div>
                     </div>
                     <div className="px-3">
-                        <PrimaryBtn
+                        <SecondaryBtn
                         iconImage={SearchIcon} 
                         iconTitle="Search" />
                     </div>
@@ -60,7 +61,7 @@ function logs(){
                 </div>
             </div>
             <div className="flex justify-center pt-6">
-                <div className="grid grid-cols-6 gap-x-10 md:w-3/4 lg:w-[800px]">
+                <div className="grid grid-cols-6 gap-x-10 md:w-3/4 lg:w-[800px] pb-3 border-b border-palette-gray75">
                     <div className="text-white font-roboto lg:text-[10pt] md:text-[8pt]">Channel</div>
                     <div className="text-white font-roboto lg:text-[10pt] md:text-[8pt]">Type</div>
                     <div className="text-white font-roboto lg:text-[10pt] md:text-[8pt]">Origin</div>
@@ -69,7 +70,7 @@ function logs(){
                     <div className="text-white font-roboto lg:text-[10pt] md:text-[8pt] flex justify-center">Preview</div>
                 </div>
             </div>
-            <div className="py-6">
+            <div>
                 <LogItem 
                     LogChannel={"Live"}
                     LogType={"RTSP"}
