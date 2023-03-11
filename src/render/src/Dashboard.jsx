@@ -26,16 +26,18 @@ function Dashboard() {
             </Link>
           </div>
           <div>
-            <Link to="">
+            <Link to="/logs">
               <Icon 
               iconImage={logIcon} 
               iconTitle="Logs" />
             </Link>
           </div>
           <div>
-            <Icon 
-            iconImage={configureIcon} 
-            iconTitle="Configure" />
+            <Link to="/config">
+              <Icon 
+              iconImage={configureIcon} 
+              iconTitle="Configure" />
+            </Link>
           </div>
           <div>
             <Icon 

@@ -4,6 +4,7 @@ import Dashboard from "./Dashboard";
 import File from "./File";
 import Live from "./Live";
 import Logs from "./Logs";
+import Config from "./Configuration";
 import "./index.css";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 
@@ -16,6 +17,7 @@ root.render(
       <Route path="/file" element={<File />} />
       <Route path="/live" element={<Live />} />
       <Route path="/logs" element={<Logs />} />
+      <Route path="/config" element={<Config />} />
     </Routes>
   </BrowserRouter>
 );
