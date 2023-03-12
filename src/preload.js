@@ -4,8 +4,8 @@
 const { contextBridge, ipcRenderer } = require("electron");
 
 contextBridge.exposeInMainWorld("electronAPI", {
-  openLogs: () => ipcRenderer.send("open-logs"),
-  closeLogs: () => ipcRenderer.send("close-logs"),
+  // openLogs: () => ipcRenderer.send("open-logs"),
+  // closeLogs: () => ipcRenderer.send("close-logs"),
   addLog: (values) => ipcRenderer.send("add-log", values),
   getLogs: () => ipcRenderer.send("get-logs"),
   openLog: () => ipcRenderer.send("open-log"),
