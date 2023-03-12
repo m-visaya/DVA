@@ -90,6 +90,3 @@ out/
 
 # SQLite database
 logs.db
-
-# Contents
-saved/
