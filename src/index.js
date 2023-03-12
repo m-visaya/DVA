@@ -124,7 +124,7 @@ const handleAddLog = (event, values) => {
   const now = new Date();
   const timeDiff = now - recentLogDate;
 
-  if (!recentLogDate || timeDiff >= 60 * 60 * 1000) {
+  if (!recentLogDate || timeDiff >= 60 * 1000) {
 
     // Save accident frame
     const base64Data = values.imageDataURL.replace(/^data:image\/png;base64,/, "");
@@ -152,7 +152,7 @@ const handleAddLog = (event, values) => {
 
     console.log("New log added to the database.");
   } else {
-    console.log("Not adding new log - last log occurred less than an hour ago.");
+    console.log("Not adding new log - last log occurred less than a minute ago.");
   }
 };
 
