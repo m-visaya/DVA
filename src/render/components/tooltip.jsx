@@ -1,4 +1,4 @@
-import liveIcon from "../assets/live.svg"
+import liveIcon from "../assets/graphics/live.svg"
 
 function tooltip(){
     return(

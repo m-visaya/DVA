@@ -1,4 +1,4 @@
-import returnIcon from "../assets/return.svg"
+import returnIcon from "../assets/graphics/return.svg"
 import { Link } from "react-router-dom"
 
 function returnButton({ returnTitle, to }) {
