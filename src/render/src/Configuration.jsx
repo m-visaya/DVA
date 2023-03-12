@@ -1,5 +1,5 @@
 import ReturnButton from "../components/common/returnButton";
-import ConfigBtn from "../components/config/configButton";
+import ConfigCat from "../components/config/configCategory";
 import CameraConfig from "../components/config/camera_config/cameraConfig";
 
 function configuration(){
@@ -14,16 +14,16 @@ function configuration(){
             <div className="flex justify-center pt-10">
                 <div className="grid grid-cols-5 gap-3 md:w-3/4 lg:w-[800px]">
                     <div className="col-span-1">
-                        <div><ConfigBtn 
+                        <div><ConfigCat 
                             iconTitle={"Cameras"}
                         /></div>
-                        <div><ConfigBtn 
+                        <div><ConfigCat 
                             iconTitle={"Appearance"}
                         /></div>
-                        <div><ConfigBtn 
+                        <div><ConfigCat 
                             iconTitle={"Logs"}
                         /></div>
-                        <div><ConfigBtn 
+                        <div><ConfigCat 
                             iconTitle={"Danger Zone"}
                         /></div>
                     </div>
