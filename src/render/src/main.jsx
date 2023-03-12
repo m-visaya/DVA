@@ -13,11 +13,11 @@ const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
   <BrowserRouter>
     <Routes>
-      <Route exact path="/" element={<Dashboard />} />
-      <Route path="/file" element={<File />} />
-      <Route path="/live" element={<Live />} />
-      <Route path="/logs" element={<Logs />} />
-      <Route path="/config" element={<Config />} />
+      <Route key="dashboard" exact path="/" element={<Dashboard />} />
+      <Route key="file" path="/file" element={<File />} />
+      <Route key="live" path="/live" element={<Live />} />
+      <Route key="logs" path="/logs" element={<Logs />} />
+      <Route key="config" path="/config" element={<Config />} />
     </Routes>
   </BrowserRouter>
 );
