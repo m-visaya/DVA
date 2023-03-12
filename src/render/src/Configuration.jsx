@@ -1,11 +1,11 @@
-import ReturnButton from "../components/returnButton";
-import ConfigBtn from "../components/configButton";
-import CameraConfig from "../components/cameraConfig";
+import ReturnButton from "../components/common/returnButton";
+import ConfigBtn from "../components/config/configButton";
+import CameraConfig from "../components/config/camera_config/cameraConfig";
 
 function configuration(){
 
     return(
-        <div className="bg-palette-gray100 h-screen flex flex-col">
+        <div className="bg-palette-gray100 min-h-screen flex flex-col">
             <div className="flex justify-center pt-7">
                 <div className="relative md:-left-72 lg:-left-80">
                     <ReturnButton returnTitle="Configure" to="/" />
@@ -27,7 +27,7 @@ function configuration(){
                             iconTitle={"Danger Zone"}
                         /></div>
                     </div>
-                    <div className="col-span-4 row-auto">
+                    <div className="col-span-4 row-auto min-h-[325px]">
                         <div className="box-border bg-secondary-gray h-full w-full rounded-2xl m-1 cursor-pointer drop-shadow-lg">
                             <div>
                                 <CameraConfig />

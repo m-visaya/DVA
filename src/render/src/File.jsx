@@ -1,5 +1,5 @@
-import ReturnButton from "../components/returnButton";
-import FileDash from "../components/fileDash";
+import ReturnButton from "../components/common/returnButton";
+import FileDash from "../components/file/fileDash";
 import { useRef, useState, useEffect } from "react";
 import * as tf from "@tensorflow/tfjs";
 import "@tensorflow/tfjs-backend-webgl";

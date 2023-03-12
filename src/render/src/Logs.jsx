@@ -1,6 +1,6 @@
-import ReturnButton from "../components/returnButton";
-import SecondaryBtn from "../components/secondaryButton";
-import LogItem from "../components/logItem";
+import ReturnButton from "../components/common/returnButton";
+import SecondaryBtn from "../components/common/secondaryButton";
+import LogItem from "../components/logs/logItem";
 import ExportIcon from "../assets/graphics/export.svg";
 import SearchIcon from "../assets/graphics/search.svg";
 

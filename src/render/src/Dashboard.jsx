@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom";
-import Icon from "../components/icon";
+import Icon from "../components/dashboard/icon";
 import liveIcon from "../assets/graphics/live.svg";
 import fileIcon from "../assets/graphics/file.svg";
 import configureIcon from "../assets/graphics/configure.svg";

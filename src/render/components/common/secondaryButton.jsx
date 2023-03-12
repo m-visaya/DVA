@@ -1,7 +1,7 @@
 function secondaryBtn({iconImage, iconTitle}){
     return(
         <div
-        className="box-border bg-secondary-gray h-8 w-full rounded-2xl m-1 cursor-pointer drop-shadow-lg"
+        className="box-border bg-secondary-gray hover:bg-primary-gray h-8 w-full rounded-2xl m-1 cursor-pointer drop-shadow-lg"
       >
         <div className="flex justify-center h-full items-center">
           <div className="grid grid-cols-4 flex h-full items-center">

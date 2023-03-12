@@ -1,5 +1,5 @@
-import ReturnButton from "../components/returnButton";
-import LiveDash from "../components/liveDash";
+import ReturnButton from "../components/common/returnButton";
+import LiveDash from "../components/live/liveDash";
 import { useRef, useState, useEffect, useCallback } from "react";
 import Webcam from "react-webcam";
 import * as tf from "@tensorflow/tfjs";
