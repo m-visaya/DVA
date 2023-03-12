@@ -52,7 +52,20 @@ function live() {
             prediction = "No Accident Detected";
           } else {
             prediction = "Accident Detected";
-            window.electronAPI.addLog();
+
+            const canvas = document.createElement("canvas");
+            canvas.width = img.videoWidth;
+            canvas.height = img.videoHeight;
+            canvas.getContext("2d").drawImage(img, 0, 0, canvas.width, canvas.height);
+            const imageDataURL = canvas.toDataURL();
+
+            window.electronAPI.addLog({
+              channel: "Live",
+              type: "RTSP",
+              origin: "rtsp://10.23.12.34:80",
+              imageDataURL: imageDataURL,
+            });
+
             window.electronAPI.getLogs();
             window.electronAPI.onLogsData((event, rows) => {
               console.log("Contents of the logs table:");
@@ -60,7 +73,6 @@ function live() {
               // Do something with the retrieved rows
             });
           }
-          // prediction = prediction[0] * 100 < 50 ? "No Accident Detected" : "Accident Detected";
 
           setPrediction(prediction);
           console.log(prediction, conf);

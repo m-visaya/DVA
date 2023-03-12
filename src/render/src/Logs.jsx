@@ -4,13 +4,14 @@ import LogItem from "../components/logItem";
 import ExportIcon from "../assets/graphics/export.svg";
 import SearchIcon from "../assets/graphics/search.svg";
 
+import { useState } from "react";
+
 function logs(){
-    // window.electronAPI.getLogs();
-    // window.electronAPI.onLogsData((event, rows) => {
-    //     console.log("Contents of the logs table:");
-    //     console.log(rows);
-    //     // Do something with the retrieved rows
-    // });
+    const [logsData, setLogsData] = useState([]);
+    window.electronAPI.getLogs();
+    window.electronAPI.onLogsData((event, rows) => {
+        setLogsData(rows);
+    });
 
     return(
         <div className="bg-palette-gray100 min-h-screen flex flex-col">
@@ -73,13 +74,16 @@ function logs(){
                 </div>
             </div>
             <div>
-                <LogItem 
-                    LogChannel={"Live"}
-                    LogType={"RTSP"}
-                    LogOrigin={"some rtsp url path that is probably long"}
-                    LogDate={"12/12/2012"}
-                    LogPath={"Some path where the image is saved"}
-                />
+                {logsData.map((log) => (
+                    <LogItem
+                        key={log[0]} // Make sure each log item has a unique key
+                        LogChannel={log[1]}
+                        LogType={log[2]}
+                        LogOrigin={log[3]}
+                        LogDate={log[4]}
+                        LogPath={log[5]}
+                    />
+                ))}
             </div>
         </div>
     )
