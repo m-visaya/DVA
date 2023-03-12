@@ -8,6 +8,8 @@ contextBridge.exposeInMainWorld("electronAPI", {
   closeLogs: () => ipcRenderer.send("close-logs"),
   addLog: (values) => ipcRenderer.send("add-log", values),
   getLogs: () => ipcRenderer.send("get-logs"),
+  openLog: () => ipcRenderer.send("open-log"),
+  closeLog: () => ipcRenderer.send("close-log"),
   onLogsData: (callback) => ipcRenderer.on("logs-data", callback),
   fireNotification: (props) => ipcRenderer.invoke("fire-notification", props),
 });

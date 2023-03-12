@@ -156,12 +156,47 @@ const handleAddLog = (event, values) => {
   }
 };
 
-
 const handleGetLogs = (event) => {
   // Select all rows from the logs table
   const result = db.exec(`SELECT * FROM logs`);
   const rows = result[0].values;
   event.reply("logs-data", rows);
+};
+
+const handleOpenLog = (event) => {
+  if (BrowserWindow.getAllWindows().length == 3) {
+    return;
+  }
+
+  const parent = BrowserWindow.fromWebContents(event.sender);
+  const logWindow = new BrowserWindow({
+    width: 700,
+    height: 500,
+    minWidth: 500,
+    minHeight: 400,
+    autoHideMenuBar: true,
+    parent: parent,
+    modal: true,
+    show: false,
+    frame: true,
+    webPreferences: {
+      preload: path.join(__dirname, "preload.js"),
+    },
+  });
+
+  logWindow.loadURL("http://localhost:5173/log");
+
+  logWindow.once("ready-to-show", () => {
+    setTimeout(() => {
+      logWindow.show();
+    }, 50);
+  });
+};
+
+const handleCloseLog = (event) => {
+  const logWindow = BrowserWindow.fromWebContents(event.sender);
+  logWindow.hide();
+  logWindow.close();
 };
 
 const fireNotification = (event, props) => {
@@ -193,6 +228,10 @@ app.whenReady().then(() => {
   ipcMain.on("close-logs", handleCloseLogs);
   ipcMain.on("add-log", handleAddLog);
   ipcMain.on("get-logs", handleGetLogs);
+
+  ipcMain.on("open-log", handleOpenLog);
+  ipcMain.on("close-log", handleCloseLog);
+
   ipcMain.handle("fire-notification", fireNotification);
 
   initDatabase();
