@@ -1,5 +1,5 @@
-import logIcon from "../assets/graphics/logs.svg";
-import { Link } from "react-router-dom"
+import { Link } from "react-router-dom";
+import logIcon from "../../assets/graphics/logs.svg";
 
 function logButton() {
   return (

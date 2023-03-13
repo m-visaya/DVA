@@ -1,5 +1,5 @@
 import Status from "../common/status";
-import LogButton from "../logs/logButton";
+import LogButton from "../log/logButton";
 
 function fileDash({detectionStatus}) {
   return (
