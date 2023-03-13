@@ -43,9 +43,9 @@ async function initDatabase() {
   )`);
 
   // Print the contents of the 'logs' table
-  const query = `SELECT * FROM logs`;
-  const result = db.exec(query);
-  console.log(result[0]);
+  // const query = `SELECT * FROM logs`;
+  // const result = db.exec(query);
+  // console.log(result[0]);
 }
 
 // Handle creating/removing shortcuts on Windows when installing/uninstalling.
@@ -78,41 +78,41 @@ const createWindow = () => {
   mainWindow.removeMenu();
 };
 
-const handleOpenLogs = (event) => {
-  if (BrowserWindow.getAllWindows().length == 2) {
-    return;
-  }
+// const handleOpenLogs = (event) => {
+//   if (BrowserWindow.getAllWindows().length == 2) {
+//     return;
+//   }
 
-  const parent = BrowserWindow.fromWebContents(event.sender);
-  const logsWindow = new BrowserWindow({
-    width: 700,
-    height: 500,
-    minWidth: 500,
-    minHeight: 400,
-    autoHideMenuBar: true,
-    parent: parent,
-    modal: true,
-    show: false,
-    frame: true,
-    webPreferences: {
-      preload: path.join(__dirname, "preload.js"),
-    },
-  });
+//   const parent = BrowserWindow.fromWebContents(event.sender);
+//   const logsWindow = new BrowserWindow({
+//     width: 700,
+//     height: 500,
+//     minWidth: 500,
+//     minHeight: 400,
+//     autoHideMenuBar: true,
+//     parent: parent,
+//     modal: true,
+//     show: false,
+//     frame: true,
+//     webPreferences: {
+//       preload: path.join(__dirname, "preload.js"),
+//     },
+//   });
 
-  logsWindow.loadURL("http://localhost:5173/logs");
+//   logsWindow.loadURL("http://localhost:5173/logs");
 
-  logsWindow.once("ready-to-show", () => {
-    setTimeout(() => {
-      logsWindow.show();
-    }, 50);
-  });
-};
+//   logsWindow.once("ready-to-show", () => {
+//     setTimeout(() => {
+//       logsWindow.show();
+//     }, 50);
+//   });
+// };
 
-const handleCloseLogs = (event) => {
-  const logsWindow = BrowserWindow.fromWebContents(event.sender);
-  logsWindow.hide();
-  logsWindow.close();
-};
+// const handleCloseLogs = (event) => {
+//   const logsWindow = BrowserWindow.fromWebContents(event.sender);
+//   logsWindow.hide();
+//   logsWindow.close();
+// };
 
 const handleAddLog = (event, values) => {
   // Retrieve the most recent log from the logs table
@@ -124,7 +124,7 @@ const handleAddLog = (event, values) => {
   const now = new Date();
   const timeDiff = now - recentLogDate;
 
-  if (!recentLogDate || timeDiff >= 60 * 60 * 1000) {
+  if (!recentLogDate || timeDiff >= 60 * 1000) {
 
     // Save accident frame
     const base64Data = values.imageDataURL.replace(/^data:image\/png;base64,/, "");
@@ -152,19 +152,23 @@ const handleAddLog = (event, values) => {
 
     console.log("New log added to the database.");
   } else {
-    console.log("Not adding new log - last log occurred less than an hour ago.");
+    console.log("Not adding new log - last log occurred less than a minute ago.");
   }
 };
 
 const handleGetLogs = (event) => {
   // Select all rows from the logs table
   const result = db.exec(`SELECT * FROM logs`);
-  const rows = result[0].values;
-  event.reply("logs-data", rows);
+  if (result && result.length > 0) {
+    const rows = result[0].values;
+    event.reply("logs-data", rows);
+  } else {
+    event.reply("logs-data", []);
+  }
 };
 
 const handleOpenLog = (event) => {
-  if (BrowserWindow.getAllWindows().length == 3) {
+  if (BrowserWindow.getAllWindows().length == 2) {
     return;
   }
 
@@ -224,8 +228,8 @@ const fireNotification = (event, props) => {
 // Some APIs can only be used after this event occurs.
 
 app.whenReady().then(() => {
-  ipcMain.on("open-logs", handleOpenLogs);
-  ipcMain.on("close-logs", handleCloseLogs);
+  // ipcMain.on("open-logs", handleOpenLogs);
+  // ipcMain.on("close-logs", handleCloseLogs);
   ipcMain.on("add-log", handleAddLog);
   ipcMain.on("get-logs", handleGetLogs);
 

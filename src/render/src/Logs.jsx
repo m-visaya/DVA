@@ -5,6 +5,7 @@ import ExportIcon from "../assets/graphics/export.svg";
 import SearchIcon from "../assets/graphics/search.svg";
 
 import { useState } from "react";
+import { useLocation } from 'react-router-dom';
 
 function logs(){
     const [logsData, setLogsData] = useState([]);
@@ -13,11 +14,14 @@ function logs(){
         setLogsData(rows);
     });
 
+    const location = useLocation();
+    const fromPath = location.state?.from || '/';
+
     return(
         <div className="bg-palette-gray100 min-h-screen flex flex-col">
             <div className="flex justify-center pt-7">
                 <div className="relative md:-left-72 lg:-left-80">
-                    <ReturnButton returnTitle="Logs" to="/" />
+                    <ReturnButton returnTitle="Logs" to={fromPath} />
                 </div>
             </div>
             <div className="flex justify-center pt-12">
