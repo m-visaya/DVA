@@ -1,6 +1,6 @@
 import ReturnButton from "../components/common/returnButton";
-import ConfigCat from "../components/config/configCategory";
 import CameraConfig from "../components/config/camera_config/cameraConfig";
+import ConfigCat from "../components/config/configCategory";
 
 function configuration(){
 
@@ -27,8 +27,8 @@ function configuration(){
                             iconTitle={"Danger Zone"}
                         /></div>
                     </div>
-                    <div className="col-span-4 row-auto min-h-[325px]">
-                        <div className="box-border bg-secondary-gray h-full w-full rounded-2xl m-1 cursor-pointer drop-shadow-lg">
+                    <div className="col-span-4 row-auto min-h-[350px]">
+                        <div className="box-border bg-secondary-gray h-full w-full rounded-2xl m-1 drop-shadow-lg">
                             <div>
                                 <CameraConfig />
                             </div>

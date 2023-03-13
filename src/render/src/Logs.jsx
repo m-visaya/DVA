@@ -32,10 +32,11 @@ function logs(){
                         </div>
                         <div className="col-span-2">                        
                             <select className="bg-palette-gray75 text-white lg:text-[10pt] md:text-[8pt] font-roboto h-8 w-full rounded-md m-1 cursor-pointer drop-shadow-lg" name="channels" id="channels">
-                            <option value="All">All</option>
-                            <option value="Live">Live</option>
-                            <option value="File">File</option>
-                        </select></div>
+                                <option value="All">All</option>
+                                <option value="Live">Live</option>
+                                <option value="File">File</option>
+                            </select>
+                        </div>
                     </div>
                     <div className="grid grid-cols-3">
                         <div className="col-span-1 flex justify-center items-center">
