@@ -9,7 +9,7 @@ function cameraConfig(){
 
             <div>
                 <p className="font-roboto font-bold text-white text-[18pt]">Cameras</p>
-                <p className="font-roboto text-palette-gray50 text-[10pt]">Add RTSP camera or a webcam source.</p>
+                <p className="font-roboto text-palette-gray50 text-[8pt]">Add RTSP camera or a webcam source.</p>
                 <div className="mt-3">
                     <p className="font-roboto text-white text-[10pt]">Register a camera</p>
                     <div className="grid grid-cols-2 gap-x-3 mt-2">
@@ -27,7 +27,7 @@ function cameraConfig(){
             {/* RTSP Config Process 1 of 2 */}
             {/* <div>
                 <p className="font-roboto font-bold text-white text-[18pt]">RTSP Configuration</p>
-                <p className="font-roboto text-palette-gray50 text-[10pt]">Close Circuit television interface.</p>
+                <p className="font-roboto text-palette-gray50 text-[8pt]">Close Circuit television interface.</p>
                 <div className="mt-5">
                     <p className="font-roboto text-white text-[10pt]">RTSP Link</p>
                     <div className="mt-3">
@@ -48,7 +48,7 @@ function cameraConfig(){
             {/* RTSP Config Process 2 of 2 */}
             {/* <div>
                 <p className="font-roboto font-bold text-white text-[18pt]">RTSP Configuration</p>
-                <p className="font-roboto text-palette-gray50 text-[10pt]">Close Circuit television interface.</p>
+                <p className="font-roboto text-palette-gray50 text-[8pt]">Close Circuit television interface.</p>
                 <div className="mt-3">
                     <p className="font-roboto text-white text-[10pt]">Verify</p>
                     <div className="mt-2">
@@ -69,7 +69,7 @@ function cameraConfig(){
             {/* Webcam Config Process 1 of 2 */}
             {/* <div>
                 <p className="font-roboto font-bold text-white text-[18pt]">Webcam Configuration</p>
-                <p className="font-roboto text-palette-gray50 text-[10pt]">Web camera source interface.</p>
+                <p className="font-roboto text-palette-gray50 text-[8pt]">Web camera source interface.</p>
                 <div className="mt-5">
                     <p className="font-roboto text-white text-[10pt]">Select a source</p>
                     <div className="mt-3">
@@ -93,7 +93,7 @@ function cameraConfig(){
             {/* Webcam Config Process 2 of 2 */}
             {/* <div>
                 <p className="font-roboto font-bold text-white text-[18pt]">Webcam Configuration</p>
-                <p className="font-roboto text-palette-gray50 text-[10pt]">Web camera source interface.</p>
+                <p className="font-roboto text-palette-gray50 text-[8pt]">Web camera source interface.</p>
                 <div className="mt-3">
                     <p className="font-roboto text-white text-[10pt]">Verify</p>
                     <div className="mt-2">
