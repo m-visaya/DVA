@@ -2,8 +2,8 @@ import ReturnButton from "../components/common/returnButton";
 import ConfigCat from "../components/config/configCategory";
 // import DangerZone from "../components/config/dangerzone_config/dangerzoneConfig";
 // import Logs from "../components/config/logs_config/logsConfig";
-import Appearance from "../components/config/appearance_config/appearanceConfig";
-// import Camera from "../components/config/camera_config/cameraConfig";
+// import Appearance from "../components/config/appearance_config/appearanceConfig";
+import Camera from "../components/config/camera_config/cameraConfig";
 
 function configuration(){
 
@@ -33,8 +33,8 @@ function configuration(){
                     <div className="col-span-4 row-auto min-h-[350px]">
                         <div className="box-border bg-secondary-gray h-full w-full rounded-2xl m-1 drop-shadow-lg">
                             <div>
-                                {/* <Camera /> */}
-                                <Appearance />
+                                <Camera />
+                                {/* <Appearance /> */}
                                 {/* <Logs /> */}
                                 {/* <DangerZone /> */}
 
