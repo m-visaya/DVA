@@ -1,3 +1,8 @@
+import appearanceIcon from "../assets/graphics/appearance.svg";
+import cameraIcon from "../assets/graphics/cameras.svg";
+import logsIcon from "../assets/graphics/logs.svg";
+import warningIcon from "../assets/graphics/warning.svg";
+
 import ReturnButton from "../components/common/returnButton";
 import ConfigCat from "../components/config/configCategory";
 // import DangerZone from "../components/config/dangerzone_config/dangerzoneConfig";
@@ -18,16 +23,20 @@ function configuration(){
                 <div className="grid grid-cols-5 gap-3 md:w-3/4 lg:w-[800px]">
                     <div className="col-span-1">
                         <div><ConfigCat 
-                            iconTitle={"Cameras"}
+                            icon={cameraIcon}
+                            title={"Cameras"}
                         /></div>
-                        <div><ConfigCat 
-                            iconTitle={"Appearance"}
+                        <div><ConfigCat
+                            icon={appearanceIcon}
+                            title={"Appearance"}
                         /></div>
-                        <div><ConfigCat 
-                            iconTitle={"Logs"}
+                        <div><ConfigCat
+                            icon={logsIcon}
+                            title={"Logs"}
                         /></div>
-                        <div><ConfigCat 
-                            iconTitle={"Danger Zone"}
+                        <div><ConfigCat
+                            icon={warningIcon}
+                            title={"Danger Zone"}
                         /></div>
                     </div>
                     <div className="col-span-4 row-auto min-h-[350px]">
