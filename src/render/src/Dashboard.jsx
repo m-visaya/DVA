@@ -11,6 +11,19 @@ function Dashboard() {
     <div className="bg-palette-gray100 h-screen flex flex-col">
       <div className="flex justify-center h-full items-center">
         <div className="grid grid-cols-2 gap-6">
+          <div className="col-span-2 flex justify-center pb-5">
+            <div className="grid grid-cols-2 gap-x-2">
+              <div className="flex justify-center items-center">
+                <p className="text-palette-gray50 text-[44pt] font-roboto">12:00</p>
+              </div>
+              <div className="flex items-center">
+                <p className="text-palette-gray50 text-[16pt] font-roboto">Wednesday<br />March 4</p>
+              </div>
+              <div className="col-span-2 flex justify-center">
+                <p className="text-palette-gray50 text-[12pt] font-roboto">0 : Detected Accidents</p>
+              </div>
+            </div>
+          </div>
           <div>
             <Link to="/live">
               <Icon 
