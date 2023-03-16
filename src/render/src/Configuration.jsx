@@ -1,7 +1,3 @@
-import appearanceIcon from "../assets/graphics/appearance.svg";
-import cameraIcon from "../assets/graphics/cameras.svg";
-import logsIcon from "../assets/graphics/logs.svg";
-import warningIcon from "../assets/graphics/warning.svg";
 
 import ReturnButton from "../components/common/returnButton";
 import ConfigCat from "../components/config/configCategory";
@@ -23,19 +19,15 @@ function configuration(){
                 <div className="grid grid-cols-5 gap-3 md:w-3/4 lg:w-[800px]">
                     <div className="col-span-1">
                         <div><ConfigCat 
-                            icon={cameraIcon}
                             title={"Cameras"}
                         /></div>
                         <div><ConfigCat
-                            icon={appearanceIcon}
                             title={"Appearance"}
                         /></div>
                         <div><ConfigCat
-                            icon={logsIcon}
                             title={"Logs"}
                         /></div>
                         <div><ConfigCat
-                            icon={warningIcon}
                             title={"Danger Zone"}
                         /></div>
                     </div>
