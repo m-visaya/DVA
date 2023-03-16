@@ -6,7 +6,6 @@ function cameraConfig(){
     return(
         <div className="px-7 py-5">
             {/* Camera Select Source Process 0 */}
-
             <div>
                 <p className="font-roboto font-bold text-white text-[18pt]">Cameras</p>
                 <p className="font-roboto text-palette-gray50 text-[8pt]">Add RTSP camera or a webcam source.</p>
