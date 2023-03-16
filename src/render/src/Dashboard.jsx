@@ -4,6 +4,7 @@ import configureIcon from "../assets/graphics/configure.svg";
 import fileIcon from "../assets/graphics/file.svg";
 import liveIcon from "../assets/graphics/live.svg";
 import logIcon from "../assets/graphics/logs.svg";
+// import Modal from "../components/common/modal";
 import Icon from "../components/dashboard/icon";
 
 function Dashboard() {
@@ -67,6 +68,7 @@ function Dashboard() {
           </div> */}
         </div>
       </div>
+    {/* < Modal /> */}
     </div>
   );
 }
