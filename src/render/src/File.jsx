@@ -1,5 +1,7 @@
 import ReturnButton from "../components/common/returnButton";
 import FileDash from "../components/file/fileDash";
+import Loading from "../components/common/loading";
+
 import { useRef, useState, useEffect } from "react";
 import * as tf from "@tensorflow/tfjs";
 import "@tensorflow/tfjs-backend-webgl";
@@ -42,13 +44,9 @@ function file() {
               const canvas = document.createElement("canvas");
               canvas.width = img.videoWidth;
               canvas.height = img.videoHeight;
-              canvas.getContext("2d").drawImage(
-                img,
-                0,
-                0,
-                canvas.width,
-                canvas.height
-              );
+              canvas
+                .getContext("2d")
+                .drawImage(img, 0, 0, canvas.width, canvas.height);
               const imageDataURL = canvas.toDataURL();
 
               window.electronAPI.addLog({
@@ -77,15 +75,16 @@ function file() {
 
   return (
     <div className="bg-black h-screen flex flex-col relative">
-      <div className="absolute z-10 place-items-start 2xl:pl-10 lg:pl-8 md:pl-6 mt-5">
-        <ReturnButton returnTitle="File" to="/" />
-      </div>
+      {!model && <Loading message="Loading Model..." />}
       <input
         type="file"
         onChange={handleFileInputChange}
-        accept="image/*,video/*"
-        className="ml-auto z-10"
+        accept="video/*"
+        className="ml-auto z-10 absolute top-0 right-0"
       />
+      <div className="absolute z-10 place-items-start 2xl:pl-10 lg:pl-8 md:pl-6 mt-5">
+        <ReturnButton returnTitle="File" to="/" />
+      </div>
       {video && (
         <video
           ref={videoRef}
@@ -97,7 +96,6 @@ function file() {
           playsInline
         />
       )}
-
       <FileDash detectionStatus={prediction} />
     </div>
   );
