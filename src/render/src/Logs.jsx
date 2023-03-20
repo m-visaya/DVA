@@ -8,26 +8,32 @@ import { useState, useEffect } from "react";
 import { useLocation } from "react-router-dom";
 
 function logs() {
-  const [logsData, setLogsData] = useState([]);
-  window.electronAPI.getLogs();
-  window.electronAPI.onLogsData((event, rows) => {
-    setLogsData(rows);
-  });
-
   const location = useLocation();
   const fromPath = location.state?.from || "/";
-  const initLogFilter =
+  const initChannel =
     fromPath !== "/"
       ? String(fromPath).replace("/", "").charAt(0).toUpperCase() +
         String(fromPath).slice(2)
       : "All";
 
-  const [logFilter, setLogFilter] = useState(initLogFilter);
+  const [channel, setChannel] = useState(initChannel);
+  const [startDate, setStartDate] = useState(null);
+  const [finishDate, setFinishDate] = useState(null);
+  const [logsData, setLogsData] = useState([]);
+
+  window.electronAPI.getLogs({
+    channel: channel,
+    from: startDate,
+    to: finishDate,
+  });
+  window.electronAPI.onLogsData((event, rows) => {
+    setLogsData(rows);
+  });
 
   useEffect(() => {
     // do something when the filter changes
     return;
-  }, [logFilter]);
+  }, [channel]);
 
   return (
     <div className="bg-palette-gray100 min-h-screen flex flex-col">
@@ -49,8 +55,8 @@ function logs() {
                 className="bg-palette-gray75 text-white lg:text-[10pt] md:text-[8pt] font-roboto h-8 w-full rounded-md m-1 cursor-pointer drop-shadow-lg"
                 name="channels"
                 id="channels"
-                value={logFilter}
-                onChange={(e) => setLogFilter(e.target.value)}
+                value={channel}
+                onChange={(e) => setChannel(e.target.value)}
               >
                 <option value="All">All</option>
                 <option value="Live">Live</option>
@@ -68,6 +74,7 @@ function logs() {
               <input
                 className="bg-palette-gray75 text-palette-gray50 text-[8pt] h-8 w-full rounded-md m-1 cursor-pointer drop-shadow-lg"
                 type="date"
+                onChange={(e) => setStartDate(e.target.value)}
               ></input>
             </div>
           </div>
@@ -81,6 +88,7 @@ function logs() {
               <input
                 className="bg-palette-gray75 text-palette-gray50 text-[8pt] h-8 w-full rounded-md m-1 cursor-pointer drop-shadow-lg"
                 type="date"
+                onChange={(e) => setFinishDate(e.target.value)}
               ></input>
             </div>
           </div>

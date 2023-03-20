@@ -4,12 +4,12 @@
 const { contextBridge, ipcRenderer } = require("electron");
 
 contextBridge.exposeInMainWorld("electronAPI", {
-  // openLogs: () => ipcRenderer.send("open-logs"),
-  // closeLogs: () => ipcRenderer.send("close-logs"),
-  addLog: (values) => ipcRenderer.send("add-log", values),
-  getLogs: () => ipcRenderer.send("get-logs"),
+  addLog: (props) => ipcRenderer.send("add-log", props),
+  getLogs: (props) => ipcRenderer.send("get-logs", props),
   openLog: () => ipcRenderer.send("open-log"),
   closeLog: () => ipcRenderer.send("close-log"),
+  getImage: (imagePath) => ipcRenderer.send("get-image", imagePath),
   onLogsData: (callback) => ipcRenderer.on("logs-data", callback),
+  onImageData: (callback) => ipcRenderer.on("image-data", callback),
   fireNotification: (props) => ipcRenderer.invoke("fire-notification", props),
 });

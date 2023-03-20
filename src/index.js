@@ -1,4 +1,4 @@
-const { app, ipcMain, BrowserWindow, Notification } = require("electron");
+const { app, ipcMain, protocol, BrowserWindow, Notification } = require("electron");
 const isDev = require("electron-is-dev");
 const fs = require('fs');
 const path = require('path');
@@ -78,43 +78,7 @@ const createWindow = () => {
   mainWindow.removeMenu();
 };
 
-// const handleOpenLogs = (event) => {
-//   if (BrowserWindow.getAllWindows().length == 2) {
-//     return;
-//   }
-
-//   const parent = BrowserWindow.fromWebContents(event.sender);
-//   const logsWindow = new BrowserWindow({
-//     width: 700,
-//     height: 500,
-//     minWidth: 500,
-//     minHeight: 400,
-//     autoHideMenuBar: true,
-//     parent: parent,
-//     modal: true,
-//     show: false,
-//     frame: true,
-//     webPreferences: {
-//       preload: path.join(__dirname, "preload.js"),
-//     },
-//   });
-
-//   logsWindow.loadURL("http://localhost:5173/logs");
-
-//   logsWindow.once("ready-to-show", () => {
-//     setTimeout(() => {
-//       logsWindow.show();
-//     }, 50);
-//   });
-// };
-
-// const handleCloseLogs = (event) => {
-//   const logsWindow = BrowserWindow.fromWebContents(event.sender);
-//   logsWindow.hide();
-//   logsWindow.close();
-// };
-
-const handleAddLog = (event, values) => {
+const handleAddLog = (event, props) => {
   // Retrieve the most recent log from the logs table
   const recentLogQuery = `SELECT MAX("Date Occurred") FROM logs`;
   const recentLogResult = db.exec(recentLogQuery);
@@ -127,38 +91,50 @@ const handleAddLog = (event, values) => {
   if (!recentLogDate || timeDiff >= 60 * 1000) {
 
     // Save accident frame
-    const base64Data = values.imageDataURL.replace(/^data:image\/png;base64,/, "");
+    const base64Data = props.imageDataURL.replace(/^data:image\/png;base64,/, "");
     const buffer = Buffer.from(base64Data, "base64");
     const dateTimeString = now.toLocaleString().replace(/[/\s:]/g, "-");
-    const filePath = `./saved/${dateTimeString}.png`;
+    const fileName = `${dateTimeString}.png`;
+    const filePath = path.join(__dirname, `saved`, fileName);
 
     fs.writeFile(filePath, buffer, (err) => {
       if (err) {
         console.error(err);
       } else {
-        console.log("Image saved successfully");
+        // Insert a new log into the logs table with props from the 'props' dictionary
+        const insertQuery = `INSERT INTO logs (Channel, Type, Origin, "File Path", "Date Occurred")
+        values (?, ?, ?, ?, ?)`;
+
+        const insertValues = [props.channel, props.type, props.origin, filePath, now.toISOString()];
+        db.run(insertQuery, insertValues);
+
+        // Export the updated database to the file system
+        const data = db.export();
+        fs.writeFileSync(dbPath, data);
+
+        console.log("New log added.");
       }
     });
 
-    // Insert a new log into the logs table with values from the 'values' dictionary
-    const insertQuery = `INSERT INTO logs (Channel, Type, Origin, "File Path", "Date Occurred")
-                         VALUES (?, ?, ?, ?, ?)`;
-    const insertValues = [values.channel, values.type, values.origin, filePath, now.toISOString()];
-    db.run(insertQuery, insertValues);
-
-    // Export the updated database to the file system
-    const data = db.export();
-    fs.writeFileSync(dbPath, data);
-
-    console.log("New log added to the database.");
   } else {
     console.log("Not adding new log - last log occurred less than a minute ago.");
   }
 };
 
-const handleGetLogs = (event) => {
-  // Select all rows from the logs table
-  const result = db.exec(`SELECT * FROM logs`);
+const handleGetLogs = (event, props) => {
+  // Build the SQL query based on the provided filters
+  let query = `SELECT * FROM logs WHERE 1=1`;
+  if (props.channel != "All") {
+    query += ` AND Channel = '${props.channel}'`;
+  }
+  if (props.from) {
+    query += ` AND "Date Occurred" >= '${props.from}'`;
+  }
+  if (props.to) {
+    query += ` AND "Date Occurred" <= '${props.to}'`;
+  }
+  // Execute the query
+  const result = db.exec(query);
   if (result && result.length > 0) {
     const rows = result[0].values;
     event.reply("logs-data", rows);
@@ -203,6 +179,11 @@ const handleCloseLog = (event) => {
   logWindow.close();
 };
 
+const handleGetImage = (event, imagePath) => {
+  const imageData = `data:image/png;base64,${fs.readFileSync(imagePath).toString('base64')}`;
+  event.reply("image-data", imageData);
+}
+
 const fireNotification = (event, props) => {
   const window = BrowserWindow.fromWebContents(event.sender);
 
@@ -228,10 +209,14 @@ const fireNotification = (event, props) => {
 // Some APIs can only be used after this event occurs.
 
 app.whenReady().then(() => {
-  // ipcMain.on("open-logs", handleOpenLogs);
-  // ipcMain.on("close-logs", handleCloseLogs);
+  protocol.registerFileProtocol('file', (request, callback) => {
+    const url = request.url.substr(7); // Strip off "file://"
+    callback({ path: path.normalize(`${__dirname}/${url}`) });
+  });
+
   ipcMain.on("add-log", handleAddLog);
   ipcMain.on("get-logs", handleGetLogs);
+  ipcMain.on("get-image", handleGetImage);
 
   ipcMain.on("open-log", handleOpenLog);
   ipcMain.on("close-log", handleCloseLog);
