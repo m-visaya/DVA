@@ -6,6 +6,7 @@ import { useRef, useState, useEffect, useCallback } from "react";
 import Webcam from "react-webcam";
 import * as tf from "@tensorflow/tfjs";
 import "@tensorflow/tfjs-backend-webgl";
+import { fireNotification, addLog } from "./helper";
 
 const MODEL_PATH = "./assets/model/xception_js/model.json";
 
@@ -55,6 +56,7 @@ function live() {
             prediction = "No Accident Detected";
           } else {
             prediction = "Accident Detected";
+
             const canvas = document.createElement("canvas");
             canvas.width = img.videoWidth;
             canvas.height = img.videoHeight;
@@ -63,19 +65,12 @@ function live() {
               .drawImage(img, 0, 0, canvas.width, canvas.height);
             const imageDataURL = canvas.toDataURL();
 
-            window.electronAPI.addLog({
-              channel: "Live",
-              type: "RTSP",
-              origin: "rtsp://10.23.12.34:80",
-              imageDataURL: imageDataURL,
-            });
-
-            window.electronAPI.getLogs();
-            window.electronAPI.onLogsData((event, rows) => {
-              console.log("Contents of the logs table:");
-              console.log(rows);
-              // Do something with the retrieved rows
-            });
+            addLog(
+              "Live",
+              "RTSP",
+              "rtsp://10.23.12.34:80",
+              imageDataURL,
+            );
           }
 
           setPrediction(prediction);

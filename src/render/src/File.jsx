@@ -5,7 +5,7 @@ import Loading from "../components/common/loading";
 import { useRef, useState, useEffect } from "react";
 import * as tf from "@tensorflow/tfjs";
 import "@tensorflow/tfjs-backend-webgl";
-import { fireNotification } from "./helper";
+import { fireNotification, addLog } from "./helper";
 
 const MODEL_PATH = "./assets/model/xception_js/model.json";
 
@@ -49,12 +49,12 @@ function file() {
                 .drawImage(img, 0, 0, canvas.width, canvas.height);
               const imageDataURL = canvas.toDataURL();
 
-              window.electronAPI.addLog({
-                channel: "Live",
-                type: "RTSP",
-                origin: "rtsp://10.23.12.34:80",
-                imageDataURL: imageDataURL,
-              });
+              addLog(
+                "File",
+                "RTSP",
+                "rtsp://10.23.12.34:80",
+                imageDataURL,
+              );
             }
 
             setPrediction(prediction);
