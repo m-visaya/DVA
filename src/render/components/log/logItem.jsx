@@ -1,11 +1,20 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
 function logItem({LogChannel, LogType, LogOrigin, LogDate, LogPath}){
     const [imageSource, setImageSource] = useState(String);
-    window.electronAPI.getImage(LogPath);
-    window.electronAPI.onImageData((event, imageData) => {
-        setImageSource(imageData);
-    });
+
+    useEffect(() => {
+        const imageDataHandler = (event, imageData) => {
+            setImageSource(imageData);
+        };
+    
+        console.log(LogPath);
+        window.electronAPI.getImage(LogPath);
+        window.electronAPI.onImageData(imageDataHandler);
+    
+        // return () => {};
+      }, []); // empty dependency array to run effect only once
+    
 
     return(
         <div className="flex flex justify-center" onClick={() => window.electronAPI.openLog()}>

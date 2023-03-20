@@ -19,21 +19,32 @@ function logs() {
   const [channel, setChannel] = useState(initChannel);
   const [startDate, setStartDate] = useState(null);
   const [finishDate, setFinishDate] = useState(null);
-  const [logsData, setLogsData] = useState([]);
 
-  window.electronAPI.getLogs({
-    channel: channel,
-    from: startDate,
-    to: finishDate,
-  });
-  window.electronAPI.onLogsData((event, rows) => {
-    setLogsData(rows);
-  });
+  const [logsData, setLogsData] = useState([]);
+  
+  useEffect(() => {
+    const logsDataHandler = (event, rows) => {
+      setLogsData(rows);
+    };
+
+    window.electronAPI.getLogs({
+      channel: channel,
+      from: startDate,
+      to: finishDate,
+    });
+    window.electronAPI.onLogsData(logsDataHandler);
+
+    // return () => {};
+  }, []); // empty dependency array to run effect only once
 
   useEffect(() => {
-    // do something when the filter changes
+    window.electronAPI.getLogs({
+      channel: channel,
+      from: startDate,
+      to: finishDate,
+    });
     return;
-  }, [channel]);
+  }, [channel, startDate, finishDate]);
 
   return (
     <div className="bg-palette-gray100 min-h-screen flex flex-col">
