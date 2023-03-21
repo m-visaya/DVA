@@ -180,9 +180,17 @@ const handleCloseLog = (event) => {
 };
 
 const handleGetImage = (event, imagePath) => {
-  const imageData = `data:image/png;base64,${fs.readFileSync(imagePath).toString('base64')}`;
-  event.reply("image-data", imageData);
+  fs.readFile(imagePath, (err, data) => {
+    if (err) {
+      // handle error
+      return;
+    }
+    
+    const imageData = `data:image/png;base64,${data.toString('base64')}`;
+    event.reply("image-data", imageData);
+  });
 }
+
 
 const fireNotification = (event, props) => {
   const window = BrowserWindow.fromWebContents(event.sender);
