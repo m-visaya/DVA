@@ -75,7 +75,7 @@ function file() {
 
   return (
     <div className="bg-black h-screen flex flex-col relative">
-      {!model && <Loading message="Loading Model..." />}
+      {!model && <Loading message="Loading" />}
       <input
         type="file"
         onChange={handleFileInputChange}
