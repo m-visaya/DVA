@@ -9,7 +9,17 @@ contextBridge.exposeInMainWorld("electronAPI", {
   openLog: () => ipcRenderer.send("open-log"),
   closeLog: () => ipcRenderer.send("close-log"),
   getImage: (imagePath) => ipcRenderer.send("get-image", imagePath),
-  onLogsData: (callback) => ipcRenderer.on("logs-data", callback),
-  onImageData: (callback) => ipcRenderer.on("image-data", callback),
+  onLogsData: (callback) => {
+    ipcRenderer.on("logs-data", callback);
+    return () => {
+      ipcRenderer.off("logs-data", callback);
+    };
+  },
+  onImageData: (callback) => {
+    ipcRenderer.on("image-data", callback);
+    return () => {
+      ipcRenderer.off("image-data", callback);
+    };
+  },
   fireNotification: (props) => ipcRenderer.invoke("fire-notification", props),
 });

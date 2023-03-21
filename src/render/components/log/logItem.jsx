@@ -1,22 +1,23 @@
 import { useState, useEffect } from "react";
 
-function logItem({LogChannel, LogType, LogOrigin, LogDate, LogPath}){
+function logItem({ LogChannel, LogType, LogOrigin, LogDate, LogPath }) {
     const [imageSource, setImageSource] = useState(String);
 
     useEffect(() => {
         const imageDataHandler = (event, imageData) => {
             setImageSource(imageData);
         };
-    
-        console.log(LogPath);
-        window.electronAPI.getImage(LogPath);
-        window.electronAPI.onImageData(imageDataHandler);
-    
-        // return () => {};
-      }, []); // empty dependency array to run effect only once
-    
 
-    return(
+        window.electronAPI.getImage(LogPath);
+        const removeEventListener = window.electronAPI.onImageData(imageDataHandler);
+
+        return () => {
+            removeEventListener();
+        };
+    }, []); // empty dependency array to run effect only once
+
+
+    return (
         <div className="flex flex justify-center" onClick={() => window.electronAPI.openLog()}>
             <div className="grid grid-cols-6 gap-x-10 md:w-3/4 lg:w-[800px] py-2 border-b border-palette-gray75 ">
                 <div className="text-palette-gray50 font-roboto lg:text-[10pt] md:text-[8pt] flex items-center truncate">{LogChannel}</div>
@@ -30,5 +31,5 @@ function logItem({LogChannel, LogType, LogOrigin, LogDate, LogPath}){
             </div>
         </div>
     );
-   }
-   export default logItem;
+}
+export default logItem;

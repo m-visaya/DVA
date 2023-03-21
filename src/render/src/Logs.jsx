@@ -13,7 +13,7 @@ function logs() {
   const initChannel =
     fromPath !== "/"
       ? String(fromPath).replace("/", "").charAt(0).toUpperCase() +
-        String(fromPath).slice(2)
+      String(fromPath).slice(2)
       : "All";
 
   const [channel, setChannel] = useState(initChannel);
@@ -21,7 +21,7 @@ function logs() {
   const [finishDate, setFinishDate] = useState(null);
 
   const [logsData, setLogsData] = useState([]);
-  
+
   useEffect(() => {
     const logsDataHandler = (event, rows) => {
       setLogsData(rows);
@@ -32,9 +32,12 @@ function logs() {
       from: startDate,
       to: finishDate,
     });
-    window.electronAPI.onLogsData(logsDataHandler);
 
-    // return () => {};
+    const removeEventListener = window.electronAPI.onLogsData(logsDataHandler);
+
+    return () => {
+      removeEventListener();
+    };
   }, []); // empty dependency array to run effect only once
 
   useEffect(() => {
@@ -43,6 +46,7 @@ function logs() {
       from: startDate,
       to: finishDate,
     });
+ 
     return;
   }, [channel, startDate, finishDate]);
 
