@@ -6,7 +6,7 @@ function logItem({ LogID, LogChannel, LogType, LogOrigin, LogDate, LogPath }) {
     useEffect(() => {
         const imageDataHandler = (event, res) => {
             if (res.id == LogID) {
-                console.log("match");
+                // console.log("match");
                 setImageSource(res.data);
             }
         };
