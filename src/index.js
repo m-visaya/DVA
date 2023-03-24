@@ -1,11 +1,14 @@
 const { app, ipcMain, protocol, BrowserWindow, Notification } = require("electron");
 const isDev = require("electron-is-dev");
+const initSqlJs = require('sql.js');
+
 const fs = require('fs');
 const path = require('path');
-const initSqlJs = require('sql.js');
-const dbPath = path.join(__dirname, 'logs.db');
 
-console.log(dbPath);
+const dbPath = path.join(__dirname, 'logs.db');
+const savePath = path.join(app.getPath('documents'), "DVA", "saved");
+
+if (!fs.existsSync(savePath)) fs.mkdir(savePath);
 
 let SQL;
 let db;
@@ -95,7 +98,8 @@ const handleAddLog = (event, props) => {
     const buffer = Buffer.from(base64Data, "base64");
     const dateTimeString = now.toLocaleString().replace(/[/\s:]/g, "-");
     const fileName = `${dateTimeString}.png`;
-    const filePath = path.join(__dirname, `saved`, fileName);
+    
+    const filePath = path.join(savePath, fileName);
 
     fs.writeFile(filePath, buffer, (err) => {
       if (err) {
