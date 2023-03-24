@@ -38,17 +38,7 @@ function logs() {
     return () => {
       removeEventListener();
     };
-  }, []); // empty dependency array to run effect only once
-
-  useEffect(() => {
-    window.electronAPI.getLogs({
-      channel: channel,
-      from: startDate,
-      to: finishDate,
-    });
- 
-    return;
-  }, [channel, startDate, finishDate]);
+  }, [channel, startDate, finishDate]); // empty dependency array to run effect only once
 
   return (
     <div className="bg-palette-gray100 min-h-screen flex flex-col">
