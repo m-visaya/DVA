@@ -179,15 +179,19 @@ const handleCloseLog = (event) => {
   logWindow.close();
 };
 
-const handleGetImage = (event, imagePath) => {
-  fs.readFile(imagePath, (err, data) => {
+const handleGetImage = (event, props) => {
+  fs.readFile(props.path, (err, data) => {
     if (err) {
       // handle error
       return;
     }
     
     const imageData = `data:image/png;base64,${data.toString('base64')}`;
-    event.reply("image-data", imageData);
+    const res = {
+      id: props.id,
+      data: imageData,
+    };
+    event.reply("image-data", res);
   });
 }
 

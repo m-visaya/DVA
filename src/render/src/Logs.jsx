@@ -133,6 +133,7 @@ function logs() {
         {logsData.map((log) => (
           <LogItem
             key={log[0]} // Make sure each log item has a unique key
+            LogID={log[0]}
             LogChannel={log[1]}
             LogType={log[2]}
             LogOrigin={log[3]}
