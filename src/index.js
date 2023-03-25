@@ -8,7 +8,7 @@ const path = require('path');
 const dbPath = path.join(__dirname, 'logs.db');
 const savePath = path.join(app.getPath('documents'), "DVA", "saved");
 
-if (!fs.existsSync(savePath)) fs.mkdir(savePath);
+if (!fs.existsSync(savePath)) fs.mkdirSync(savePath, { recursive: true });
 
 let SQL;
 let db;
