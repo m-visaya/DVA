@@ -15,8 +15,8 @@ module.exports = {
           gray: "#2D2D2D",
         },
         palette: {
-          white25: "#E6E6E6",
-          white50: "#F6F6F6",
+          white25: "#E8E8E8",
+          white50: "#F1F1F1",
           white75: "#FBFBFB",
           white100: "#FFFFFF",
           gray25: "#C2C2C2",

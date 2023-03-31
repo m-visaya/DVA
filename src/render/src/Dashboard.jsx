@@ -36,9 +36,9 @@ function Dashboard() {
                   </p>
                 </div>
               </div>
-              <p className="text-palette-gray75 dark:text-palette-gray50 text-[12pt] font-roboto text-center">
+              {/* <p className="text-palette-gray75 dark:text-palette-gray50 text-[12pt] font-roboto text-center">
                 0 : Detected Accidents
-              </p>
+              </p> */}
             </div>
           </div>
           <div>

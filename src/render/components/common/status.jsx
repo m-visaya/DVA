@@ -5,7 +5,7 @@ function Status({statusTitle, statusDescription}) {
     <div>
       <div className="flex justify-center h-full items-center">
         <div className="grid grid-cols-4 h-full items-center">
-          <div className="cols-span-1">
+          <div className="cols-span-1 flex justify-center">
             <img src={statusGreen} className="w-3"></img>
           </div>
           <div className="col-span-3">
