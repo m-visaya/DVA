@@ -8,26 +8,37 @@ import { useState, useEffect } from "react";
 import { useLocation } from "react-router-dom";
 
 function logs() {
-  const [logsData, setLogsData] = useState([]);
-  window.electronAPI.getLogs();
-  window.electronAPI.onLogsData((event, rows) => {
-    setLogsData(rows);
-  });
-
   const location = useLocation();
   const fromPath = location.state?.from || "/";
-  const initLogFilter =
+  const initChannel =
     fromPath !== "/"
       ? String(fromPath).replace("/", "").charAt(0).toUpperCase() +
-        String(fromPath).slice(2)
+      String(fromPath).slice(2)
       : "All";
 
-  const [logFilter, setLogFilter] = useState(initLogFilter);
+  const [channel, setChannel] = useState(initChannel);
+  const [startDate, setStartDate] = useState(null);
+  const [finishDate, setFinishDate] = useState(null);
+
+  const [logsData, setLogsData] = useState([]);
 
   useEffect(() => {
-    // do something when the filter changes
-    return;
-  }, [logFilter]);
+    const logsDataHandler = (event, rows) => {
+      setLogsData(rows);
+    };
+
+    window.electronAPI.getLogs({
+      channel: channel,
+      from: startDate,
+      to: finishDate,
+    });
+
+    const removeEventListener = window.electronAPI.onLogsData(logsDataHandler);
+
+    return () => {
+      removeEventListener();
+    };
+  }, [channel, startDate, finishDate]); // empty dependency array to run effect only once
 
   return (
     <div className="bg-pallete-white75 dark:bg-palette-gray100 min-h-screen flex flex-col">
@@ -49,8 +60,8 @@ function logs() {
                 className="bg-palette-white50 dark:text-pallete-gray75 lg:text-[10pt] md:text-[8pt] font-roboto h-8 w-full rounded-md m-1 cursor-pointer"
                 name="channels"
                 id="channels"
-                value={logFilter}
-                onChange={(e) => setLogFilter(e.target.value)}
+                value={channel}
+                onChange={(e) => setChannel(e.target.value)}
               >
                 <option value="All">All</option>
                 <option value="Live">Live</option>
@@ -68,6 +79,7 @@ function logs() {
               <input
                 className="bg-palette-white50 dark:bg-palette-gray75 text-palette-gray50 text-[8pt] h-8 w-full rounded-md m-1 cursor-pointer"
                 type="date"
+                onChange={(e) => setStartDate(e.target.value)}
               ></input>
             </div>
           </div>
@@ -81,6 +93,7 @@ function logs() {
               <input
                 className="bg-palette-white50 dark:bg-palette-gray75 text-palette-gray50 text-[8pt] h-8 w-full rounded-md m-1 cursor-pointer"
                 type="date"
+                onChange={(e) => setFinishDate(e.target.value)}
               ></input>
             </div>
           </div>
@@ -117,6 +130,7 @@ function logs() {
         {logsData.map((log) => (
           <LogItem
             key={log[0]} // Make sure each log item has a unique key
+            LogID={log[0]}
             LogChannel={log[1]}
             LogType={log[2]}
             LogOrigin={log[3]}

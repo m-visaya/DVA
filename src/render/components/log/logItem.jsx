@@ -1,14 +1,40 @@
-function logItem({LogChannel, LogType, LogOrigin, LogDate, LogPath}){
-    return(
+import { useState, useEffect } from "react";
+
+function logItem({ LogID, LogChannel, LogType, LogOrigin, LogDate, LogPath }) {
+    const [imageSource, setImageSource] = useState("");
+
+    useEffect(() => {
+        const imageDataHandler = (event, res) => {
+            if (res.id == LogID) {
+                // console.log("match");
+                setImageSource(res.data);
+            }
+        };
+
+        window.electronAPI.getImage({
+            path: LogPath,
+            id: LogID
+        });
+        const removeEventListener = window.electronAPI.onImageData(imageDataHandler);
+
+        return () => {
+            removeEventListener();
+        };
+    }, []); // empty dependency array to run effect only once
+
+
+    return (
         <div className="flex flex justify-center" onClick={() => window.electronAPI.openLog()}>
             <div className="grid grid-cols-5 gap-x-10 md:w-3/4 lg:w-[800px] py-2 border-b border-palette-gray75">
                 <div className="text-palette-gray50 font-roboto lg:text-[10pt] md:text-[8pt] flex items-center truncate">{LogType}</div>
                 <div className="text-palette-gray50 font-roboto lg:text-[10pt] md:text-[8pt] flex items-center truncate">{LogOrigin}</div>
                 <div className="text-palette-gray50 font-roboto lg:text-[10pt] md:text-[8pt] flex items-center truncate">{LogDate}</div>
                 <div className="text-palette-gray50 font-roboto lg:text-[10pt] md:text-[8pt] flex items-center truncate">{LogPath}</div>
-                <div className="box-border bg-palette-gray75 h-12 w-auto rounded-xl m-1 cursor-pointer drop-shadow-lg"></div>
+                <div className="box-border bg-palette-gray75 h-12 w-auto rounded-xl m-1 cursor-pointer drop-shadow-lg">
+                    <img src={imageSource} alt="Log Image" className="h-full w-full object-cover" />
+                </div>
             </div>
         </div>
     );
-   }
-   export default logItem;
+}
+export default logItem;
