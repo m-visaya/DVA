@@ -30,7 +30,7 @@ function logs() {
   }, [logFilter]);
 
   return (
-    <div className="bg-palette-gray100 min-h-screen flex flex-col">
+    <div className="bg-pallete-white75 dark:bg-palette-gray100 min-h-screen flex flex-col">
       <div className="flex justify-center pt-7">
         <div className="relative md:-left-72 lg:-left-80">
           <ReturnButton returnTitle="Logs" to={fromPath} />
@@ -39,14 +39,14 @@ function logs() {
       <div className="flex justify-center pt-12">
         <div className="grid grid-cols-5 gap-x-2 md:w-3/4 lg:w-[800px]">
           <div className="grid grid-cols-3">
-            <div className="col-span-1 flex justify-center items-center">
-              <label className="text-white font-roboto lg:text-[10pt] md:text-[8pt]">
-                Channel:
+            <div className="col-span-1 flex items-center">
+              <label className="dark:text-pallete-gray75 font-roboto lg:text-[10pt] md:text-[8pt]">
+                Type:
               </label>
             </div>
             <div className="col-span-2">
               <select
-                className="bg-palette-gray75 text-white lg:text-[10pt] md:text-[8pt] font-roboto h-8 w-full rounded-md m-1 cursor-pointer drop-shadow-lg"
+                className="bg-palette-white50 dark:text-pallete-gray75 lg:text-[10pt] md:text-[8pt] font-roboto h-8 w-full rounded-md m-1 cursor-pointer"
                 name="channels"
                 id="channels"
                 value={logFilter}
@@ -60,26 +60,26 @@ function logs() {
           </div>
           <div className="grid grid-cols-3">
             <div className="col-span-1 flex justify-center items-center">
-              <label className="text-white font-roboto lg:text-[10pt] md:text-[8pt]">
+              <label className="dark:text-pallete-gray75 font-roboto lg:text-[10pt] md:text-[8pt]">
                 From:
               </label>
             </div>
             <div className="col-span-2">
               <input
-                className="bg-palette-gray75 text-palette-gray50 text-[8pt] h-8 w-full rounded-md m-1 cursor-pointer drop-shadow-lg"
+                className="bg-palette-white50 dark:bg-palette-gray75 text-palette-gray50 text-[8pt] h-8 w-full rounded-md m-1 cursor-pointer"
                 type="date"
               ></input>
             </div>
           </div>
           <div className="grid grid-cols-3">
             <div className="col-span-1 flex justify-center items-center">
-              <label className="text-white font-roboto lg:text-[10pt] md:text-[8pt]">
+              <label className="dark:text-pallete-gray75 font-roboto lg:text-[10pt] md:text-[8pt]">
                 To:
               </label>
             </div>
             <div className="col-span-2">
               <input
-                className="bg-palette-gray75 text-palette-gray50 text-[8pt] h-8 w-full rounded-md m-1 cursor-pointer drop-shadow-lg"
+                className="bg-palette-white50 dark:bg-palette-gray75 text-palette-gray50 text-[8pt] h-8 w-full rounded-md m-1 cursor-pointer"
                 type="date"
               ></input>
             </div>
@@ -95,23 +95,20 @@ function logs() {
         </div>
       </div>
       <div className="flex justify-center pt-6">
-        <div className="grid grid-cols-6 gap-x-10 md:w-3/4 lg:w-[800px] pb-3 border-b border-palette-gray75">
-          <div className="text-white font-roboto lg:text-[10pt] md:text-[8pt]">
-            Channel
-          </div>
-          <div className="text-white font-roboto lg:text-[10pt] md:text-[8pt]">
+        <div className="grid grid-cols-5 gap-x-10 md:w-3/4 lg:w-[800px] pb-3 border-b border-palette-gray75">
+          <div className="dark:text-pallete-gray75 font-roboto lg:text-[10pt] md:text-[8pt]">
             Type
           </div>
-          <div className="text-white font-roboto lg:text-[10pt] md:text-[8pt]">
+          <div className="dark:text-pallete-gray75 font-roboto lg:text-[10pt] md:text-[8pt]">
             Origin
           </div>
-          <div className="text-white font-roboto lg:text-[10pt] md:text-[8pt]">
+          <div className="dark:text-pallete-gray75 font-roboto lg:text-[10pt] md:text-[8pt]">
             Date Occured
           </div>
-          <div className="text-white font-roboto lg:text-[10pt] md:text-[8pt]">
+          <div className="dark:text-pallete-gray75 font-roboto lg:text-[10pt] md:text-[8pt]">
             File Path
           </div>
-          <div className="text-white font-roboto lg:text-[10pt] md:text-[8pt] flex justify-center">
+          <div className="dark:text-pallete-gray75 font-roboto lg:text-[10pt] md:text-[8pt] flex justify-center">
             Preview
           </div>
         </div>
