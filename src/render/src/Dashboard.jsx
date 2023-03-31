@@ -25,18 +25,18 @@ function Dashboard() {
           <div className="col-span-2 flex justify-center pb-5">
             <div className="flex flex-col">
               <div className="flex justify-center items-center gap-4">
-                <p className="text-palette-gray75 text-[44pt] font-roboto">
+                <p className="text-palette-gray75 dark:text-palette-gray50 text-[44pt] font-roboto">
                   {time.toLocaleString(DateTime.TIME_SIMPLE)}
                 </p>
                 <div className="flex items-center leading-tight">
-                  <p className="text-palette-gray75 text-[16pt] font-roboto">
+                  <p className="text-palette-gray75 dark:text-palette-gray50 text-[16pt] font-roboto">
                     {time.toLocaleString({ weekday: "long" })}
                     <br />
                     {time.toLocaleString({ month: "long" })} {time.day}
                   </p>
                 </div>
               </div>
-              <p className="text-palette-gray75 text-[12pt] font-roboto text-center">
+              <p className="text-palette-gray75 dark:text-palette-gray50 text-[12pt] font-roboto text-center">
                 0 : Detected Accidents
               </p>
             </div>

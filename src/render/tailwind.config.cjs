@@ -1,6 +1,6 @@
 /** @type {import('tailwindcss').Config} */
 module.exports = {
-  darkMode: 'class',
+  darkMode: 'media',
   content: ["./index.html", "./src/**/*.{js,ts,jsx,tsx}", "./components/**/*.{js,ts,jsx,tsx}"],
   theme: {
     extend: {
@@ -22,6 +22,7 @@ module.exports = {
           gray25: "#C2C2C2",
           gray50: "#909090",
           gray75: "#2D2D2D",
+          gray80: "#4B4B4B",
           gray100: "#1E1E1E",
         },
       },

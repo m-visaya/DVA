@@ -1,6 +1,6 @@
 function icon({iconImage, iconTitle, iconDescription}){
  return(
-    <div className="group box-border bg-palette-white75 dark:bg-palette-gray75 hover:scale-105 hover:bg-palette-white25 h-auto w-64 rounded-2xl">
+    <div className="group box-border bg-palette-white75 dark:bg-palette-gray75 hover:scale-105 hover:bg-palette-white25 hover:dark:bg-palette-gray80 h-auto w-64 rounded-2xl">
       <div className="grid grid-cols-3 flex items-center h-full py-4">
         <div className="flex justify-center">
           <img src={iconImage} className="w-8"></img>  
