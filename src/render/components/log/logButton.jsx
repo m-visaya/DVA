@@ -5,7 +5,7 @@ function logButton() {
   return (
     <Link to="/logs" state={{ from: location.pathname }}>
       <div
-        className="box-border bg-palette-gray100 h-12 w-auto lg:rounded-2xl md:rounded-xl m-1 cursor-pointer drop-shadow-lg">
+        className="box-border bg-palette-gray100 h-12 w-auto rounded-xl cursor-pointer drop-shadow-lg">
         <div className="flex justify-center h-full items-center">
           <div className="grid grid-cols-4 flex h-full items-center">
             <div className="col-span-1">

@@ -92,7 +92,7 @@ function live() {
           ))}
         </select>
       </div>
-      {model && ready ? null : <Loading message="Loading Model..." />}
+      {model && ready ? null : <Loading message="Loading"/>}
       <Webcam
         className="absolute h-full w-full"
         ref={webcamRef}

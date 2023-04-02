@@ -1,6 +1,5 @@
 import { Link } from "react-router-dom";
 import configureIcon from "../assets/graphics/configure.svg";
-// import exitIcon from "../assets/graphics/exit.svg";
 import fileIcon from "../assets/graphics/file.svg";
 import liveIcon from "../assets/graphics/live.svg";
 import logIcon from "../assets/graphics/logs.svg";
@@ -20,26 +19,23 @@ function Dashboard() {
   }, []);
 
   return (
-    <div className="bg-palette-gray100 h-screen flex flex-col">
+    <div className="bg-palette-white75 dark:bg-palette-gray100 h-screen flex flex-col">
       <div className="flex justify-center h-full items-center">
-        <div className="grid grid-cols-2 gap-6">
+        <div className="grid grid-cols-2 gap-6 xl:gap-y-12 xl:gap-x-24">
           <div className="col-span-2 flex justify-center pb-5">
             <div className="flex flex-col">
-              <div className="flex justify-center items-center gap-4">
-                <p className="text-palette-gray50 text-[44pt] font-roboto">
+              <div className="flex justify-center items-center gap-4 xl:scale-125">
+                <p className="text-palette-gray75 dark:text-palette-gray50 text-[44pt] font-roboto">
                   {time.toLocaleString(DateTime.TIME_SIMPLE)}
                 </p>
                 <div className="flex items-center leading-tight">
-                  <p className="text-palette-gray50 text-[16pt] font-roboto">
+                  <p className="text-palette-gray75 dark:text-palette-gray50 text-[16pt] font-roboto">
                     {time.toLocaleString({ weekday: "long" })}
                     <br />
                     {time.toLocaleString({ month: "long" })} {time.day}
                   </p>
                 </div>
               </div>
-              <p className="text-palette-gray50 text-[12pt] font-roboto text-center">
-                0 : Detected Accidents
-              </p>
             </div>
           </div>
           <div>
@@ -78,11 +74,6 @@ function Dashboard() {
               />
             </Link>
           </div>
-          {/* <div>
-            <Icon 
-            iconImage={exitIcon} 
-            iconTitle="Exit" />
-          </div> */}
         </div>
       </div>
       {/* <Modal /> */}
