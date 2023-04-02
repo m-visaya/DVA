@@ -28,7 +28,7 @@ function configuration(){
                         /></div>
                     </div>
                     <div className="col-span-4 row-auto ">
-                        <div className="box-border bg-palette-white50 dark:bg-palette-gray100 h-full w-full rounded-2xl m-1">
+                        <div className="box-border bg-palette-white50 dark:bg-palette-gray75 h-full w-full rounded-xl m-1">
                             <div>
                                 <Camera />
                                 {/* <Appearance /> */}

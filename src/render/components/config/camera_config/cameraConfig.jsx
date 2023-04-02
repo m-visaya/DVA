@@ -12,7 +12,7 @@ function cameraConfig(){
                 <div className="mt-5">
                     <p className="font-roboto text-palette-gray100 dark:text-palette-gray50 text-[10pt]">Select a source</p>
                     <div className="mt-3">
-                            <select className="bg-palette-white25 dark:bg-palette-gray75 text-palette-gray100 dark:text-palette-gray50 text-[10pt] pl-3 font-roboto h-10 w-64 rounded-md cursor-pointer" name="channels" id="channels">
+                            <select className="bg-palette-white25 dark:bg-palette-gray100 text-palette-gray100 dark:text-palette-gray50 text-[10pt] pl-3 font-roboto h-10 w-64 rounded-md cursor-pointer" name="channels" id="channels">
                                 <option value="Live">Webcam 1</option>
                                 <option value="File">Webcam 2</option>
                             </select>
@@ -27,7 +27,7 @@ function cameraConfig(){
                             </div>
                         </div>
                     </div>
-                    <div className="flex flex-row-reverse mr-3 gap-x-2">
+                    <div className="flex flex-row-reverse gap-x-2 mt-10">
                         <ConfigPrimaryBtn 
                             Title={"Save"}
                         />
