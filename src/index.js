@@ -92,6 +92,12 @@ const handleAddLog = (event, props) => {
   const timeDiff = now - recentLogDate;
 
   if (!recentLogDate || timeDiff >= 60 * 1000) {
+    fireNotification(event, {
+      body: "DVA",
+      icon: "assets/statusRed.svg",
+      title: "An accident has been detected",
+      sound: null,
+    })
 
     // Save accident frame
     const base64Data = props.imageDataURL.replace(/^data:image\/png;base64,/, "");
