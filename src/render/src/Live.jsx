@@ -2,7 +2,7 @@ import ReturnButton from "../components/common/returnButton";
 import LiveDash from "../components/live/liveDash";
 import Loading from "../components/common/loading";
 
-import { useRef, useState, useEffect, useCallback } from "react";
+import { useRef, useState, useEffect } from "react";
 import Webcam from "react-webcam";
 import * as tf from "@tensorflow/tfjs";
 import "@tensorflow/tfjs-backend-webgl";
@@ -14,23 +14,16 @@ function live() {
   const webcamRef = useRef(null);
   const [prediction, setPrediction] = useState("No Accident Detected");
   const [model, setModel] = useState(null);
-  const [devices, setDevices] = useState([]);
   const [device, setDevice] = useState();
   const [ready, setReady] = useState(false);
 
-  const handleDevices = useCallback(
-    (mediaDevices) =>
-      setDevices(mediaDevices.filter(({ kind }) => kind === "videoinput")),
-    [setDevices]
-  );
-
-  useEffect(() => {
-    navigator.mediaDevices.enumerateDevices().then(handleDevices);
-    setDevice(devices[0]?.deviceId);
-  }, [handleDevices]);
-
   useEffect(() => {
     const loadModel = async () => {
+      const defaultCamera = await window.electronAPI.fetchSetting(
+        "defaultCamera"
+      );
+      if (defaultCamera) setDevice(defaultCamera);
+
       const model = await tf.loadGraphModel(MODEL_PATH);
       setModel(model);
       console.log("model loaded");
@@ -65,12 +58,7 @@ function live() {
               .drawImage(img, 0, 0, canvas.width, canvas.height);
             const imageDataURL = canvas.toDataURL();
 
-            addLog(
-              "Live",
-              "RTSP",
-              "rtsp://10.23.12.34:80",
-              imageDataURL,
-            );
+            addLog("Live", "RTSP", "rtsp://10.23.12.34:80", imageDataURL);
           }
 
           setPrediction(prediction);
@@ -84,15 +72,7 @@ function live() {
 
   return (
     <div className="bg-black h-screen flex flex-col relative">
-      <div className="ml-auto z-10 absolute right-0">
-        <label className="text-white mr-3">Camera Source</label>
-        <select value={device} onChange={(e) => setDevice(e.target.value)}>
-          {devices.map((option) => (
-            <option value={option.deviceId}>{option.label}</option>
-          ))}
-        </select>
-      </div>
-      {model && ready ? null : <Loading message="Loading"/>}
+      {model && ready ? null : <Loading message="Loading" />}
       <Webcam
         className="absolute h-full w-full"
         ref={webcamRef}

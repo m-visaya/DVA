@@ -1,24 +1,64 @@
-const { app, ipcMain, protocol, BrowserWindow, Notification } = require("electron");
+const {
+  app,
+  ipcMain,
+  protocol,
+  BrowserWindow,
+  Notification,
+} = require("electron");
 const isDev = require("electron-is-dev");
-const initSqlJs = require('sql.js');
+const initSqlJs = require("sql.js");
 
-const fs = require('fs');
-const path = require('path');
+const fs = require("fs");
+const path = require("path");
 
-const dbPath = path.join(__dirname, 'logs.db');
-const savePath = path.join(app.getPath('documents'), "DVA", "saved");
+const dbPath = path.join(__dirname, "logs.db");
+const savePath = path.join(app.getPath("documents"), "DVA", "saved");
 
 if (!fs.existsSync(savePath)) fs.mkdirSync(savePath, { recursive: true });
 
 let SQL;
 let db;
 
+const defaults = {
+  defaultCamera: "",
+};
+
+class Save {
+  constructor(prefs) {
+    const UserDataPath = app.getPath("userData");
+    this.path = path.join(UserDataPath, prefs.configName + ".json");
+    this.data = this.parseDataFile(this.path, prefs.defaults);
+  }
+
+  get(key) {
+    return this.data[key];
+  }
+
+  set(key, val) {
+    this.data[key] = val;
+    fs.writeFileSync(this.path, JSON.stringify(this.data));
+  }
+
+  parseDataFile(filePath, defaults) {
+    try {
+      return JSON.parse(fs.readFileSync(filePath));
+    } catch (error) {
+      return defaults;
+    }
+  }
+}
+
+const save = new Save({
+  configName: "user-preferences",
+  defaults: defaults,
+});
+
 async function initDatabase() {
   // Load the SQL.js library and set up the SQL object
   SQL = await initSqlJs({
     // Required to load the wasm binary asynchronously. Of course, you can host it wherever you want
     // You can omit locateFile completely when running in node
-    locateFile: file => `./node_modules/sql.js/dist/${file}`
+    locateFile: (file) => `./node_modules/sql.js/dist/${file}`,
   });
 
   // Check if the database file already exists
@@ -26,13 +66,13 @@ async function initDatabase() {
     // If it does, load the database from the file
     const data = fs.readFileSync(dbPath);
     db = new SQL.Database(data);
-    console.log('Loaded existing database from file:', dbPath);
+    console.log("Loaded existing database from file:", dbPath);
   } else {
     // If it doesn't, create a new database object
     db = new SQL.Database();
     const data = db.export();
     fs.writeFileSync(dbPath, data);
-    console.log('Created new database object.');
+    console.log("Created new database object.");
   }
 
   // Create the logs table if it doesn't already exist
@@ -92,13 +132,15 @@ const handleAddLog = (event, props) => {
   const timeDiff = now - recentLogDate;
 
   if (!recentLogDate || timeDiff >= 60 * 1000) {
-
     // Save accident frame
-    const base64Data = props.imageDataURL.replace(/^data:image\/png;base64,/, "");
+    const base64Data = props.imageDataURL.replace(
+      /^data:image\/png;base64,/,
+      ""
+    );
     const buffer = Buffer.from(base64Data, "base64");
     const dateTimeString = now.toLocaleString().replace(/[/\s:]/g, "-");
     const fileName = `${dateTimeString}.png`;
-    
+
     const filePath = path.join(savePath, fileName);
 
     fs.writeFile(filePath, buffer, (err) => {
@@ -109,7 +151,13 @@ const handleAddLog = (event, props) => {
         const insertQuery = `INSERT INTO logs (Channel, Type, Origin, "File Path", "Date Occurred")
         values (?, ?, ?, ?, ?)`;
 
-        const insertValues = [props.channel, props.type, props.origin, filePath, now.toISOString()];
+        const insertValues = [
+          props.channel,
+          props.type,
+          props.origin,
+          filePath,
+          now.toISOString(),
+        ];
         db.run(insertQuery, insertValues);
 
         // Export the updated database to the file system
@@ -119,9 +167,10 @@ const handleAddLog = (event, props) => {
         console.log("New log added.");
       }
     });
-
   } else {
-    console.log("Not adding new log - last log occurred less than a minute ago.");
+    console.log(
+      "Not adding new log - last log occurred less than a minute ago."
+    );
   }
 };
 
@@ -189,16 +238,15 @@ const handleGetImage = (event, props) => {
       // handle error
       return;
     }
-    
-    const imageData = `data:image/png;base64,${data.toString('base64')}`;
+
+    const imageData = `data:image/png;base64,${data.toString("base64")}`;
     const res = {
       id: props.id,
       data: imageData,
     };
     event.reply("image-data", res);
   });
-}
-
+};
 
 const fireNotification = (event, props) => {
   const window = BrowserWindow.fromWebContents(event.sender);
@@ -224,8 +272,24 @@ const fireNotification = (event, props) => {
 // initialization and is ready to create browser windows.
 // Some APIs can only be used after this event occurs.
 
+const handleSaveSettings = (event, prefs) => {
+  for (const key in prefs) {
+    if (Object.hasOwnProperty.call(prefs, key)) {
+      save.set(key, prefs[key]);
+    }
+  }
+};
+
+const handleOpenSettings = (event, pref) => {
+  try {
+    return save.get(pref);
+  } catch (error) {
+    return defaults[pref];
+  }
+};
+
 app.whenReady().then(() => {
-  protocol.registerFileProtocol('file', (request, callback) => {
+  protocol.registerFileProtocol("file", (request, callback) => {
     const url = request.url.substr(7); // Strip off "file://"
     callback({ path: path.normalize(`${__dirname}/${url}`) });
   });
@@ -237,6 +301,9 @@ app.whenReady().then(() => {
   ipcMain.on("open-log", handleOpenLog);
   ipcMain.on("close-log", handleCloseLog);
 
+  ipcMain.on("save-settings", handleSaveSettings);
+
+  ipcMain.handle("open-settings", handleOpenSettings);
   ipcMain.handle("fire-notification", fireNotification);
 
   initDatabase();

@@ -22,4 +22,6 @@ contextBridge.exposeInMainWorld("electronAPI", {
     };
   },
   fireNotification: (props) => ipcRenderer.invoke("fire-notification", props),
+  saveSettings: (prefs) => ipcRenderer.send("save-settings", prefs),
+  fetchSetting: (pref) => ipcRenderer.invoke("open-settings", pref),
 });
