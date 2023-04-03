@@ -1,6 +1,7 @@
 import ReturnButton from "../components/common/returnButton";
 import LiveDash from "../components/live/liveDash";
 import Loading from "../components/common/loading";
+import AlertModal from "../components/common/alertModal";
 
 import { useRef, useState, useEffect, useCallback } from "react";
 import Webcam from "react-webcam";
@@ -84,14 +85,14 @@ function live() {
 
   return (
     <div className="bg-black h-screen flex flex-col relative">
-      <div className="ml-auto z-10 absolute right-0">
+      {/* <div className="ml-auto z-10 absolute right-0">
         <label className="text-white mr-3">Camera Source</label>
         <select value={device} onChange={(e) => setDevice(e.target.value)}>
           {devices.map((option) => (
             <option value={option.deviceId}>{option.label}</option>
           ))}
         </select>
-      </div>
+      </div> */}
       {model && ready ? null : <Loading message="Loading"/>}
       <Webcam
         className="absolute h-full w-full"
@@ -103,6 +104,7 @@ function live() {
         <ReturnButton returnTitle="Live" to="/" />
       </div>
       <LiveDash detectionStatus={prediction} />
+      {/* <AlertModal/> */}
     </div>
   );
 }
