@@ -9,10 +9,10 @@ function Status({statusTitle, statusDescription}) {
             <img src={statusGreen} className="w-3"></img>
           </div>
           <div className="col-span-3">
-            <p className="text-white font-roboto text-[10pt] ">
+            <p className="text-palette-gray75 dark:text-palette-gray50 font-bold font-roboto text-[10pt] ">
               {statusTitle} :
             </p>
-            <p className="text-palette-gray50 font-roboto text-[8pt]">
+            <p className="text-palette-gray75 dark:text-palette-gray50 font-roboto text-[8pt]">
               {statusDescription}
             </p>
           </div>
