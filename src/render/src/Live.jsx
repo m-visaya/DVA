@@ -1,6 +1,7 @@
 import ReturnButton from "../components/common/returnButton";
 import LiveDash from "../components/live/liveDash";
 import Loading from "../components/common/loading";
+import AlertModal from "../components/common/alertModal";
 
 import { useRef, useState, useEffect } from "react";
 import Webcam from "react-webcam";
@@ -83,6 +84,7 @@ function live() {
         <ReturnButton returnTitle="Live" to="/" />
       </div>
       <LiveDash detectionStatus={prediction} />
+      {/* <AlertModal/> */}
     </div>
   );
 }
