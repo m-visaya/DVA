@@ -127,10 +127,8 @@ const handleAddLog = (event, props) => {
   const recentLogDate = new Date(recentLogResult[0].values[0][0]);
   const timeDiff = props.timestamp - recentLogDate;
 
-  if (recentLogDate && timeDiff < 60 * 1000 && timeDiff > 0) {
-    console.log(
-      "Not adding new log - last log occurred less than a minute ago."
-    );
+  // check cooldown
+  if (recentLogDate && timeDiff < 12 * 1000 && timeDiff > 0) {
     return;
   }
 
@@ -166,7 +164,8 @@ const handleAddLog = (event, props) => {
     ""
   );
   const buffer = Buffer.from(base64Data, "base64");
-  const fileName = `${props.frameCount}.png`;
+  const paddedNum = `${props.frameCount.toString().padStart(2, '0')}`;
+  const fileName = `${dateTimeString}_${paddedNum}.png`;
   const filePath = path.join(framesPath, fileName);
 
   fs.writeFile(filePath, buffer, (err) => {
