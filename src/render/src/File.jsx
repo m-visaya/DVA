@@ -16,6 +16,8 @@ function file() {
   const [video, setVideo] = useState(null);
 
   const videoRef = useRef(null);
+  const frameCount = useRef(0);
+  const timestamp = useRef(null);
 
   useEffect(() => {
     const loadModel = async () => {
@@ -37,25 +39,24 @@ function file() {
             const reshaped = resized.expandDims(0);
             let prediction = model.predict(reshaped).arraySync()[0];
             let conf = prediction * 100;
-            if (prediction[0] * 100 < 50) {
-              prediction = "No Accident Detected";
-            } else {
+
+            if (prediction[0] * 100 >= 50 || frameCount.current) {
               prediction = "Accident Detected";
 
+              timestamp.current = frameCount.current === 0 ? new Date() : timestamp.current;
+              
               const canvas = document.createElement("canvas");
               canvas.width = img.videoWidth;
               canvas.height = img.videoHeight;
               canvas
                 .getContext("2d")
                 .drawImage(img, 0, 0, canvas.width, canvas.height);
-              const imageDataURL = canvas.toDataURL();
 
-              addLog(
-                "File",
-                "RTSP",
-                "rtsp://10.23.12.34:80",
-                imageDataURL,
-              );
+              const frameDataURL = canvas.toDataURL();
+              addLog("File", "RTSP", "rtsp://10.23.12.34:80", frameDataURL, frameCount.current+1, timestamp.current);
+              frameCount.current = (frameCount.current + 1) % 10;
+            } else {
+                prediction = "No Accident Detected";
             }
 
             setPrediction(prediction);
@@ -77,12 +78,12 @@ function file() {
   return (
     <div className="bg-black h-screen flex flex-col relative">
       {!model && <Loading message="Loading" />}
-      {/* <input
+      <input
         type="file"
         onChange={handleFileInputChange}
         accept="video/*"
         className="ml-auto z-10 absolute top-0 right-0"
-      /> */}
+      />
       <div className="absolute z-10 place-items-start 2xl:pl-10 lg:pl-8 md:pl-6 mt-5">
         <ReturnButton returnTitle="File" to="/" />
       </div>
@@ -98,7 +99,7 @@ function file() {
         />
       )}
       <FileDash detectionStatus={prediction} />
-      <AlertModal/> 
+      {/* <AlertModal/>  */}
     </div>
   );
 }
