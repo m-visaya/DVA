@@ -17,7 +17,7 @@ root.render(
       <Route key="file" path="/file" element={<File />} />
       <Route key="live" path="/live" element={<Live />} />
       <Route key="logs" path="/logs" element={<Logs />} />
-      {/* <Route key="log" path="/log" element={<Log />} /> */}
+      {/* <Route key="logItem" path="/logs/log" element={<Log />} /> */}
       <Route key="config" path="/config" element={<Config />} />
     </Routes>
   </BrowserRouter>

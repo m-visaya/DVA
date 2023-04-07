@@ -30,7 +30,7 @@ function AlertModal(props) {
                                     <div className="flex h-full items-center">
                                         <div className="col-span-3">
                                             <p className="text-palette-gray100 dark:text-palette-gray50 font-bold font-roboto lg:text-[10pt] md:text-[8pt]">
-                                                Continue (60s)
+                                                Continue
                                             </p>
                                         </div>
                                     </div>
