@@ -122,16 +122,21 @@ const createWindow = () => {
 };
 
 const handleAddLog = (event, props) => {
-  // Retrieve the most recent log from the logs table
   const recentLogQuery = `SELECT MAX("Date Occurred") FROM logs`;
   const recentLogResult = db.exec(recentLogQuery);
   const recentLogDate = new Date(recentLogResult[0].values[0][0]);
+  const timeDiff = props.timestamp - recentLogDate;
 
-  // Compare the most recent log's date with the current time
-  const now = new Date();
-  const timeDiff = now - recentLogDate;
+  // check cooldown
+  if (recentLogDate && timeDiff < 12 * 1000 && timeDiff > 0) {
+    return;
+  }
 
-  if (!recentLogDate || timeDiff >= 60 * 1000) {
+  // Save accident frames
+  const dateTimeString = props.timestamp.toLocaleString().replace(/[/\s:]/g, "-");
+  const framesPath = path.join(savePath, dateTimeString);
+
+  if (props.frameCount === 1) {
     fireNotification(event, {
       body: "DVA",
       icon: "assets/statusRed.svg",
@@ -139,46 +144,35 @@ const handleAddLog = (event, props) => {
       sound: null,
     });
 
-    // Save accident frame
-    const base64Data = props.imageDataURL.replace(
-      /^data:image\/png;base64,/,
-      ""
-    );
-    const buffer = Buffer.from(base64Data, "base64");
-    const dateTimeString = now.toLocaleString().replace(/[/\s:]/g, "-");
-    const fileName = `${dateTimeString}.png`;
+    fs.mkdirSync(framesPath, { recursive: true });
 
-    const filePath = path.join(savePath, fileName);
+    // Save log details
+    const insertQuery = `INSERT INTO logs (Channel, Type, Origin, "File Path", "Date Occurred")
+    values (?, ?, ?, ?, ?)`;
 
-    fs.writeFile(filePath, buffer, (err) => {
-      if (err) {
-        console.error(err);
-      } else {
-        // Insert a new log into the logs table with props from the 'props' dictionary
-        const insertQuery = `INSERT INTO logs (Channel, Type, Origin, "File Path", "Date Occurred")
-        values (?, ?, ?, ?, ?)`;
+    const insertValues = [props.channel, props.type, props.origin, framesPath, props.timestamp.toISOString()];
+    db.run(insertQuery, insertValues);
 
-        const insertValues = [
-          props.channel,
-          props.type,
-          props.origin,
-          filePath,
-          now.toISOString(),
-        ];
-        db.run(insertQuery, insertValues);
+    const data = db.export();
+    fs.writeFileSync(dbPath, data);
 
-        // Export the updated database to the file system
-        const data = db.export();
-        fs.writeFileSync(dbPath, data);
-
-        console.log("New log added.");
-      }
-    });
-  } else {
-    console.log(
-      "Not adding new log - last log occurred less than a minute ago."
-    );
+    console.log("New log added.");
   }
+
+  const base64Data = props.frameDataURL.replace(
+    /^data:image\/png;base64,/,
+    ""
+  );
+  const buffer = Buffer.from(base64Data, "base64");
+  const paddedNum = `${props.frameCount.toString().padStart(2, '0')}`;
+  const fileName = `${dateTimeString}_${paddedNum}.png`;
+  const filePath = path.join(framesPath, fileName);
+
+  fs.writeFile(filePath, buffer, (err) => {
+    if (err) {
+      console.error(err);
+    }
+  });
 };
 
 const handleGetLogs = (event, props) => {
@@ -240,18 +234,27 @@ const handleCloseLog = (event) => {
 };
 
 const handleGetImage = (event, props) => {
-  fs.readFile(props.path, (err, data) => {
+  fs.readdir(props.path, (err, files) => {
     if (err) {
-      // handle error
+      console.error(err);
       return;
     }
 
-    const imageData = `data:image/png;base64,${data.toString("base64")}`;
-    const res = {
-      id: props.id,
-      data: imageData,
-    };
-    event.reply("image-data", res);
+    const firstFilePath = `${props.path}/${files[0]}`;
+
+    fs.readFile(firstFilePath, (err, data) => {
+      if (err) {
+        console.error(err);
+        return;
+      }
+
+      const imageData = `data:image/png;base64,${data.toString("base64")}`;
+      const res = {
+        id: props.id,
+        data: imageData,
+      };
+      event.reply("image-data", res);
+    });
   });
 };
 

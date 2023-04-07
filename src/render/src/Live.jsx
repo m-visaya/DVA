@@ -18,6 +18,9 @@ function live() {
   const [device, setDevice] = useState();
   const [ready, setReady] = useState(false);
 
+  const frameCount = useRef(0);
+  const timestamp = useRef(null);
+
   useEffect(() => {
     const loadModel = async () => {
       const defaultCamera = await window.electronAPI.fetchSetting(
@@ -46,10 +49,11 @@ function live() {
           const reshaped = resized.expandDims(0);
           let prediction = model.predict(reshaped).arraySync()[0];
           let conf = prediction * 100;
-          if (prediction[0] * 100 < 50) {
-            prediction = "No Accident Detected";
-          } else {
+
+          if (prediction[0] * 100 >= 50 || frameCount.current) {
             prediction = "Accident Detected";
+
+            timestamp.current = frameCount.current === 0 ? new Date() : timestamp.current;
 
             const canvas = document.createElement("canvas");
             canvas.width = img.videoWidth;
@@ -57,9 +61,12 @@ function live() {
             canvas
               .getContext("2d")
               .drawImage(img, 0, 0, canvas.width, canvas.height);
-            const imageDataURL = canvas.toDataURL();
-
-            addLog("Live", "RTSP", "rtsp://10.23.12.34:80", imageDataURL);
+            
+            const frameDataURL = canvas.toDataURL();
+            addLog("Live", "RTSP", "rtsp://10.23.12.34:80", frameDataURL, frameCount.current+1, timestamp.current);
+            frameCount.current = (frameCount.current + 1) % 10;
+          } else {
+            prediction = "No Accident Detected";
           }
 
           setPrediction(prediction);
