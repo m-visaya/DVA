@@ -77,12 +77,12 @@ function file() {
   return (
     <div className="bg-black h-screen flex flex-col relative">
       {!model && <Loading message="Loading" />}
-      {/* <input
+      <input
         type="file"
         onChange={handleFileInputChange}
         accept="video/*"
         className="ml-auto z-10 absolute top-0 right-0"
-      /> */}
+      />
       <div className="absolute z-10 place-items-start 2xl:pl-10 lg:pl-8 md:pl-6 mt-5">
         <ReturnButton returnTitle="File" to="/" />
       </div>
@@ -98,7 +98,7 @@ function file() {
         />
       )}
       <FileDash detectionStatus={prediction} />
-      <AlertModal/> 
+      {/* <AlertModal/>  */}
     </div>
   );
 }
