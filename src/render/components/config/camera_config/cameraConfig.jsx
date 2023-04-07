@@ -72,7 +72,7 @@ function cameraConfig() {
               </p>
               <div className="mt-2">
                 <Webcam
-                  className="h-32 w-64 object-cover rounded"
+                  className="h-32 w-64 object-cover rounded-md"
                   ref={webcamRef}
                   videoConstraints={{ deviceId: device }}
                   onUserMedia={() => setReady(true)}
