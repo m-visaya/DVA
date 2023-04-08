@@ -31,7 +31,7 @@ function Dashboard() {
             <div className="col-span-2 flex justify-center mb-5">
               <div className="font-roboto text-center text-palette-gray75 dark:text-palette-gray50 leading-tight xl:scale-125">
                 <p className="text-[26pt] font-bold">Vehicular Accidents Detection</p>
-                <p className="text-[16pt] font-extralight">Deep Learning Convolutional Neural Networks</p>
+                <p className="text-[16pt] font-extralight">Deep Learning Convolutional Neural Network</p>
               </div>
             </div>
             <div>
