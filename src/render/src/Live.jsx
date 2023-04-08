@@ -63,7 +63,7 @@ function live() {
               .drawImage(img, 0, 0, canvas.width, canvas.height);
             
             const frameDataURL = canvas.toDataURL();
-            addLog("Live", "RTSP", "rtsp://10.23.12.34:80", frameDataURL, frameCount.current+1, timestamp.current);
+            addLog("Live", "OBS Virtual Camera", frameDataURL, frameCount.current+1, timestamp.current);
             frameCount.current = (frameCount.current + 1) % 10;
           } else {
             prediction = "No Accident Detected";

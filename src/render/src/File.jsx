@@ -53,7 +53,7 @@ function file() {
                 .drawImage(img, 0, 0, canvas.width, canvas.height);
 
               const frameDataURL = canvas.toDataURL();
-              addLog("File", "RTSP", "rtsp://10.23.12.34:80", frameDataURL, frameCount.current+1, timestamp.current);
+              addLog("File", video.name, frameDataURL, frameCount.current+1, timestamp.current);
               frameCount.current = (frameCount.current + 1) % 10;
             } else {
                 prediction = "No Accident Detected";
@@ -72,7 +72,7 @@ function file() {
 
   const handleFileInputChange = (e) => {
     const file = e.target.files[0];
-    setVideo(URL.createObjectURL(file));
+    setVideo({name: file.name, stream: URL.createObjectURL(file)});
   };
 
   return (
@@ -90,7 +90,7 @@ function file() {
       {video && (
         <video
           ref={videoRef}
-          src={video}
+          src={video.stream}
           alt="Video file"
           className="absolute h-full w-full"
           autoPlay
