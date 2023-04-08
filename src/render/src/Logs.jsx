@@ -20,20 +20,24 @@ function logs() {
   const [startDate, setStartDate] = useState(null);
   const [finishDate, setFinishDate] = useState(null);
 
-  const [logsData, setLogsData] = useState([]);
+  const [logs, setLogs] = useState([]);
 
   useEffect(() => {
     const logsDataHandler = async () => {
-      const logs = await window.electronAPI.getLogs({
+      const logsData = await window.electronAPI.getLogs({
         type: type,
         from: startDate,
         to: finishDate,
       });
-      setLogsData(logs);
+      setLogs(logsData);
     };
 
     logsDataHandler();
   }, [type, startDate, finishDate]); // empty dependency array to run effect only once
+
+  const handleExportClick = () => {
+    window.electronAPI.exportLogs()
+  }
 
   return (
     <div className="bg-pallete-white75 dark:bg-palette-gray100 min-h-screen flex flex-col">
@@ -97,7 +101,7 @@ function logs() {
               <SecondaryBtn iconImage={SearchIcon} iconTitle="Reset" />
             </div>
             <div className="w-auto">
-              <SecondaryBtn iconImage={ExportIcon} iconTitle="Export" />
+              <SecondaryBtn onclick={handleExportClick()} iconImage={ExportIcon} iconTitle="Export" />
             </div>
           </div>
         </div>
@@ -122,7 +126,7 @@ function logs() {
         </div>
       </div>
       <div>
-        {logsData.map((log) => (
+        {logs.map((log) => (
           <LogItem
             key={log[0]} // Make sure each log item has a unique key
             LogID={log[0]}
