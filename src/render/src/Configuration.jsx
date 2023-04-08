@@ -8,8 +8,8 @@ import Camera from "../components/config/camera_config/cameraConfig";
 function configuration(){
 
     const[camera, setcamera] = useState(true);
-    const[appearance, setappearance] = useState(true);
-    const[logs, setlogs] = useState(true);
+    const[appearance, setappearance] = useState(false);
+    const[logs, setlogs] = useState(false);
 
     return(
         <div className="bg-palette-white75 dark:bg-palette-gray100 min-h-screen flex flex-col">
@@ -21,15 +21,15 @@ function configuration(){
             <div className="flex justify-center pt-10">
                 <div className="grid grid-cols-5 gap-2 md:w-3/4 lg:w-[800px]">
                     <div className="col-span-1">
-                        <div onClick={() =>{setappearance(false), setcamera(true), setlogs(false)}}>
+                        <div onClick={() =>{setcamera(true), setappearance(false), setlogs(false)}}>
                             <ConfigCat 
                             title={"Cameras"}
                         /></div>
-                        <div onClick={() =>{setappearance(true), setcamera(false), setlogs(false)}}>
+                        <div onClick={() =>{setcamera(false), setappearance(true), setlogs(false)}}>
                             <ConfigCat
                             title={"Appearance"}
                         /></div>
-                        <div onClick={() =>{setappearance(false), setcamera(false), setlogs(true)}}>
+                        <div onClick={() =>{setcamera(false), setappearance(false), setlogs(true)}}>
                             <ConfigCat
                             title={"Logs"}
                         /></div>
