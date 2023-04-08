@@ -57,21 +57,16 @@ const save = new Save({
 });
 
 async function initDatabase() {
-  // Load the SQL.js library and set up the SQL object
   SQL = await initSqlJs({
-    // Required to load the wasm binary asynchronously. Of course, you can host it wherever you want
-    // You can omit locateFile completely when running in node
     locateFile: (file) => `./node_modules/sql.js/dist/${file}`,
   });
 
   // Check if the database file already exists
   if (fs.existsSync(dbPath)) {
-    // If it does, load the database from the file
     const data = fs.readFileSync(dbPath);
     db = new SQL.Database(data);
     console.log("Loaded existing database from file:", dbPath);
   } else {
-    // If it doesn't, create a new database object
     db = new SQL.Database();
     const data = db.export();
     fs.writeFileSync(dbPath, data);
@@ -81,17 +76,11 @@ async function initDatabase() {
   // Create the logs table if it doesn't already exist
   db.run(`CREATE TABLE IF NOT EXISTS logs (
     ID INTEGER PRIMARY KEY AUTOINCREMENT,
-    Channel TEXT,
     Type TEXT,
     Origin TEXT,
     "Date Occurred" TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     "File Path" TEXT
   )`);
-
-  // Print the contents of the 'logs' table
-  // const query = `SELECT * FROM logs`;
-  // const result = db.exec(query);
-  // console.log(result[0]);
 }
 
 // Handle creating/removing shortcuts on Windows when installing/uninstalling.
@@ -130,8 +119,9 @@ const handleAddLog = (event, props) => {
   const recentLogDate = new Date(recentLogResult[0].values[0][0]);
   const timeDiff = props.timestamp - recentLogDate;
 
-  // check cooldown
-  if (recentLogDate && timeDiff < 12 * 1000 && timeDiff > 0) {
+  // check logging threshold
+  const loggingThreshold = save.get('loggingThreshold');
+  if (recentLogDate && timeDiff < loggingThreshold * 60000 && timeDiff > 0) {
     return;
   }
 
@@ -152,11 +142,10 @@ const handleAddLog = (event, props) => {
     fs.mkdirSync(framesPath, { recursive: true });
 
     // Save log details
-    const insertQuery = `INSERT INTO logs (Channel, Type, Origin, "File Path", "Date Occurred")
-    values (?, ?, ?, ?, ?)`;
+    const insertQuery = `INSERT INTO logs (Type, Origin, "File Path", "Date Occurred")
+    values (?, ?, ?, ?)`;
 
     const insertValues = [
-      props.channel,
       props.type,
       props.origin,
       framesPath,
@@ -186,8 +175,8 @@ const handleAddLog = (event, props) => {
 const handleGetLogs = (event, props) => {
   // Build the SQL query based on the provided filters
   let query = `SELECT * FROM logs WHERE 1=1`;
-  if (props.channel != "All") {
-    query += ` AND Channel = '${props.channel}'`;
+  if (props.type != "All") {
+    query += ` AND Type = '${props.type}'`;
   }
   if (props.from) {
     query += ` AND "Date Occurred" >= '${props.from}'`;
@@ -199,9 +188,11 @@ const handleGetLogs = (event, props) => {
   const result = db.exec(query);
   if (result && result.length > 0) {
     const rows = result[0].values;
-    event.reply("logs-data", rows);
+    // event.reply("logs-data", rows);
+    return rows;
   } else {
-    event.reply("logs-data", []);
+    // event.reply("logs-data", []);
+    return [];
   }
 };
 
@@ -241,27 +232,25 @@ const handleCloseLog = (event) => {
   logWindow.close();
 };
 
-const handleGetImage = (event, props) => {
-  fs.readdir(props.path, (err, files) => {
-    if (err) {
-      console.error(err);
-      return;
-    }
-
-    const firstFilePath = `${props.path}/${files[0]}`;
-
-    fs.readFile(firstFilePath, (err, data) => {
+const handleGetImage = (event, path) => {
+  return new Promise((resolve, reject) => {
+    fs.readdir(path, (err, files) => {
       if (err) {
-        console.error(err);
+        reject(err);
         return;
       }
 
-      const imageData = `data:image/png;base64,${data.toString("base64")}`;
-      const res = {
-        id: props.id,
-        data: imageData,
-      };
-      event.reply("image-data", res);
+      const firstFilePath = `${path}/${files[0]}`;
+
+      fs.readFile(firstFilePath, (err, data) => {
+        if (err) {
+          reject(err);
+          return;
+        }
+
+        const imageData = `data:image/png;base64,${data.toString("base64")}`;
+        resolve(imageData);
+      });
     });
   });
 };
@@ -313,14 +302,12 @@ app.whenReady().then(() => {
   });
 
   ipcMain.on("add-log", handleAddLog);
-  ipcMain.on("get-logs", handleGetLogs);
-  ipcMain.on("get-image", handleGetImage);
-
   ipcMain.on("open-log", handleOpenLog);
   ipcMain.on("close-log", handleCloseLog);
-
   ipcMain.on("save-settings", handleSaveSettings);
 
+  ipcMain.handle("get-logs", handleGetLogs);
+  ipcMain.handle("get-image", handleGetImage);
   ipcMain.handle("open-settings", handleOpenSettings);
   ipcMain.handle("fire-notification", fireNotification);
 
