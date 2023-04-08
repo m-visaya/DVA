@@ -4,8 +4,7 @@ import logIcon from "../../assets/graphics/logs.svg";
 function logButton() {
   return (
     <Link to="/logs" state={{ from: location.pathname }}>
-      <div
-        className="box-border bg-palette-white25 dark:bg-palette-gray100 ease-in duration-200 hover:bg-palette-gray25 dark:hover:bg-primary-gray h-12 w-auto rounded-xl cursor-pointer">
+      <div className="box-border bg-palette-white25 dark:bg-palette-gray100 ease-in duration-200 hover:bg-palette-gray25 dark:hover:bg-primary-gray h-12 w-auto rounded-xl cursor-pointer">
         <div className="flex justify-center h-full items-center">
           <div className="grid grid-cols-4 flex h-full items-center">
             <div className="col-span-1">
