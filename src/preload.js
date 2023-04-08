@@ -4,23 +4,11 @@
 const { contextBridge, ipcRenderer } = require("electron");
 
 contextBridge.exposeInMainWorld("electronAPI", {
-  addLog: (props) => ipcRenderer.send("add-log", props),
-  getLogs: (props) => ipcRenderer.send("get-logs", props),
   openLog: () => ipcRenderer.send("open-log"),
   closeLog: () => ipcRenderer.send("close-log"),
-  getImage: (imagePath) => ipcRenderer.send("get-image", imagePath),
-  onLogsData: (callback) => {
-    ipcRenderer.on("logs-data", callback);
-    return () => {
-      ipcRenderer.off("logs-data", callback);
-    };
-  },
-  onImageData: (callback) => {
-    ipcRenderer.on("image-data", callback);
-    return () => {
-      ipcRenderer.off("image-data", callback);
-    };
-  },
+  addLog: (props) => ipcRenderer.send("add-log", props),
+  getLogs: (props) => ipcRenderer.invoke("get-logs", props),
+  getImage: (path) => ipcRenderer.invoke("get-image", path),
   fireNotification: (props) => ipcRenderer.invoke("fire-notification", props),
   saveSettings: (prefs) => ipcRenderer.send("save-settings", prefs),
   fetchSetting: (pref) => ipcRenderer.invoke("open-settings", pref),
