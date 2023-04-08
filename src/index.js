@@ -12,9 +12,12 @@ const fs = require("fs");
 const path = require("path");
 
 const dbPath = path.join(__dirname, "logs.db");
-const savePath = path.join(app.getPath("documents"), "DVA", "saved");
+const docPath = app.getPath("documents");
+const savePath = path.join(docPath, "DVA", "saved");
+const exportPath = path.join(docPath, "DVA", "exported");
 
 if (!fs.existsSync(savePath)) fs.mkdirSync(savePath, { recursive: true });
+if (!fs.existsSync(exportPath)) fs.mkdirSync(exportPath, { recursive: true });
 
 let SQL;
 let db;
@@ -129,7 +132,7 @@ const handleAddLog = (event, props) => {
   const dateTimeString = props.timestamp
     .toLocaleString()
     .replace(/[/\s:]/g, "-");
-  const framesPath = path.join(savePath, dateTimeString);
+  const folderPath = path.join(savePath, dateTimeString);
 
   if (props.frameCount === 1) {
     fireNotification(event, {
@@ -139,7 +142,7 @@ const handleAddLog = (event, props) => {
       sound: null,
     });
 
-    fs.mkdirSync(framesPath, { recursive: true });
+    fs.mkdirSync(folderPath, { recursive: true });
 
     // Save log details
     const insertQuery = `INSERT INTO logs (Type, Origin, "File Path", "Date Occurred")
@@ -148,7 +151,7 @@ const handleAddLog = (event, props) => {
     const insertValues = [
       props.type,
       props.origin,
-      framesPath,
+      folderPath,
       props.timestamp.toISOString(),
     ];
     db.run(insertQuery, insertValues);
@@ -163,7 +166,7 @@ const handleAddLog = (event, props) => {
   const buffer = Buffer.from(base64Data, "base64");
   const paddedNum = `${props.frameCount.toString().padStart(2, "0")}`;
   const fileName = `${dateTimeString}_${paddedNum}.png`;
-  const filePath = path.join(framesPath, fileName);
+  const filePath = path.join(folderPath, fileName);
 
   fs.writeFile(filePath, buffer, (err) => {
     if (err) {
@@ -188,12 +191,39 @@ const handleGetLogs = (event, props) => {
   const result = db.exec(query);
   if (result && result.length > 0) {
     const rows = result[0].values;
-    // event.reply("logs-data", rows);
     return rows;
   } else {
-    // event.reply("logs-data", []);
     return [];
   }
+};
+
+const handleExportLogs = (event) => {
+  // Build the SQL query to select all logs
+  const query = `SELECT * FROM logs`;
+
+  // Execute the query and get the resulting rows
+  const result = db.exec(query);
+  const rows = result[0].values;
+
+  // Convert the rows to a CSV string
+  const csv = rows
+    .map((row) => row.join(","))
+    .join("\n");
+
+  // Define the filename and path for the CSV file
+  const now = new Date();
+  const dateTimeString = now.toLocaleString().replace(/[/\s:]/g, "-");
+  const fileName = `${dateTimeString}.csv`;
+  const filePath = path.join(exportPath, fileName);
+
+  // Write the CSV string to the local file
+  fs.writeFile(filePath, csv, (err) => {
+    if (err) {
+      console.error(`Error exporting logs: ${err}`);
+      return;
+    }
+    console.log(`Logs exported to ${filePath}`);
+  });
 };
 
 const handleOpenLog = (event) => {
@@ -303,6 +333,7 @@ app.whenReady().then(() => {
   ipcMain.on("add-log", handleAddLog);
   ipcMain.on("open-log", handleOpenLog);
   ipcMain.on("close-log", handleCloseLog);
+  ipcMain.on("export-logs", handleExportLogs);
   ipcMain.on("save-settings", handleSaveSettings);
 
   ipcMain.handle("get-logs", handleGetLogs);
