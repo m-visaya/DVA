@@ -8,9 +8,8 @@ export const fireNotification = (title, body, icon, sound) => {
   sound ? audio.play() : null;
 };
 
-export const addLog = (channel, type, origin, frameDataURL, frameCount, timestamp) =>  {
+export const addLog = (type, origin, frameDataURL, frameCount, timestamp) =>  {
   window.electronAPI.addLog({
-    channel: channel,
     type:  type,
     origin: origin,
     frameDataURL: frameDataURL,

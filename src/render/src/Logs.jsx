@@ -10,35 +10,30 @@ import { useLocation } from "react-router-dom";
 function logs() {
   const location = useLocation();
   const fromPath = location.state?.from || "/";
-  const initChannel =
+  const initType =
     fromPath !== "/"
       ? String(fromPath).replace("/", "").charAt(0).toUpperCase() +
       String(fromPath).slice(2)
       : "All";
 
-  const [channel, setChannel] = useState(initChannel);
+  const [type, setType] = useState(initType);
   const [startDate, setStartDate] = useState(null);
   const [finishDate, setFinishDate] = useState(null);
 
   const [logsData, setLogsData] = useState([]);
 
   useEffect(() => {
-    const logsDataHandler = (event, rows) => {
-      setLogsData(rows);
+    const logsDataHandler = async () => {
+      const logs = await window.electronAPI.getLogs({
+        type: type,
+        from: startDate,
+        to: finishDate,
+      });
+      setLogsData(logs);
     };
 
-    window.electronAPI.getLogs({
-      channel: channel,
-      from: startDate,
-      to: finishDate,
-    });
-
-    const removeEventListener = window.electronAPI.onLogsData(logsDataHandler);
-
-    return () => {
-      removeEventListener();
-    };
-  }, [channel, startDate, finishDate]); // empty dependency array to run effect only once
+    logsDataHandler();
+  }, [type, startDate, finishDate]); // empty dependency array to run effect only once
 
   return (
     <div className="bg-pallete-white75 dark:bg-palette-gray100 min-h-screen flex flex-col">
@@ -58,10 +53,10 @@ function logs() {
             <div className="col-span-2">
               <select
                 className="bg-palette-white50 text-palette-gray100 dark:text-palette-gray50 dark:bg-palette-gray75 lg:text-[10pt] md:text-[8pt] font-roboto h-8 w-full rounded-md m-1 cursor-pointer"
-                name="channels"
-                id="channels"
-                value={channel}
-                onChange={(e) => setChannel(e.target.value)}
+                name="types"
+                id="types"
+                value={type}
+                onChange={(e) => setType(e.target.value)}
               >
                 <option className="text-palette-gray100 dark:text-palette-gray50" value="All">All</option>
                 <option className="text-palette-gray100 dark:text-palette-gray50" value="Live">Live</option>
@@ -131,11 +126,10 @@ function logs() {
           <LogItem
             key={log[0]} // Make sure each log item has a unique key
             LogID={log[0]}
-            LogChannel={log[1]}
-            LogType={log[2]}
-            LogOrigin={log[3]}
-            LogDate={log[4]}
-            LogPath={log[5]}
+            LogType={log[1]}
+            LogOrigin={log[2]}
+            LogDate={log[3]}
+            LogPath={log[4]}
           />
         ))}
       </div>

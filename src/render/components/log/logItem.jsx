@@ -1,25 +1,15 @@
 import { useState, useEffect } from "react";
 
-function logItem({ LogID, LogChannel, LogType, LogOrigin, LogDate, LogPath }) {
+function logItem({ LogID, LogType, LogOrigin, LogDate, LogPath }) {
     const [imageSource, setImageSource] = useState("");
 
     useEffect(() => {
-        const imageDataHandler = (event, res) => {
-            if (res.id == LogID) {
-                // console.log("match");
-                setImageSource(res.data);
-            }
+        const imageDataHandler = async () => {
+            const imageData = await window.electronAPI.getImage(LogPath);
+            setImageSource(imageData);
         };
 
-        window.electronAPI.getImage({
-            path: LogPath,
-            id: LogID
-        });
-        const removeEventListener = window.electronAPI.onImageData(imageDataHandler);
-
-        return () => {
-            removeEventListener();
-        };
+        imageDataHandler();
     }, []); // empty dependency array to run effect only once
 
 
