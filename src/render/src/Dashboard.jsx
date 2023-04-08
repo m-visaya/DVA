@@ -10,8 +10,8 @@ import { DateTime } from "luxon";
 
 function Dashboard() {
   const [time, setTime] = useState(DateTime.now());
-
   const updateTime = () => setTime(DateTime.now());
+  const [initialSetup, setInitialSetup] = useState(false);
 
   useEffect(() => {
     const timeId = setInterval(updateTime, 1000);
@@ -27,6 +27,10 @@ function Dashboard() {
         document.documentElement.classList.remove("dark");
         window.electronAPI.saveSettings({ preferredTheme: "light" });
       }
+    });
+
+    window.electronAPI.fetchSetting("defaultCamera").then((defaultCamera) => {
+      if (!defaultCamera) setInitialSetup(true);
     });
 
     return () => clearInterval(timeId);
@@ -103,8 +107,7 @@ function Dashboard() {
           </div>
         </div>
       </div>
-
-      {/* <Modal /> */}
+      {initialSetup && <Modal setInitialSetup={setInitialSetup} />}
     </div>
   );
 }

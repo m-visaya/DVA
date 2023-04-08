@@ -4,7 +4,7 @@ import SourceSelect from "./sourceSelect";
 import { useEffect, useCallback, useState, useRef } from "react";
 import Webcam from "react-webcam";
 
-function cameraConfig() {
+function cameraConfig({ setInitialSetup }) {
   const [devices, setDevices] = useState([]);
   const [device, setDevice] = useState();
   const webcamRef = useRef(null);
@@ -29,15 +29,16 @@ function cameraConfig() {
   }, []);
 
   const handleSaveSettings = () => {
-    let prefs = {
+    const prefs = {
       defaultCamera: device ?? devices[0]?.deviceId,
     };
     window.electronAPI.saveSettings(prefs);
+
+    if (setInitialSetup) setInitialSetup(false);
   };
 
   return (
     <div className="px-7 py-5">
-      {/* Webcam Config Process 1 of 2 */}
       <div>
         <p className="font-roboto font-bold text-palette-gray100 dark:text-palette-gray50 text-[18pt]">
           Camera Configuration
