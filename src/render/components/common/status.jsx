@@ -1,4 +1,5 @@
 import statusGreen from "../../assets/graphics/statusGreen.svg";
+import statusRed from "../../assets/graphics/statusRed.svg";
 
 function Status({statusTitle, statusDescription}) {
   return (
