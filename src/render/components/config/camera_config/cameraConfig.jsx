@@ -58,7 +58,9 @@ function cameraConfig() {
               onChange={(e) => setDevice(e.target.value)}
             >
               {devices.map((option) => (
-                <option value={option.deviceId}>{option.label}</option>
+                <option value={option.deviceId} key={option.label}>
+                  {option.label}
+                </option>
               ))}
             </select>
             <p className="font-roboto text-palette-gray50 text-[8pt] mt-2">
@@ -82,7 +84,7 @@ function cameraConfig() {
           </div>
           <div className="flex flex-row-reverse gap-x-2 mt-10">
             <div onClick={handleSaveSettings}>
-              <ConfigPrimaryBtn Title={"Save"} deviceId={device} />
+              <ConfigPrimaryBtn Title={"Save"} />
             </div>
           </div>
         </div>

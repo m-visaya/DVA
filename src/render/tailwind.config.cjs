@@ -1,16 +1,20 @@
 /** @type {import('tailwindcss').Config} */
 module.exports = {
-  darkMode: 'media',
-  content: ["./index.html", "./src/**/*.{js,ts,jsx,tsx}", "./components/**/*.{js,ts,jsx,tsx}"],
+  darkMode: "class",
+  content: [
+    "./index.html",
+    "./src/**/*.{js,ts,jsx,tsx}",
+    "./components/**/*.{js,ts,jsx,tsx}",
+  ],
   theme: {
     extend: {
-      fontFamily:{
-        'roboto':'Roboto'
+      fontFamily: {
+        roboto: "Roboto",
       },
       colors: {
         primary: {
           gray: "#5A5A5A",
-          blue: "#3B82F4"
+          blue: "#3B82F4",
         },
         secondary: {
           gray: "#2D2D2D",

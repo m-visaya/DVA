@@ -20,12 +20,15 @@ let SQL;
 let db;
 
 const defaults = {
-  defaultCamera: "",
+  defaultCamera: null,
+  preferredTheme: null,
+  loggingThreshold: 10,
 };
 
 class Save {
   constructor(prefs) {
     const UserDataPath = app.getPath("userData");
+    console.log(UserDataPath);
     this.path = path.join(UserDataPath, prefs.configName + ".json");
     this.data = this.parseDataFile(this.path, prefs.defaults);
   }
@@ -133,7 +136,9 @@ const handleAddLog = (event, props) => {
   }
 
   // Save accident frames
-  const dateTimeString = props.timestamp.toLocaleString().replace(/[/\s:]/g, "-");
+  const dateTimeString = props.timestamp
+    .toLocaleString()
+    .replace(/[/\s:]/g, "-");
   const framesPath = path.join(savePath, dateTimeString);
 
   if (props.frameCount === 1) {
@@ -150,7 +155,13 @@ const handleAddLog = (event, props) => {
     const insertQuery = `INSERT INTO logs (Channel, Type, Origin, "File Path", "Date Occurred")
     values (?, ?, ?, ?, ?)`;
 
-    const insertValues = [props.channel, props.type, props.origin, framesPath, props.timestamp.toISOString()];
+    const insertValues = [
+      props.channel,
+      props.type,
+      props.origin,
+      framesPath,
+      props.timestamp.toISOString(),
+    ];
     db.run(insertQuery, insertValues);
 
     const data = db.export();
@@ -159,12 +170,9 @@ const handleAddLog = (event, props) => {
     console.log("New log added.");
   }
 
-  const base64Data = props.frameDataURL.replace(
-    /^data:image\/png;base64,/,
-    ""
-  );
+  const base64Data = props.frameDataURL.replace(/^data:image\/png;base64,/, "");
   const buffer = Buffer.from(base64Data, "base64");
-  const paddedNum = `${props.frameCount.toString().padStart(2, '0')}`;
+  const paddedNum = `${props.frameCount.toString().padStart(2, "0")}`;
   const fileName = `${dateTimeString}_${paddedNum}.png`;
   const filePath = path.join(framesPath, fileName);
 

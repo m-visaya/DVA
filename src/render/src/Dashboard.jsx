@@ -15,6 +15,20 @@ function Dashboard() {
 
   useEffect(() => {
     const timeId = setInterval(updateTime, 1000);
+    window.electronAPI.fetchSetting("preferredTheme").then((preferredTheme) => {
+      if (
+        preferredTheme === "dark" ||
+        (!preferredTheme &&
+          window.matchMedia("(prefers-color-scheme: dark)").matches)
+      ) {
+        document.documentElement.classList.add("dark");
+        window.electronAPI.saveSettings({ preferredTheme: "dark" });
+      } else {
+        document.documentElement.classList.remove("dark");
+        window.electronAPI.saveSettings({ preferredTheme: "light" });
+      }
+    });
+
     return () => clearInterval(timeId);
   }, []);
 
@@ -23,15 +37,18 @@ function Dashboard() {
       <img
         src="../assets/graphics/background.svg"
         className="absolute w-full h-full object-cover object-bottom opacity-80 overflow-hidden"
-      >
-      </img>
+      ></img>
       <div className="flex justify-center h-full items-center z-10">
         <div className="w-auto h-auto p-12 rounded-xl">
           <div className="grid grid-cols-2 gap-6 xl:gap-y-12 xl:gap-x-24">
             <div className="col-span-2 flex justify-center mb-5">
               <div className="font-roboto text-center text-palette-gray75 dark:text-palette-gray50 leading-tight xl:scale-125">
-                <p className="text-[26pt] font-bold">Vehicular Accidents Detection</p>
-                <p className="text-[16pt] font-extralight">Deep Learning Convolutional Neural Network</p>
+                <p className="text-[26pt] font-bold">
+                  Vehicular Accidents Detection
+                </p>
+                <p className="text-[16pt] font-extralight">
+                  Deep Learning Convolutional Neural Network
+                </p>
               </div>
             </div>
             <div>
@@ -74,21 +91,18 @@ function Dashboard() {
         </div>
       </div>
 
-
       <div className="flex justify-center pb-3 xl:pb-5">
         <div className="grid grid-cols-2 gap-x-2 text-palette-gray75 dark:text-palette-gray50 text-[10pt] font-roboto">
           <div>
-            <p>
-              Detected Accidents: 0
-            </p>
+            <p>Detected Accidents: 0</p>
           </div>
           <div>
-            {time.toLocaleString(DateTime.TIME_SIMPLE)} {time.toLocaleString({ weekday: "long" })} {time.toLocaleString({ month: "long" })} {time.day}
+            {time.toLocaleString(DateTime.TIME_SIMPLE)}{" "}
+            {time.toLocaleString({ weekday: "long" })}{" "}
+            {time.toLocaleString({ month: "long" })} {time.day}
           </div>
         </div>
       </div>
-
-
 
       {/* <Modal /> */}
     </div>
