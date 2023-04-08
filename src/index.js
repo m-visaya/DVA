@@ -210,10 +210,9 @@ const handleOpenLog = (event) => {
 
   const parent = BrowserWindow.fromWebContents(event.sender);
   const logWindow = new BrowserWindow({
-    width: 700,
-    height: 500,
-    minWidth: 500,
-    minHeight: 400,
+    minWidth: 800,
+    minHeight: 600,
+    resizable: false,
     autoHideMenuBar: true,
     parent: parent,
     modal: true,
@@ -224,7 +223,7 @@ const handleOpenLog = (event) => {
     },
   });
 
-  logWindow.loadURL("http://localhost:5173/log");
+  logWindow.loadURL("http://localhost:5173/preview");
 
   logWindow.once("ready-to-show", () => {
     setTimeout(() => {
