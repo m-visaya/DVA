@@ -148,11 +148,14 @@ function file() {
         />
       ) : (
         <input
-          type="file"
-          onChange={handleFileInputChange}
-          accept="video/*"
-          className="absolute place-self-center bg-white bottom-1/2"
-        />
+        type="file"
+        onChange={handleFileInputChange}
+        accept="video/*"
+        className="absolute place-self-center bottom-1/2
+         file:bg-primary-blue file:dark:bg-palette-gray100 file:ease-in
+         file:duration-200 file:hover:bg-palette-gray25 file:dark:hover:bg-primary-gray
+         file:rounded-2xl file:px-4 file:py-2 file:text-white file:dark:text-palette-gray50 file:font-roboto file:font-bold file:text-[10pt] file:border-0 w-[105px] file:opacity-80"
+      />
       )}
       <FileDash detectionStatus={prediction} />
       {showAccidentModel && (
