@@ -5,16 +5,18 @@ function logItem({ LogID, LogType, LogOrigin, LogDate, LogPath }) {
 
     useEffect(() => {
         const imageDataHandler = async () => {
-            const imageData = await window.electronAPI.getImage(LogPath);
+            const imageData = await window.electronAPI.getImage({
+                path: LogPath,
+                all: false
+            });
             setImageSource(imageData);
         };
 
         imageDataHandler();
     }, []); // empty dependency array to run effect only once
 
-
     return (
-        <div className="flex flex justify-center" onClick={() => window.electronAPI.openLog()}>
+        <div className="flex flex justify-center" onClick={() => window.electronAPI.openLog(LogID)}>
             <div className="grid grid-cols-5 gap-x-10 md:w-3/4 lg:w-[800px] py-2 border-b border-palette-gray75">
                 <div className="text-palette-gray50 font-roboto lg:text-[10pt] md:text-[8pt] flex items-center truncate">{LogType}</div>
                 <div className="text-palette-gray50 font-roboto lg:text-[10pt] md:text-[8pt] flex items-center truncate">{LogOrigin}</div>

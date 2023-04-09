@@ -1,9 +1,30 @@
 import ReactSwipe from "react-swipe";
-import { useEffect } from "react";
+import { useState, useEffect } from "react";
+import { useLocation } from 'react-router-dom';
+import { imag } from "@tensorflow/tfjs";
 
 function preview() {
+  const location = useLocation();
   let reactSwipeEl;
 
+  const [imageSources, setImageSources] = useState([]);
+  const [log, setLog] = useState([]);
+
+  useEffect(() => {
+    const initLogPreview = async () => {
+      const logParam = new URLSearchParams(location.search).get("log");
+      const logDetails = JSON.parse(decodeURIComponent(logParam));
+      const imageData = await window.electronAPI.getImage({
+          path: logDetails[4],
+          all: true
+      });
+      setLog(logDetails);
+      setImageSources(imageData);
+    };
+
+    initLogPreview();
+  }, []);
+  
   useEffect(() => {
     window.electronAPI.fetchSetting("preferredTheme").then((preferredTheme) => {
       if (
@@ -20,6 +41,9 @@ function preview() {
     });
   }, []);
 
+  console.log(log);
+  console.log(imageSources.length);
+
   return (
     <div className="bg-black h-screen flex flex-col">
       <ReactSwipe
@@ -27,18 +51,11 @@ function preview() {
         swipeOptions={{ continuous: false }}
         ref={(el) => (reactSwipeEl = el)}
       >
-        <div>
-          <img
-            src="https://mdbcdn.b-cdn.net/img/new/slides/041.webp"
-            className="h-screen object-contain"
-          ></img>
-        </div>
-        <div>
-          <img
-            src="https://mdbcdn.b-cdn.net/img/new/slides/042.webp"
-            className="h-screen object-contain"
-          ></img>
-        </div>
+        {imageSources.map((src, index) => (
+          <div key={index}>
+            <img src={src} className="h-screen object-contain" />
+          </div>
+        ))}
       </ReactSwipe>
       <button
         className="absolute bottom-0 left-0 top-0 flex w-[15%] items-center justify-center border-0 bg-none p-0 text-center text-white opacity-50 transition-opacity duration-150 ease-[cubic-bezier(0.25,0.1,0.25,1.0)] hover:text-white hover:no-underline hover:opacity-90 hover:outline-none focus:text-white focus:no-underline focus:opacity-90 focus:outline-none motion-reduce:transition-none"
@@ -50,13 +67,13 @@ function preview() {
             xmlns="http://www.w3.org/2000/svg"
             fill="none"
             viewBox="0 0 24 24"
-            stroke-width="1.5"
+            strokeWidth="1.5"
             stroke="currentColor"
             className="h-8 w-8"
           >
             <path
-              stroke-linecap="round"
-              stroke-linejoin="round"
+              strokeLinecap="round"
+              strokeLinejoin="round"
               d="M15.75 19.5L8.25 12l7.5-7.5"
             />
           </svg>
@@ -72,13 +89,13 @@ function preview() {
             xmlns="http://www.w3.org/2000/svg"
             fill="none"
             viewBox="0 0 24 24"
-            stroke-width="1.5"
+            strokeWidth="1.5"
             stroke="currentColor"
             className="h-8 w-8"
           >
             <path
-              stroke-linecap="round"
-              stroke-linejoin="round"
+              strokeLinecap="round"
+              strokeLinejoin="round"
               d="M8.25 4.5l7.5 7.5-7.5 7.5"
             />
           </svg>
@@ -91,7 +108,7 @@ function preview() {
               Type :
             </p>
             <p className="text-palette-gray75 dark:text-palette-gray50 font-roboto text-[8pt]">
-              Live Capture
+              { log[1] }
             </p>
           </div>
           <div>
@@ -99,7 +116,7 @@ function preview() {
               Origin :
             </p>
             <p className="text-palette-gray75 dark:text-palette-gray50 font-roboto text-[8pt]">
-              OBS Virtual Camera
+              { log[2] }
             </p>
           </div>
           <div>
@@ -107,7 +124,7 @@ function preview() {
               Date Occured :
             </p>
             <p className="text-palette-gray75 dark:text-palette-gray50 font-roboto text-[8pt]">
-              4:39:25 04/09/2023
+              { log[3] }
             </p>
           </div>
           <div className="col-span-2">
@@ -115,7 +132,7 @@ function preview() {
               File Path :
             </p>
             <p className="text-palette-gray75 dark:text-palette-gray50 font-roboto text-[8pt]">
-              C:/Users/Administrator/Documents/DVA/saved/accident001
+              { log[4] }
             </p>
           </div>
           <div className="flex justify-center items-center bg-primary-blue dark:bg-palette-gray100 ease-in duration-200 hover:bg-palette-gray25 dark:hover:bg-primary-gray rounded-xl cursor-pointer">

@@ -198,11 +198,11 @@ const handleGetLogs = (event, props) => {
 };
 
 const handleExportLogs = (event) => {
-  // Build the SQL query to select all logs
   const query = `SELECT * FROM logs`;
-
-  // Execute the query and get the resulting rows
   const result = db.exec(query);
+
+  if (!result[0]) return result;
+
   const rows = result[0].values;
 
   // Convert the rows to a CSV string
@@ -226,10 +226,14 @@ const handleExportLogs = (event) => {
   });
 };
 
-const handleOpenLog = (event) => {
+const handleOpenLog = (event, id) => {
   if (BrowserWindow.getAllWindows().length == 2) {
     return;
   }
+
+  const query = `SELECT * FROM logs WHERE ID=${id}`;
+  const result = db.exec(query);
+  let log = result[0].values[0];
 
   const parent = BrowserWindow.fromWebContents(event.sender);
   const logWindow = new BrowserWindow({
@@ -246,7 +250,9 @@ const handleOpenLog = (event) => {
     },
   });
 
-  logWindow.loadURL("http://localhost:5173/preview");
+  logWindow.loadURL(
+    `http://localhost:5173/preview?log=${encodeURIComponent(JSON.stringify(log))}`
+  );
 
   logWindow.once("ready-to-show", () => {
     setTimeout(() => {
@@ -261,27 +267,22 @@ const handleCloseLog = (event) => {
   logWindow.close();
 };
 
-const handleGetImage = (event, path) => {
-  return new Promise((resolve, reject) => {
-    fs.readdir(path, (err, files) => {
-      if (err) {
-        reject(err);
-        return;
-      }
+const handleGetImage = async (event, props) => {
+  const { path, all } = props;
+  const files = await fs.promises.readdir(path);
 
-      const firstFilePath = `${path}/${files[0]}`;
-
-      fs.readFile(firstFilePath, (err, data) => {
-        if (err) {
-          reject(err);
-          return;
-        }
-
-        const imageData = `data:image/png;base64,${data.toString("base64")}`;
-        resolve(imageData);
-      });
-    });
-  });
+  if (all) {
+    const imageDataList = await Promise.all(
+      files.map(async (file) => {
+        const data = await fs.promises.readFile(`${path}/${file}`);
+        return `data:image/png;base64,${data.toString("base64")}`;
+      })
+    );
+    return imageDataList;
+  } else {
+    const data = await fs.promises.readFile(`${path}/${files[0]}`);
+    return `data:image/png;base64,${data.toString("base64")}`;
+  }
 };
 
 const fireNotification = (event, props) => {
