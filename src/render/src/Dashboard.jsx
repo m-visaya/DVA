@@ -5,6 +5,7 @@ import liveIcon from "../assets/graphics/live.svg";
 import logIcon from "../assets/graphics/logs.svg";
 import Modal from "../components/common/modal";
 import Icon from "../components/dashboard/icon";
+import HelpIcon from "../assets/graphics/help.svg"
 import { useEffect, useState } from "react";
 import { DateTime } from "luxon";
 
@@ -38,6 +39,16 @@ function Dashboard() {
 
   return (
     <div className="bg-palette-white75 dark:bg-palette-gray100 h-screen flex flex-col">
+      <Link to="/help">
+        <div className="absolute top-0 right-0 mr-4 mt-4 bg-palette-white75 dark:bg-palette-gray75
+                        ease-in-out duration-200 hover:bg-palette-white25 hover:dark:bg-palette-gray80
+                        font-roboto font-bold text-[10pt]
+                        p-2 rounded-xl flex grid grid-cols-2 place-items-center z-20">
+          <img src={HelpIcon} className="w-5"></img>
+          <p className="mr-1">Help</p>              
+        </div>
+
+      </Link>
       <img
         src="../assets/graphics/background.svg"
         className="absolute w-full h-full object-cover object-bottom opacity-80 overflow-hidden"
