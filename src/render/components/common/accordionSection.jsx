@@ -20,7 +20,7 @@ class AccordionSection extends React.Component {
     } = this;
 
     return (
-      <div className="p-3 bg-palette-white50 dark:bg-palette-gray75 ease-in-out duration-200 hover:bg-palette-white25 hover:dark:bg-palette-gray80 rounded-xl my-2">
+      <div className="p-3 bg-palette-white50 dark:bg-palette-gray75 ease-in-out duration-200 rounded-xl my-2">
         <div onClick={onClick} className="text-palette-gray100 dark:text-palette-gray50 font-bold font-roboto p-2">
           {label}
           <div style={{ float: 'right' }}>
