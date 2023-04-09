@@ -101,7 +101,7 @@ function logs() {
               <SecondaryBtn iconImage={SearchIcon} iconTitle="Reset" />
             </div>
             <div className="w-auto">
-              <SecondaryBtn onclick={handleExportClick()} iconImage={ExportIcon} iconTitle="Export" />
+              <SecondaryBtn onclick={() => handleExportClick()} iconImage={ExportIcon} iconTitle="Export" />
             </div>
           </div>
         </div>
