@@ -43,6 +43,12 @@ function logs() {
     });
   }
 
+  const handleResetClick = () => {
+    setType("All");
+    setStartDate("");
+    setFinishDate("");
+  }  
+
   return (
     <div className="bg-pallete-white75 dark:bg-palette-gray100 min-h-screen flex flex-col">
       <div className="flex justify-center pt-7">
@@ -101,7 +107,7 @@ function logs() {
             </div>
           </div>
           <div className="grid grid-cols-2 col-span-2 gap-x-5 mx-6">
-            <div className="w-auto">
+            <div onClick={() => handleResetClick()} className="w-auto">
               <SecondaryBtn iconImage={SearchIcon} iconTitle="Reset" />
             </div>
             <div onClick={() => handleExportClick()} className="w-auto">
