@@ -8,6 +8,7 @@ import Webcam from "react-webcam";
 import * as tf from "@tensorflow/tfjs";
 import "@tensorflow/tfjs-backend-webgl";
 import { addLog } from "./helper";
+import { DateTime } from "luxon";
 
 const MODEL_PATH = "./assets/model/xception_js/model.json";
 
@@ -22,6 +23,7 @@ function live() {
   const frameCount = useRef(0);
   const timestamp = useRef(null);
   const frameLoop = useRef();
+  const threshold = useRef(null);
 
   useEffect(() => {
     const loadModel = async () => {
@@ -79,7 +81,7 @@ function live() {
             let className = "";
 
             if (conf >= 50 || frameCount.current) {
-              if (!showAccidentModel) setShowAccidentModal(true);
+              showAccidentModelonThreshold();
 
               className = "Accident Detected";
 
@@ -119,6 +121,17 @@ function live() {
     };
     predict();
   }, [model]);
+
+  const showAccidentModelonThreshold = async () => {
+    if (threshold.current === null) {
+      setShowAccidentModal(true);
+      threshold.current = DateTime.now().plus({
+        minutes: await window.electronAPI.fetchSetting("loggingThreshold"),
+      });
+    }
+
+    if (threshold.current < DateTime.now()) threshold.current = null;
+  };
 
   return (
     <div className="bg-black h-screen flex flex-col relative">

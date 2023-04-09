@@ -8,6 +8,7 @@ import * as tf from "@tensorflow/tfjs";
 import { addLog } from "./helper";
 import "@tensorflow/tfjs-backend-webgl";
 const MODEL_PATH = "./assets/model/xception_js/model.json";
+import { DateTime } from "luxon";
 
 function file() {
   const [prediction, setPrediction] = useState("No Accident Detected");
@@ -19,6 +20,7 @@ function file() {
   const frameCount = useRef(0);
   const timestamp = useRef(null);
   const frameLoop = useRef();
+  const threshold = useRef(null);
 
   useEffect(() => {
     const loadModel = async () => {
@@ -35,6 +37,7 @@ function file() {
       console.log("model loaded");
     };
     if (!model) loadModel();
+
     return () => {
       setModel(null);
       setVideo(null);
@@ -73,7 +76,7 @@ function file() {
               let className = "";
 
               if (conf >= 50 || frameCount.current) {
-                if (!showAccidentModel) setShowAccidentModal(true);
+                showAccidentModelonThreshold();
 
                 className = "Accident Detected";
 
@@ -128,6 +131,17 @@ function file() {
     setPrediction("No Accident Detected");
   };
 
+  const showAccidentModelonThreshold = async () => {
+    if (threshold.current === null) {
+      setShowAccidentModal(true);
+      threshold.current = DateTime.now().plus({
+        minutes: await window.electronAPI.fetchSetting("loggingThreshold"),
+      });
+    }
+
+    if (threshold.current < DateTime.now()) threshold.current = null;
+  };
+
   return (
     <div className="bg-black h-screen flex flex-col relative">
       {!model && <Loading message="Loading" />}
@@ -148,14 +162,14 @@ function file() {
         />
       ) : (
         <input
-        type="file"
-        onChange={handleFileInputChange}
-        accept="video/*"
-        className="absolute place-self-center bottom-1/2
+          type="file"
+          onChange={handleFileInputChange}
+          accept="video/*"
+          className="absolute place-self-center bottom-1/2 cursor-pointer
          file:bg-primary-blue file:dark:bg-palette-gray100 file:ease-in
          file:duration-200 file:hover:bg-palette-gray25 file:dark:hover:bg-primary-gray
          file:rounded-2xl file:px-4 file:py-2 file:text-white file:dark:text-palette-gray50 file:font-roboto file:font-bold file:text-[10pt] file:border-0 w-[105px] file:opacity-80"
-      />
+        />
       )}
       <FileDash detectionStatus={prediction} />
       {showAccidentModel && (

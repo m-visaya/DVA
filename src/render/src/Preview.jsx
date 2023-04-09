@@ -1,8 +1,24 @@
-import React from "react";
 import ReactSwipe from "react-swipe";
+import { useEffect } from "react";
 
 function preview() {
   let reactSwipeEl;
+
+  useEffect(() => {
+    window.electronAPI.fetchSetting("preferredTheme").then((preferredTheme) => {
+      if (
+        preferredTheme === "dark" ||
+        (!preferredTheme &&
+          window.matchMedia("(prefers-color-scheme: dark)").matches)
+      ) {
+        document.documentElement.classList.add("dark");
+        window.electronAPI.saveSettings({ preferredTheme: "dark" });
+      } else {
+        document.documentElement.classList.remove("dark");
+        window.electronAPI.saveSettings({ preferredTheme: "light" });
+      }
+    });
+  }, []);
 
   return (
     <div className="bg-black h-screen flex flex-col">
