@@ -36,7 +36,11 @@ function logs() {
   }, [type, startDate, finishDate]); // empty dependency array to run effect only once
 
   const handleExportClick = () => {
-    window.electronAPI.exportLogs()
+    window.electronAPI.exportLogs({
+      type: type,
+      from: startDate,
+      to: finishDate,
+    });
   }
 
   return (
@@ -100,8 +104,8 @@ function logs() {
             <div className="w-auto">
               <SecondaryBtn iconImage={SearchIcon} iconTitle="Reset" />
             </div>
-            <div className="w-auto">
-              <SecondaryBtn onclick={() => handleExportClick()} iconImage={ExportIcon} iconTitle="Export" />
+            <div onClick={() => handleExportClick()} className="w-auto">
+              <SecondaryBtn iconImage={ExportIcon} iconTitle="Export" />
             </div>
           </div>
         </div>
