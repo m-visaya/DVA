@@ -10,7 +10,7 @@ function returnButton({ returnTitle, to }) {
             <img src={returnIcon} className="lg:w-8 md:w-6"></img>
           </div>
           <div className="col-span-3">
-            <p className="text-palette-gray50 font-roboto font-bold md:text-xl lg:text-2xl md:my-2">
+            <p className="text-palette-gray75 dark:text-palette-gray50 font-roboto font-bold md:text-xl lg:text-2xl md:my-2">
               {returnTitle}
             </p>
           </div>

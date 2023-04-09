@@ -5,7 +5,7 @@ function preview() {
   let reactSwipeEl;
 
   return (
-    <div className="bg-palette-white75 dark:bg-palette-gray100 h-screen flex flex-col">
+    <div className="bg-black h-screen flex flex-col">
       <ReactSwipe
         className="carousel h-full"
         swipeOptions={{ continuous: false }}
