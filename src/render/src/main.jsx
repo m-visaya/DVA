@@ -6,6 +6,7 @@ import Live from "./Live";
 import Logs from "./Logs";
 import Config from "./Configuration";
 import Preview from "./Preview";
+import Help from "./Help";
 import "./index.css";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 
@@ -20,6 +21,7 @@ root.render(
       <Route key="logs" path="/logs" element={<Logs />} />
       <Route key="preview" path="/preview" element={<Preview />} />
       <Route key="config" path="/config" element={<Config />} />
+      <Route key="help" path="/help" element={<Help />} />
     </Routes>
   </BrowserRouter>
 );
