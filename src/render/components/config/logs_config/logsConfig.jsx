@@ -47,7 +47,7 @@ function logsConfig() {
             onChange={(e) => setThreshold(e.target.value)}
           ></input>
           <p className="font-roboto text-palette-gray100 dark:text-palette-gray50 text-[8pt] mt-2">
-            Value: {threshold}
+            Value: {threshold} minutes
           </p>
           {/*TODO need to set a step value of 5 or whatever*/}
           <p className="font-roboto text-palette-gray50 text-[8pt] mt-2">
