@@ -117,7 +117,7 @@ function logs() {
         </div>
       </div>
       <div className="flex justify-center pt-6">
-        <div className="grid grid-cols-5 gap-x-10 md:w-3/4 lg:w-[800px] pb-3 border-b border-palette-gray75">
+        <div className="grid grid-cols-5 gap-x-10 md:w-3/4 lg:w-[800px] pb-3 border-b border-palette-gray-25 dark:border-palette-gray75">
           <div className="text-palette-gray100 dark:text-palette-gray50 font-roboto lg:text-[10pt] md:text-[8pt]">
             Type
           </div>

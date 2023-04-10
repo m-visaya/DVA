@@ -104,12 +104,12 @@ function preview() {
         </span>
       </button>
       <div className="absolute z-20 bottom-9 left-1/2 transform -translate-x-1/2 box-border drop-shadow-lg bg-palette-white75 dark:bg-palette-gray75 h-auto w-3/4 rounded-xl">
-        <div className="grid grid-cols-3 grid-rows-2 py-3 px-5 gap-y-3">
+        <div className="grid grid-cols-3 grid-rows-2 py-3 px-5 gap-y-3 gap-x-5">
           <div>
             <p className="text-palette-gray75 dark:text-palette-gray50 font-bold font-roboto text-[10pt] ">
               Type :
             </p>
-            <p className="text-palette-gray75 dark:text-palette-gray50 font-roboto text-[8pt]">
+            <p className="text-palette-gray75 dark:text-palette-gray50 font-roboto text-[8pt] truncate">
               { log[1] }
             </p>
           </div>
@@ -117,7 +117,7 @@ function preview() {
             <p className="text-palette-gray75 dark:text-palette-gray50 font-bold font-roboto text-[10pt] ">
               Origin :
             </p>
-            <p className="text-palette-gray75 dark:text-palette-gray50 font-roboto text-[8pt]">
+            <p className="text-palette-gray75 dark:text-palette-gray50 font-roboto text-[8pt] truncate">
               { log[2] }
             </p>
           </div>
@@ -125,7 +125,7 @@ function preview() {
             <p className="text-palette-gray75 dark:text-palette-gray50 font-bold font-roboto text-[10pt] ">
               Date Occured :
             </p>
-            <p className="text-palette-gray75 dark:text-palette-gray50 font-roboto text-[8pt]">
+            <p className="text-palette-gray75 dark:text-palette-gray50 font-roboto text-[8pt] truncate">
               { log[3] }
             </p>
           </div>
@@ -133,7 +133,7 @@ function preview() {
             <p className="text-palette-gray75 dark:text-palette-gray50 font-bold font-roboto text-[10pt] ">
               File Path :
             </p>
-            <p className="text-palette-gray75 dark:text-palette-gray50 font-roboto text-[8pt]">
+            <p className="text-palette-gray75 dark:text-palette-gray50 font-roboto text-[8pt] truncate">
               { log[4] }
             </p>
           </div>

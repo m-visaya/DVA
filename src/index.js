@@ -250,6 +250,7 @@ const handleOpenLog = (event, id) => {
     minWidth: 800,
     minHeight: 600,
     resizable: false,
+    minimizable: false,
     autoHideMenuBar: true,
     parent: parent,
     modal: true,
