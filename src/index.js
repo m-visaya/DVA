@@ -4,6 +4,7 @@ const {
   protocol,
   BrowserWindow,
   Notification,
+  shell,
 } = require("electron");
 const isDev = require("electron-is-dev");
 const initSqlJs = require("sql.js");
@@ -296,6 +297,11 @@ const handleGetImage = async (event, props) => {
   }
 };
 
+
+const handleOpenDir = (event, path) => {
+  shell.openPath(path);
+};
+
 const fireNotification = (event, props) => {
   const window = BrowserWindow.fromWebContents(event.sender);
 
@@ -347,6 +353,7 @@ app.whenReady().then(() => {
   ipcMain.on("close-log", handleCloseLog);
   ipcMain.on("export-logs", handleExportLogs);
   ipcMain.on("save-settings", handleSaveSettings);
+  ipcMain.on("open-dir", handleOpenDir);
 
   ipcMain.handle("get-logs", handleGetLogs);
   ipcMain.handle("get-image", handleGetImage);
