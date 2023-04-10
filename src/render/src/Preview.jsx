@@ -46,17 +46,19 @@ function preview() {
 
   return (
     <div className="bg-black h-screen flex flex-col">
-      <ReactSwipe
-        className="carousel h-full"
-        swipeOptions={{ continuous: false }}
-        ref={(el) => (reactSwipeEl = el)}
-      >
-        {imageSources.map((src, index) => (
-          <div key={index}>
-            <img src={src} className="h-screen object-contain" />
-          </div>
-        ))}
-      </ReactSwipe>
+      {imageSources.length > 0 ? (
+        <ReactSwipe
+          className="carousel h-full"
+          swipeOptions={{ continuous: false }}
+          ref={(el) => (reactSwipeEl = el)}
+        >
+          {imageSources.map((src, index) => (
+            <div key={index}>
+              <img src={src} className="h-screen object-contain" />
+            </div>
+          ))}
+        </ReactSwipe>
+      ) : null}
       <button
         className="absolute bottom-0 left-0 top-0 flex w-[15%] items-center justify-center border-0 bg-none p-0 text-center text-white opacity-50 transition-opacity duration-150 ease-[cubic-bezier(0.25,0.1,0.25,1.0)] hover:text-white hover:no-underline hover:opacity-90 hover:outline-none focus:text-white focus:no-underline focus:opacity-90 focus:outline-none motion-reduce:transition-none"
         type="button"

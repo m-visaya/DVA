@@ -197,8 +197,18 @@ const handleGetLogs = (event, props) => {
   }
 };
 
-const handleExportLogs = (event) => {
-  const query = `SELECT * FROM logs`;
+const handleExportLogs = (event, props) => {
+  // Build the SQL query based on the provided filters
+  let query = `SELECT * FROM logs WHERE 1=1`;
+  if (props.type != "All") {
+    query += ` AND Type = '${props.type}'`;
+  }
+  if (props.from) {
+    query += ` AND "Date Occurred" >= '${props.from}'`;
+  }
+  if (props.to) {
+    query += ` AND "Date Occurred" <= '${props.to}'`;
+  }
   const result = db.exec(query);
 
   if (!result[0]) return result;
