@@ -98,7 +98,7 @@ function live() {
               const frameDataURL = canvas.toDataURL();
               addLog(
                 "Live",
-                "OBS Virtual Camera",
+                device?.[1],
                 frameDataURL,
                 frameCount.current + 1,
                 timestamp.current
@@ -139,7 +139,7 @@ function live() {
       <Webcam
         className="absolute h-full w-full"
         ref={webcamRef}
-        videoConstraints={{ deviceId: device }}
+        videoConstraints={{ deviceId: device?.[0] }}
         onUserMedia={() => setReady(true)}
       />
       <div className="absolute z-10 place-items-start 2xl:pl-10 lg:pl-8 md:pl-6 mt-5">

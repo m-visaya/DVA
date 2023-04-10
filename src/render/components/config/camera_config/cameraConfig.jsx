@@ -30,7 +30,7 @@ function cameraConfig({ setInitialSetup }) {
 
   const handleSaveSettings = () => {
     const prefs = {
-      defaultCamera: device ?? devices[0]?.deviceId,
+      defaultCamera: device ?? [devices[0]?.deviceId, devices[0]?.label],
     };
     window.electronAPI.saveSettings(prefs);
 
@@ -56,12 +56,14 @@ function cameraConfig({ setInitialSetup }) {
               name="channels"
               id="channels"
               value={device}
-              onChange={(e) => setDevice(e.target.value)}
+              onChange={(e) => setDevice(e.target.value.split(","))}
             >
               {devices.map((option) => (
-                <option value={option.deviceId} key={option.label}>
-                  {option.label}
-                </option>
+                <option
+                  value={`${option.deviceId},${option.label}`}
+                  key={option.label}
+                  label={option.label}
+                ></option>
               ))}
             </select>
             <p className="font-roboto text-palette-gray50 text-[8pt] mt-2">
@@ -77,7 +79,9 @@ function cameraConfig({ setInitialSetup }) {
                 <Webcam
                   className="h-32 w-64 object-cover rounded-md"
                   ref={webcamRef}
-                  videoConstraints={{ deviceId: device }}
+                  videoConstraints={{
+                    deviceId: device?.[0],
+                  }}
                   onUserMedia={() => setReady(true)}
                 />
               </div>
