@@ -137,7 +137,7 @@ function preview() {
               { log[4] }
             </p>
           </div>
-          <div className="flex justify-center items-center bg-primary-blue dark:bg-palette-gray100 ease-in duration-200 hover:bg-palette-gray25 dark:hover:bg-primary-gray rounded-xl cursor-pointer">
+          <div onClick={() => window.electronAPI.openDir(log[4])} className="flex justify-center items-center bg-primary-blue dark:bg-palette-gray100 ease-in duration-200 hover:bg-palette-gray25 dark:hover:bg-primary-gray rounded-xl cursor-pointer">
             <p className="text-white dark:text-palette-gray50 font-roboto text-[10pt]">
               Open Directory
             </p>
