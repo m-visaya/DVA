@@ -1,5 +1,5 @@
 import ExportIcon from "../assets/graphics/export.svg";
-import SearchIcon from "../assets/graphics/search.svg";
+import ResetIcon from "../assets/graphics/clear.svg";
 import ReturnButton from "../components/common/returnButton";
 import SecondaryBtn from "../components/common/secondaryButton";
 import LogItem from "../components/log/logItem";
@@ -108,7 +108,7 @@ function logs() {
           </div>
           <div className="grid grid-cols-2 col-span-2 gap-x-5 mx-6">
             <div onClick={() => handleResetClick()} className="w-auto">
-              <SecondaryBtn iconImage={SearchIcon} iconTitle="Reset" />
+              <SecondaryBtn iconImage={ResetIcon} iconTitle="Reset" />
             </div>
             <div onClick={() => handleExportClick()} className="w-auto">
               <SecondaryBtn iconImage={ExportIcon} iconTitle="Export" />
@@ -146,6 +146,10 @@ function logs() {
             LogPath={log[4]}
           />
         ))}
+      </div>
+      <div
+      className="absolute bottom-0 right-0 m-4 place rounded-xl bg-sky-100 text-sky-800 text-[10pt] px-6 py-4 z-10">
+      Successfully exported to /Documents/DVA/exported
       </div>
     </div>
   );
