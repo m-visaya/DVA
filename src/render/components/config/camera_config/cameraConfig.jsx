@@ -4,7 +4,7 @@ import SourceSelect from "./sourceSelect";
 import { useEffect, useCallback, useState, useRef } from "react";
 import Webcam from "react-webcam";
 
-function cameraConfig({ setInitialSetup }) {
+function cameraConfig({ setInitialSetup, setSnackVisible }) {
   const [devices, setDevices] = useState([]);
   const [device, setDevice] = useState();
   const webcamRef = useRef(null);
@@ -33,7 +33,7 @@ function cameraConfig({ setInitialSetup }) {
       defaultCamera: device ?? [devices[0]?.deviceId, devices[0]?.label],
     };
     window.electronAPI.saveSettings(prefs);
-
+    setSnackVisible(true)
     if (setInitialSetup) setInitialSetup(false);
   };
 

@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import ConfigPrimaryBtn from "../configPrimaryButton";
 
-function logsConfig() {
+function logsConfig({ setSnackVisible }) {
   const [threshold, setThreshold] = useState(100);
 
   useEffect(() => {
@@ -21,6 +21,7 @@ function logsConfig() {
 
   const saveThreshold = () => {
     window.electronAPI.saveSettings({ loggingThreshold: parseInt(threshold) });
+    setSnackVisible(true)
   };
 
   return (

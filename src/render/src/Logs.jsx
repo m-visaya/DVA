@@ -3,6 +3,7 @@ import ResetIcon from "../assets/graphics/clear.svg";
 import ReturnButton from "../components/common/returnButton";
 import SecondaryBtn from "../components/common/secondaryButton";
 import LogItem from "../components/log/logItem";
+import Snackbar from "../components/common/snackbar";
 
 import { useState, useEffect } from "react";
 import { useLocation } from "react-router-dom";
@@ -19,6 +20,7 @@ function logs() {
   const [type, setType] = useState(initType);
   const [startDate, setStartDate] = useState(null);
   const [finishDate, setFinishDate] = useState(null);
+  const [snackVisible, setSnackVisible] = useState(false);
 
   const [logs, setLogs] = useState([]);
 
@@ -41,6 +43,7 @@ function logs() {
       from: startDate,
       to: finishDate,
     });
+    setSnackVisible(true)
   }
 
   const handleResetClick = () => {
@@ -147,10 +150,7 @@ function logs() {
           />
         ))}
       </div>
-      <div
-      className="absolute bottom-0 right-0 m-4 place rounded-xl bg-sky-100 text-sky-800 text-[10pt] px-6 py-4 z-10">
-      Successfully exported to /Documents/DVA/exported
-      </div>
+      {snackVisible && <Snackbar setSnackVisible={setSnackVisible} text="Successfully exported to /Documents/DVA/exported"></Snackbar>}
     </div>
   );
 }

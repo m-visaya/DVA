@@ -109,9 +109,9 @@ function Dashboard() {
       </div>
 
       <div className="flex justify-center pb-3 xl:pb-5">
-        <div className="grid grid-cols-2 gap-x-2 text-palette-gray75 dark:text-palette-gray50 text-[10pt] font-roboto">
+        <div className="grid grid-cols-1 gap-x-2 text-palette-gray75 dark:text-palette-gray50 text-[10pt] font-roboto">
           <div>
-            <p>Detected Accidents: 0</p>
+            {/* <p>Detected Accidents: 0</p> */}
           </div>
           <div>
             {time.toLocaleString(DateTime.TIME_SIMPLE)}{" "}

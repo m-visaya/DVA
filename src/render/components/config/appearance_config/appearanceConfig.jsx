@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import ConfigPrimaryBtn from "../configPrimaryButton";
 
-function appearanceConfig() {
+function appearanceConfig({ setSnackVisible }) {
   const [checked, setChecked] = useState("dark");
 
   useEffect(() => {
@@ -23,6 +23,7 @@ function appearanceConfig() {
       window.electronAPI.saveSettings({ preferredTheme: "dark" });
       document.documentElement.classList.add("dark");
     }
+    setSnackVisible(true)
   };
 
   return (
