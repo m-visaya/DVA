@@ -59,7 +59,7 @@ function logs() {
           <ReturnButton returnTitle="Logs" to={fromPath} />
         </div>
       </div>
-      <div className="flex justify-center pt-12">
+      <div className="flex justify-center pt-10">
         <div className="grid grid-cols-5 gap-x-2 md:w-3/4 lg:w-[800px]">
           <div className="grid grid-cols-3">
             <div className="col-span-1 flex items-center">

@@ -3,12 +3,14 @@ import Accordion from '../components/common/accordion';
 
 function help() {
   return (
-    <div className="bg-palette-white75 dark:bg-palette-gray100 min-h-screen">
-      <div className="absolute z-10 place-items-start 2xl:pl-10 lg:pl-8 md:pl-6 mt-5">
-        <ReturnButton returnTitle="Help" to="/" />
+    <div className="bg-palette-white75 dark:bg-palette-gray100 min-h-screen flex flex-col">
+      <div className="flex justify-center pt-7">
+        <div className="relative md:-left-72 lg:-left-80">
+            <ReturnButton returnTitle="Help" to="/" />
+        </div>
       </div>
-      <div className="flex justify-center pt-24">
-        <div className="w-1/2 pb-1/4">
+      <div className="flex justify-center pt-10">
+        <div className="md:w-3/4 lg:w-[800px] pb-1/4">
             <Accordion allowMultipleOpen>
             <div label='The Binary Classifier Model'>
             <p>The binary classifier integrated within this application is a result of applying transfer learning methods
