@@ -7,3 +7,14 @@
 ::-webkit-scrollbar {
     display: none;
 }
+
+.elementToFadeInAndOut {
+    opacity: 0;
+    animation: fade 3s linear forwards;
+}
+
+
+@keyframes fade {
+  0%,100% { opacity: 0 }
+  5%,95% { opacity: 1 }
+}
