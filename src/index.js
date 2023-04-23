@@ -247,6 +247,7 @@ const handleOpenLog = (event, id) => {
   let log = result[0].values[0];
 
   const parent = BrowserWindow.fromWebContents(event.sender);
+
   const logWindow = new BrowserWindow({
     minWidth: 800,
     minHeight: 600,
@@ -263,11 +264,12 @@ const handleOpenLog = (event, id) => {
   });
 
   logWindow.loadURL(
-    `http://localhost:5173/preview?log=${encodeURIComponent(JSON.stringify(log))}`
+    `http://localhost:5173/#/preview`
   );
 
   logWindow.once("ready-to-show", () => {
     setTimeout(() => {
+      logWindow.webContents.send('log-data', log);
       logWindow.show();
     }, 50);
   });
