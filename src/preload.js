@@ -8,6 +8,12 @@ contextBridge.exposeInMainWorld("electronAPI", {
   closeLog: () => ipcRenderer.send("close-log"),
   addLog: (props) => ipcRenderer.send("add-log", props),
   getLogs: (props) => ipcRenderer.invoke("get-logs", props),
+  onLogData: (callback) => {
+    ipcRenderer.on("log-data", callback);
+    return () => {
+      ipcRenderer.off("log-data", callback);
+    };
+  },
   exportLogs: (props) => ipcRenderer.send("export-logs", props),
   getImage: (path) => ipcRenderer.invoke("get-image", path),
   openDir: (path) => ipcRenderer.send("open-dir", path),

@@ -6,16 +6,10 @@ import LogItem from "./components/log/logItem";
 import Snackbar from "./components/common/snackbar";
 
 import { useState, useEffect } from "react";
-import { useLocation } from "react-router-dom";
 
 function logs() {
-  const location = useLocation();
-  const fromPath = location.state?.from || "/";
-  const initType =
-    fromPath !== "/"
-      ? String(fromPath).replace("/", "").charAt(0).toUpperCase() +
-      String(fromPath).slice(2)
-      : "All";
+  const fromPath = "/";
+  const initType = "All";
 
   const [type, setType] = useState(initType);
   const [startDate, setStartDate] = useState(null);
