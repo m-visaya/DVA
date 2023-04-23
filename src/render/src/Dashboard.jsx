@@ -51,10 +51,10 @@ function Dashboard() {
         </div>
 
       </Link>
-      {/* <img
+      <img
         src="../assets/graphics/background.svg"
         className="absolute w-full h-full object-cover object-bottom opacity-80 overflow-hidden"
-      ></img> */}
+      ></img>
       <div className="flex justify-center h-full items-center z-10">
         <div className="w-auto h-auto p-12 rounded-xl">
           <div className="grid grid-cols-2 gap-6 xl:gap-y-12 xl:gap-x-24">
