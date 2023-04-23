@@ -6,7 +6,8 @@ export default defineConfig({
   base: "",
   assetsInclude: ['*.svg', '*.bin', '*.json'],
   build: {
-    outDir: "../dist"
+    outDir: "../dist",
+    emptyOutDir: true,
   },
   plugins: [react()],
 });
