@@ -12,6 +12,19 @@ const initSqlJs = require("sql.js");
 const fs = require("fs");
 const path = require("path");
 
+// Handle creating/removing shortcuts on Windows when installing/uninstalling.
+if (require("electron-squirrel-startup")) {
+  // eslint-disable-line global-require
+  app.quit();
+}
+
+const gotTheLock = app.requestSingleInstanceLock();
+
+// Prevent multiple instaces of the app
+if (!gotTheLock) {
+  app.exit();
+}
+
 const dbPath = path.join(__dirname, "logs.db");
 const docPath = app.getPath("documents");
 const savePath = path.join(docPath, "DVA", "saved");
@@ -62,7 +75,7 @@ const save = new Save({
 
 async function initDatabase() {
   SQL = await initSqlJs({
-    locateFile: (file) => `./node_modules/sql.js/dist/${file}`,
+    locateFile: (file) => `${__dirname}/dist/sql-wasm.wasm`,
   });
 
   // Check if the database file already exists
@@ -87,11 +100,6 @@ async function initDatabase() {
   )`);
 }
 
-// Handle creating/removing shortcuts on Windows when installing/uninstalling.
-if (require("electron-squirrel-startup")) {
-  app.quit();
-}
-
 const createWindow = () => {
   // Create the browser window.
   const mainWindow = new BrowserWindow({
@@ -108,7 +116,7 @@ const createWindow = () => {
   mainWindow.loadURL(
     isDev
       ? "http://localhost:5173/"
-      : `file://${path.join(__dirname, "render", "dist", "index.html")}`
+      : `file://${path.join(__dirname, "dist", "index.html")}`
   );
 
   // Open the DevTools.
@@ -188,7 +196,7 @@ const handleGetLogs = (event, props) => {
   if (props.to) {
     query += ` AND "Date Occurred" <= '${props.to}'`;
   }
-  // Execute the query
+
   const result = db.exec(query);
   if (result && result.length > 0) {
     const rows = result[0].values;
@@ -264,12 +272,7 @@ const handleOpenLog = (event, id) => {
   logWindow.loadURL(
     isDev
       ? "http://localhost:5173/#/preview"
-      : `file://${path.join(
-          __dirname,
-          "render",
-          "dist",
-          "index.html"
-        )}#/preview`
+      : `file://${path.join(__dirname, "dist", "index.html")}#/preview`
   );
 
   logWindow.once("ready-to-show", () => {

@@ -1,10 +1,15 @@
 module.exports = {
-  packagerConfig: {},
+  packagerConfig: {
+    ignore: ["^(/src/render$)"],
+  },
   rebuildConfig: {},
   makers: [
     {
       name: "@electron-forge/maker-squirrel",
-      config: {},
+      "config": {
+        "name": "DVA",
+        "description": "DVA installer"
+      },
     },
     {
       name: "@electron-forge/maker-zip",

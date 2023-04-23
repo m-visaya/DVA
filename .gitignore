@@ -90,3 +90,5 @@ out/
 
 # SQLite database
 logs.db
+
+src/dist/

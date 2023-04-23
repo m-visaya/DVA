@@ -5,5 +5,8 @@ import react from "@vitejs/plugin-react";
 export default defineConfig({
   base: "",
   assetsInclude: ['*.svg', '*.bin', '*.json'],
+  build: {
+    outDir: "../dist"
+  },
   plugins: [react()],
 });
