@@ -1,10 +1,10 @@
 import React, { useState } from "react";
-import ReturnButton from "../components/common/returnButton";
-import ConfigCat from "../components/config/configCategory";
-import Logs from "../components/config/logs_config/logsConfig";
-import Appearance from "../components/config/appearance_config/appearanceConfig";
-import Camera from "../components/config/camera_config/cameraConfig";
-import Snackbar from "../components/common/snackbar";
+import ReturnButton from "./components/common/returnButton";
+import ConfigCat from "./components/config/configCategory";
+import Logs from "./components/config/logs_config/logsConfig";
+import Appearance from "./components/config/appearance_config/appearanceConfig";
+import Camera from "./components/config/camera_config/cameraConfig";
+import Snackbar from "./components/common/snackbar";
 
 function configuration() {
   const [camera, setcamera] = useState(true);

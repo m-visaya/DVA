@@ -1,7 +1,7 @@
-import ReturnButton from "../components/common/returnButton";
-import LiveDash from "../components/live/liveDash";
-import Loading from "../components/common/loading";
-import AlertModal from "../components/common/alertModal";
+import ReturnButton from "./components/common/returnButton";
+import LiveDash from "./components/live/liveDash";
+import Loading from "./components/common/loading";
+import AlertModal from "./components/common/alertModal";
 
 import { useRef, useState, useEffect } from "react";
 import Webcam from "react-webcam";

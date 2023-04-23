@@ -1,11 +1,12 @@
 import { Link } from "react-router-dom";
-import configureIcon from "../assets/graphics/configure.svg";
-import fileIcon from "../assets/graphics/file.svg";
-import liveIcon from "../assets/graphics/live.svg";
-import logIcon from "../assets/graphics/logs.svg";
-import Modal from "../components/common/modal";
-import Icon from "../components/dashboard/icon";
-import HelpIcon from "../assets/graphics/help.svg"
+import configureIcon from "./assets/graphics/configure.svg";
+import fileIcon from "./assets/graphics/file.svg";
+import liveIcon from "./assets/graphics/live.svg";
+import logIcon from "./assets/graphics/logs.svg";
+import background from "./assets/graphics/background.svg";
+import Modal from "./components/common/modal";
+import Icon from "./components/dashboard/icon";
+import HelpIcon from "./assets/graphics/help.svg"
 import { useEffect, useState } from "react";
 import { DateTime } from "luxon";
 
@@ -16,7 +17,7 @@ function Dashboard() {
 
   useEffect(() => {
     const timeId = setInterval(updateTime, 1000);
-    window.electronAPI.fetchSetting("preferredTheme").then((preferredTheme) => {
+    window.electronAPI?.fetchSetting("preferredTheme").then((preferredTheme) => {
       if (
         preferredTheme === "dark" ||
         (!preferredTheme &&
@@ -30,7 +31,7 @@ function Dashboard() {
       }
     });
 
-    window.electronAPI.fetchSetting("defaultCamera").then((defaultCamera) => {
+    window.electronAPI?.fetchSetting("defaultCamera").then((defaultCamera) => {
       if (!defaultCamera) setInitialSetup(true);
     });
 
@@ -52,7 +53,7 @@ function Dashboard() {
 
       </Link>
       <img
-        src="../assets/graphics/background.svg"
+        src={background}
         className="absolute w-full h-full object-cover object-bottom opacity-80 overflow-hidden"
       ></img>
       <div className="flex justify-center h-full items-center z-10">

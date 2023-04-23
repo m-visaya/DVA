@@ -1,5 +1,5 @@
-import ReturnButton from "../components/common/returnButton";
-import Accordion from '../components/common/accordion';
+import ReturnButton from "./components/common/returnButton";
+import Accordion from './components/common/accordion';
 
 function help() {
   return (
@@ -30,7 +30,7 @@ function help() {
             <div label='Live Module'>
                 <p>Live module allows the detection of vehicular accident using video streams from connected input devices.</p>
                 <br/>
-                <img src="../assets/screens/live.png" className="w-9/12 rounded-lg"/>
+                <img src="./assets/screens/live.png" className="w-9/12 rounded-lg"/>
                 <br/>
                 <p className="text-[8pt]">
                 <strong>Note:</strong> Only cameras detected by the OS can be selected, if your camera is not listed during the initial configuration,
@@ -44,19 +44,19 @@ function help() {
                     <li>Download and Install latest software from https://obsproject.com/</li>
                     <br/>
                     <li>In the sources panel add a media source.
-                        <img src="../assets/screens/obs1.png" className="w-9/12 rounded-lg"/>
+                        <img src="./assets/screens/obs1.png" className="w-9/12 rounded-lg"/>
                         <br/>
                     </li>
                     <li>Uncheck the local file checkbox and add the streaming URL of your CCTV / IP camera in the input field.
-                        <img src="../assets/screens/obs2.png" className="w-9/12 rounded-lg"/>
+                        <img src="./assets/screens/obs2.png" className="w-9/12 rounded-lg"/>
                         <br/>
                     </li>
                     <li>Select OBS Virtual Camera as Camera input device in the app.
-                        <img src="../assets/screens/camconfig.png" className="w-9/12 rounded-lg"/>
+                        <img src="./assets/screens/camconfig.png" className="w-9/12 rounded-lg"/>
                         <br/>
                     </li>
                     <li>Start a live detection.
-                        <img src="../assets/screens/livenet.png" className="w-9/12 rounded-lg"/>
+                        <img src="./assets/screens/livenet.png" className="w-9/12 rounded-lg"/>
                     </li>
                 </ol>
             <br/>
@@ -67,13 +67,13 @@ function help() {
             <div label='File Module'>
                 <p>File module allows the detection of vehicular accident using video streams from user provided video files.</p>
                 <br/>
-                <img src="../assets/screens/file.png" className="w-9/12 rounded-lg"/>
+                <img src="./assets/screens/file.png" className="w-9/12 rounded-lg"/>
             </div>
             <div label='Logging Threshold'>
                 <p>As the model evaluates the classification per frame, a log threshold is implemented to prevent continous logging of accidents if one is detected. The value of the threshold can be adjusted in the settings. 
                 </p>
                 <br/>
-                <img src="../assets/screens/threshold.png" className="w-9/12 rounded-lg"/>
+                <img src="./assets/screens/threshold.png" className="w-9/12 rounded-lg"/>
             </div>
             <div label='Hardware Requirements'>
                 <strong>Minimum Requirements</strong>

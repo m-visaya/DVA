@@ -112,7 +112,7 @@ const createWindow = () => {
   );
 
   // Open the DevTools.
-  mainWindow.webContents.openDevTools();
+  if(isDev) mainWindow.webContents.openDevTools();
 
   mainWindow.removeMenu();
 };

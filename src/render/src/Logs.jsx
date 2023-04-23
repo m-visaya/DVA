@@ -1,9 +1,9 @@
-import ExportIcon from "../assets/graphics/export.svg";
-import ResetIcon from "../assets/graphics/clear.svg";
-import ReturnButton from "../components/common/returnButton";
-import SecondaryBtn from "../components/common/secondaryButton";
-import LogItem from "../components/log/logItem";
-import Snackbar from "../components/common/snackbar";
+import ExportIcon from "./assets/graphics/export.svg";
+import ResetIcon from "./assets/graphics/clear.svg";
+import ReturnButton from "./components/common/returnButton";
+import SecondaryBtn from "./components/common/secondaryButton";
+import LogItem from "./components/log/logItem";
+import Snackbar from "./components/common/snackbar";
 
 import { useState, useEffect } from "react";
 import { useLocation } from "react-router-dom";
