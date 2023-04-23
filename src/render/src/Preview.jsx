@@ -3,7 +3,7 @@ import { useState, useEffect } from "react";
 import { useLocation } from 'react-router-dom';
 import { imag } from "@tensorflow/tfjs";
 
-function Preview() {
+function preview() {
   let reactSwipeEl;
 
   const [imageSources, setImageSources] = useState([]);
@@ -147,7 +147,4 @@ function Preview() {
     </div>
   );
 }
-
-// Render the component to the DOM
-const root = ReactDOM.createRoot(document.getElementById('root'));
-root.render(<Preview />);
+export default preview;

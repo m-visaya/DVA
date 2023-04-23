@@ -264,7 +264,7 @@ const handleOpenLog = (event, id) => {
   });
 
   logWindow.loadURL(
-    `file://${path.join(__dirname, "render", "dist", "preview.html")}`
+    `http://localhost:5173/#/preview`
   );
 
   logWindow.once("ready-to-show", () => {
