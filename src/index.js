@@ -112,7 +112,7 @@ const createWindow = () => {
   );
 
   // Open the DevTools.
-  if(isDev) mainWindow.webContents.openDevTools();
+  if (isDev) mainWindow.webContents.openDevTools();
 
   mainWindow.removeMenu();
 };
@@ -124,7 +124,7 @@ const handleAddLog = (event, props) => {
   const timeDiff = props.timestamp - recentLogDate;
 
   // check logging threshold
-  const loggingThreshold = save.get('loggingThreshold');
+  const loggingThreshold = save.get("loggingThreshold");
   if (recentLogDate && timeDiff < loggingThreshold * 60000 && timeDiff > 0) {
     return;
   }
@@ -217,9 +217,7 @@ const handleExportLogs = (event, props) => {
   const rows = result[0].values;
 
   // Convert the rows to a CSV string
-  const csv = rows
-    .map((row) => row.join(","))
-    .join("\n");
+  const csv = rows.map((row) => row.join(",")).join("\n");
 
   // Define the filename and path for the CSV file
   const now = new Date();
@@ -266,14 +264,17 @@ const handleOpenLog = (event, id) => {
   logWindow.loadURL(
     isDev
       ? "http://localhost:5173/#/preview"
-      : `file://${path.join(__dirname, "render", "dist", "index.html")}#/preview`
+      : `file://${path.join(
+          __dirname,
+          "render",
+          "dist",
+          "index.html"
+        )}#/preview`
   );
 
   logWindow.once("ready-to-show", () => {
-    setTimeout(() => {
-      logWindow.webContents.send('log-data', log);
-      logWindow.show();
-    }, 50);
+    logWindow.webContents.send("log-data", log);
+    logWindow.show();
   });
 };
 
@@ -300,7 +301,6 @@ const handleGetImage = async (event, props) => {
     return `data:image/png;base64,${data.toString("base64")}`;
   }
 };
-
 
 const handleOpenDir = (event, path) => {
   shell.openPath(path);

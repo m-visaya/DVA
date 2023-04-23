@@ -1,7 +1,5 @@
 import ReactSwipe from "react-swipe";
 import { useState, useEffect } from "react";
-import { useLocation } from 'react-router-dom';
-import { imag } from "@tensorflow/tfjs";
 
 function preview() {
   let reactSwipeEl;

@@ -10,7 +10,7 @@ import "@tensorflow/tfjs-backend-webgl";
 import { addLog } from "./helper";
 import { DateTime } from "luxon";
 
-const MODEL_PATH = "./assets/model/xception_js/model.json";
+const MODEL_PATH = "./model/xception_js/model.json";
 
 function live() {
   const webcamRef = useRef(null);
