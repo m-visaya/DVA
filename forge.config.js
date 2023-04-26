@@ -5,15 +5,10 @@ module.exports = {
   rebuildConfig: {},
   makers: [
     {
-      name: "@electron-forge/maker-squirrel",
-      "config": {
-        "name": "DVA",
-        "description": "DVA installer"
-      },
+      name: '@electron-forge/maker-wix',
     },
     {
       name: "@electron-forge/maker-zip",
-      platforms: ["darwin"],
     },
     {
       name: "@electron-forge/maker-deb",
