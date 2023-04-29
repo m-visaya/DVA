@@ -25,8 +25,8 @@ if (!gotTheLock) {
   app.exit();
 }
 
-const dbPath = path.join(__dirname, "logs.db");
 const docPath = app.getPath("documents");
+const dbPath = path.join(docPath, "DVA", "logs.db");
 const savePath = path.join(docPath, "DVA", "saved");
 const exportPath = path.join(docPath, "DVA", "exported");
 
