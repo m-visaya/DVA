@@ -2,7 +2,8 @@
   "name": "dva",
   "productName": "DVA",
   "version": "1.0.0",
-  "description": "My Electron application description",
+  "description": "Detection of Vehicular Accidents using Convolutional Neural Networks",
+  "icon": "src/assets/icon.ico",
   "main": "src/index.js",
   "scripts": {
     "start": "electron-forge start",
