@@ -1,7 +1,7 @@
-import ReturnButton from "../components/common/returnButton";
-import LiveDash from "../components/live/liveDash";
-import Loading from "../components/common/loading";
-import AlertModal from "../components/common/alertModal";
+import ReturnButton from "./components/common/returnButton";
+import LiveDash from "./components/live/liveDash";
+import Loading from "./components/common/loading";
+import AlertModal from "./components/common/alertModal";
 
 import { useRef, useState, useEffect } from "react";
 import Webcam from "react-webcam";
@@ -10,7 +10,7 @@ import "@tensorflow/tfjs-backend-webgl";
 import { addLog } from "./helper";
 import { DateTime } from "luxon";
 
-const MODEL_PATH = "./assets/model/xception_js/model.json";
+const MODEL_PATH = "./model/xception_js/model.json";
 
 function live() {
   const webcamRef = useRef(null);

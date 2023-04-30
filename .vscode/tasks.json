@@ -1,0 +1,63 @@
+{
+  "version": "2.0.0",
+  "tasks": [
+    {
+      "label": "Run vite project",
+      "type": "npm",
+      "script": "dev",
+      "promptOnClose": false,
+      "options": {
+        "cwd": "${workspaceFolder}/src/render"
+      }
+    },
+    {
+      "label": "Run electron project",
+      "type": "npm",
+      "script": "start",
+      "promptOnClose": false
+    },
+    {
+      "label": "Run project",
+      "dependsOn": ["Run vite project", "Run electron project"],
+      "dependsOrder": "parallel",
+      "group": "build",
+      "promptOnClose": false
+    },
+    {
+      "label": "Build vite project",
+      "type": "npm",
+      "script": "build",
+      "promptOnClose": false,
+      "options": {
+        "cwd": "${workspaceFolder}/src/render"
+      },
+      "group": "build"
+    },
+    {
+      "label": "Build electron package",
+      "type": "npm",
+      "script": "package",
+      "promptOnClose": false
+    },
+    {
+      "label": "Build electron executable",
+      "type": "npm",
+      "script": "make",
+      "promptOnClose": false
+    },
+    {
+      "label": "Build app package",
+      "dependsOn": ["Build vite project", "Build electron package"],
+      "dependsOrder": "sequence",
+      "group": "build",
+      "promptOnClose": false
+    },
+    {
+      "label": "Build app executable",
+      "dependsOn": ["Build vite project", "Build electron executable"],
+      "dependsOrder": "sequence",
+      "group": "build",
+      "promptOnClose": false
+    }
+  ]
+}

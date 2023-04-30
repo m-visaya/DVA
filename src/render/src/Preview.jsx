@@ -1,28 +1,26 @@
 import ReactSwipe from "react-swipe";
 import { useState, useEffect } from "react";
-import { useLocation } from 'react-router-dom';
-import { imag } from "@tensorflow/tfjs";
 
 function preview() {
-  const location = useLocation();
   let reactSwipeEl;
 
   const [imageSources, setImageSources] = useState([]);
   const [log, setLog] = useState([]);
 
   useEffect(() => {
-    const initLogPreview = async () => {
-      const logParam = new URLSearchParams(location.search).get("log");
-      const logDetails = JSON.parse(decodeURIComponent(logParam));
+    const logDataHandler = async (event, logData) => {
       const imageData = await window.electronAPI.getImage({
-          path: logDetails[4],
-          all: true
+        path: logData[4],
+        all: true
       });
-      setLog(logDetails);
+      setLog(logData);
       setImageSources(imageData);
-    };
+    }
 
-    initLogPreview();
+    const removeEventListener = window.electronAPI.onLogData(logDataHandler);
+    return () => {
+      removeEventListener();
+    };
   }, []);
   
   useEffect(() => {

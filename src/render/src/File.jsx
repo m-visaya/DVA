@@ -1,13 +1,13 @@
-import ReturnButton from "../components/common/returnButton";
-import FileDash from "../components/file/fileDash";
-import Loading from "../components/common/loading";
-import AlertModal from "../components/common/alertModal";
+import ReturnButton from "./components/common/returnButton";
+import FileDash from "./components/file/fileDash";
+import Loading from "./components/common/loading";
+import AlertModal from "./components/common/alertModal";
 
 import { useRef, useState, useEffect } from "react";
 import * as tf from "@tensorflow/tfjs";
 import { addLog } from "./helper";
 import "@tensorflow/tfjs-backend-webgl";
-const MODEL_PATH = "./assets/model/xception_js/model.json";
+const MODEL_PATH = "./model/xception_js/model.json";
 import { DateTime } from "luxon";
 
 function file() {

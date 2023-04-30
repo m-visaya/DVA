@@ -33,7 +33,7 @@ function cameraConfig({ setInitialSetup, setSnackVisible }) {
       defaultCamera: device ?? [devices[0]?.deviceId, devices[0]?.label],
     };
     window.electronAPI.saveSettings(prefs);
-    setSnackVisible(true)
+    if (setSnackVisible) setSnackVisible(true);
     if (setInitialSetup) setInitialSetup(false);
   };
 

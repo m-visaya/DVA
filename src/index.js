@@ -12,8 +12,21 @@ const initSqlJs = require("sql.js");
 const fs = require("fs");
 const path = require("path");
 
-const dbPath = path.join(__dirname, "logs.db");
+// Handle creating/removing shortcuts on Windows when installing/uninstalling.
+if (require("electron-squirrel-startup")) {
+  // eslint-disable-line global-require
+  app.quit();
+}
+
+const gotTheLock = app.requestSingleInstanceLock();
+
+// Prevent multiple instaces of the app
+if (!gotTheLock) {
+  app.exit();
+}
+
 const docPath = app.getPath("documents");
+const dbPath = path.join(docPath, "DVA", "logs.db");
 const savePath = path.join(docPath, "DVA", "saved");
 const exportPath = path.join(docPath, "DVA", "exported");
 
@@ -62,7 +75,7 @@ const save = new Save({
 
 async function initDatabase() {
   SQL = await initSqlJs({
-    locateFile: (file) => `./node_modules/sql.js/dist/${file}`,
+    locateFile: (file) => `${__dirname}/dist/sql-wasm.wasm`,
   });
 
   // Check if the database file already exists
@@ -87,11 +100,6 @@ async function initDatabase() {
   )`);
 }
 
-// Handle creating/removing shortcuts on Windows when installing/uninstalling.
-if (require("electron-squirrel-startup")) {
-  app.quit();
-}
-
 const createWindow = () => {
   // Create the browser window.
   const mainWindow = new BrowserWindow({
@@ -99,6 +107,7 @@ const createWindow = () => {
     height: 720,
     minWidth: 960,
     minHeight: 600,
+    icon: path.join(__dirname, "assets", "icon.png"),
     webPreferences: {
       preload: path.join(__dirname, "preload.js"),
     },
@@ -108,11 +117,11 @@ const createWindow = () => {
   mainWindow.loadURL(
     isDev
       ? "http://localhost:5173/"
-      : `file://${path.join(__dirname, "render", "dist", "index.html")}`
+      : `file://${path.join(__dirname, "dist", "index.html")}`
   );
 
   // Open the DevTools.
-  mainWindow.webContents.openDevTools();
+  if (isDev) mainWindow.webContents.openDevTools();
 
   mainWindow.removeMenu();
 };
@@ -124,7 +133,7 @@ const handleAddLog = (event, props) => {
   const timeDiff = props.timestamp - recentLogDate;
 
   // check logging threshold
-  const loggingThreshold = save.get('loggingThreshold');
+  const loggingThreshold = save.get("loggingThreshold");
   if (recentLogDate && timeDiff < loggingThreshold * 60000 && timeDiff > 0) {
     return;
   }
@@ -188,7 +197,7 @@ const handleGetLogs = (event, props) => {
   if (props.to) {
     query += ` AND "Date Occurred" <= '${props.to}'`;
   }
-  // Execute the query
+
   const result = db.exec(query);
   if (result && result.length > 0) {
     const rows = result[0].values;
@@ -217,9 +226,7 @@ const handleExportLogs = (event, props) => {
   const rows = result[0].values;
 
   // Convert the rows to a CSV string
-  const csv = rows
-    .map((row) => row.join(","))
-    .join("\n");
+  const csv = rows.map((row) => row.join(",")).join("\n");
 
   // Define the filename and path for the CSV file
   const now = new Date();
@@ -247,6 +254,7 @@ const handleOpenLog = (event, id) => {
   let log = result[0].values[0];
 
   const parent = BrowserWindow.fromWebContents(event.sender);
+
   const logWindow = new BrowserWindow({
     minWidth: 800,
     minHeight: 600,
@@ -263,13 +271,14 @@ const handleOpenLog = (event, id) => {
   });
 
   logWindow.loadURL(
-    `http://localhost:5173/preview?log=${encodeURIComponent(JSON.stringify(log))}`
+    isDev
+      ? "http://localhost:5173/#/preview"
+      : `file://${path.join(__dirname, "dist", "index.html")}#/preview`
   );
 
   logWindow.once("ready-to-show", () => {
-    setTimeout(() => {
-      logWindow.show();
-    }, 50);
+    logWindow.webContents.send("log-data", log);
+    logWindow.show();
   });
 };
 
@@ -296,7 +305,6 @@ const handleGetImage = async (event, props) => {
     return `data:image/png;base64,${data.toString("base64")}`;
   }
 };
-
 
 const handleOpenDir = (event, path) => {
   shell.openPath(path);

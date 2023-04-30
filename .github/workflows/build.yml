@@ -1,0 +1,33 @@
+name: Build
+
+on:
+  pull_request:
+    branches: [ "main" ]
+
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: windows-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Setup WiX toolkit
+        run: echo "C:\Program Files (x86)\WiX Toolset v3.11\bin" >> $GITHUB_PATH
+        shell: bash
+
+      - name: Install vite dependencies
+        run: npm install
+        working-directory: src/render
+
+      - name: Build Vite project
+        run: npm run build
+        working-directory: src/render
+
+      - name: Install electron dependencies
+        run: npm install
+
+      - name: Build application
+        run: npm run make

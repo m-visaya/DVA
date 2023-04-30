@@ -8,12 +8,12 @@ import Config from "./Configuration";
 import Preview from "./Preview";
 import Help from "./Help";
 import "./index.css";
-import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { HashRouter, Routes, Route } from "react-router-dom";
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 
 root.render(
-  <BrowserRouter>
+  <HashRouter>
     <Routes>
       <Route key="dashboard" exact path="/" element={<Dashboard />} />
       <Route key="file" path="/file" element={<File />} />
@@ -23,5 +23,5 @@ root.render(
       <Route key="config" path="/config" element={<Config />} />
       <Route key="help" path="/help" element={<Help />} />
     </Routes>
-  </BrowserRouter>
+  </HashRouter>
 );

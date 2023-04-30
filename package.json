@@ -2,7 +2,8 @@
   "name": "dva",
   "productName": "DVA",
   "version": "1.0.0",
-  "description": "My Electron application description",
+  "description": "Detection of Vehicular Accidents using Convolutional Neural Networks",
+  "icon": "src/assets/icon.ico",
   "main": "src/index.js",
   "scripts": {
     "start": "electron-forge start",
@@ -27,7 +28,9 @@
     "@electron-forge/maker-deb": "^6.0.5",
     "@electron-forge/maker-rpm": "^6.0.5",
     "@electron-forge/maker-squirrel": "^6.0.5",
+    "@electron-forge/maker-wix": "^6.1.1",
     "@electron-forge/maker-zip": "^6.0.5",
+    "@electron-forge/publisher-github": "^6.1.1",
     "electron": "23.0.0"
   }
 }
