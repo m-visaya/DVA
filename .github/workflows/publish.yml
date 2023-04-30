@@ -1,14 +1,16 @@
-name: Build
+name: Publish
 
 on:
-  pull_request:
+  push:
     branches: [ "main" ]
-
+    
   workflow_dispatch:
 
 jobs:
   build:
     runs-on: windows-latest
+
+    environment: Release
 
     steps:
       - name: Checkout code
@@ -29,5 +31,7 @@ jobs:
       - name: Install electron dependencies
         run: npm install
 
-      - name: Build application
-        run: npm run make
+      - name: Publish package
+        env:
+          GITHUB_TOKEN: ${{secrets.TOKEN}}
+        run: npm run publish
