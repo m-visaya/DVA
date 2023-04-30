@@ -10,7 +10,7 @@ module.exports = {
       "config": {
         "repository": {
           "owner": "m-visaya",
-          "name": "test"
+          "name": "DVA"
         },
         draft: false,
       }
