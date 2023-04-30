@@ -4,6 +4,18 @@ module.exports = {
     icon: "src/assets/icon",
   },
   rebuildConfig: {},
+  "publishers": [
+    {
+      "name": "@electron-forge/publisher-github",
+      "config": {
+        "repository": {
+          "owner": "m-visaya",
+          "name": "test"
+        },
+        draft: false,
+      }
+    }
+  ],
   makers: [
     {
       name: '@electron-forge/maker-wix',

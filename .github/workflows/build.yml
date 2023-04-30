@@ -1,0 +1,39 @@
+name: Publish
+
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: windows-latest
+
+    environment: Release
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Setup WiX toolkit
+        run: echo "C:\Program Files (x86)\WiX Toolset v3.11\bin" >> $GITHUB_PATH
+        shell: bash
+
+      - name: Install vite dependencies
+        run: npm install
+        working-directory: src/render
+
+      - name: Build Vite project
+        run: npm run build
+        working-directory: src/render
+
+      - name: Install electron dependencies
+        run: npm install
+
+      - name: Publish package
+        env:
+          GITHUB_TOKEN: ${{secrets.TOKEN}}
+        run: npm run publish
