@@ -1,7 +1,7 @@
 {
   "name": "dva",
   "productName": "DVA",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Detection of Vehicular Accidents using Convolutional Neural Networks",
   "icon": "src/assets/icon.ico",
   "main": "src/index.js",
