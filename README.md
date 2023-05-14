@@ -2,16 +2,17 @@
 
 <div align="center">
   <img height="100" src="src/assets/icon.png"  />
-
-<h2 align="center"> <strong> DVA </strong> </h2>
+  
+<h1 align="center"> <strong> DVA </strong> </h1>
 <h3 align="center"> Vehicular Accident Detection using AI</p>
 
 <a href="https://github.com/m-visaya/DVA/releases"><strong> Download Latest </strong></a>
 
 </div>
 
-#
-
+<br>
+<br>
+  
 <p> DVA (Detection of Vehicular Accidents) is an offline desktop application that integrates a deep learning binary classifier. The classifier is capable of detecting vehicular accidents from CCTV streams or video files. Detected accidents are logged using SQLite and the captured accident frames are saved in the user's  <code>Documents</code> folder. </p>
 
 <br>
@@ -19,11 +20,10 @@
   <img width="90%" src="src/assets/Dashboard.png"  />
 
 <br>
+<br>
+<br>
 
 <h2 align="left">Development Tools</h2>
-<hr>
-
-<br>
 
 <div align="left">
   <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/javascript/javascript-original.svg" height="40" width="52" alt="javascript logo"  />
@@ -37,17 +37,14 @@
 <br>
 
    <h2>Requirements</h2>
-   
-   #
 
 - Node <code> v16.15.1 </code>
 - WiX Toolset <code> v3.11 </code> (for building the app locally)
 
 <br>
+<br>
 
    <h2>Local Development</h2>
-
-#
 
    <h3>Clone the repository</h3>
 
@@ -80,8 +77,6 @@
 
    <h2>Build the Application</h2>
 
-#
-
 On the <code>DVA/src/render</code> directory run:
 <br>
 
@@ -95,11 +90,10 @@ On the root folder <code>DVA</code>:
 </div>
 
 <br>
+<br>
 
 <div>
     <h2>Developers</h2>
-
-#
 
 - <a href="https://github.com/rcbern">@rcbern</a>
 - <a href="https://github.com/BKManabat">@BKManabat</a>
@@ -108,7 +102,8 @@ On the root folder <code>DVA</code>:
 </div>
 
 <br>
-<hr>
+
+#
 
 <a href="https://github.com/m-visaya/DVA/issues/new">Report Bug</a>
 ●
