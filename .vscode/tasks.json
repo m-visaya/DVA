@@ -2,25 +2,61 @@
   "version": "2.0.0",
   "tasks": [
     {
+      "label": "Install main dependencies",
+      "type": "shell",
+      "command": "npm install --legacy-peer-deps",
+      "promptOnClose": false,
+      "presentation": {
+        "revealProblems": "onProblem",
+        "group": "Install dependencies"
+      }
+    },
+    {
+      "label": "Install render dependencies",
+      "type": "shell",
+      "command": "npm install --legacy-peer-deps",
+      "promptOnClose": false,
+      "options": {
+        "cwd": "${workspaceFolder}/src/render"
+      },
+      "presentation": {
+        "revealProblems": "onProblem",
+        "group": "Install dependencies"
+      }
+    },
+    {
+      "label": "Install dependencies",
+      "dependsOn": ["Install main dependencies", "Install render dependencies"],
+      "dependsOrder": "parallel",
+      "promptOnClose": false
+    },
+    {
       "label": "Run vite project",
       "type": "npm",
       "script": "dev",
       "promptOnClose": false,
       "options": {
         "cwd": "${workspaceFolder}/src/render"
+      },
+      "presentation": {
+        "revealProblems": "onProblem",
+        "group": "Run project"
       }
     },
     {
       "label": "Run electron project",
       "type": "npm",
       "script": "start",
-      "promptOnClose": false
+      "promptOnClose": false,
+      "presentation": {
+        "revealProblems": "onProblem",
+        "group": "Run project"
+      }
     },
     {
       "label": "Run project",
       "dependsOn": ["Run vite project", "Run electron project"],
       "dependsOrder": "parallel",
-      "group": "build",
       "promptOnClose": false
     },
     {
@@ -30,8 +66,7 @@
       "promptOnClose": false,
       "options": {
         "cwd": "${workspaceFolder}/src/render"
-      },
-      "group": "build"
+      }
     },
     {
       "label": "Build electron package",
@@ -49,14 +84,12 @@
       "label": "Build app package",
       "dependsOn": ["Build vite project", "Build electron package"],
       "dependsOrder": "sequence",
-      "group": "build",
       "promptOnClose": false
     },
     {
       "label": "Build app executable",
       "dependsOn": ["Build vite project", "Build electron executable"],
       "dependsOrder": "sequence",
-      "group": "build",
       "promptOnClose": false
     }
   ]

@@ -74,8 +74,9 @@ const save = new Save({
 });
 
 async function initDatabase() {
+  const sqlWasmDir = isDev ? `${__dirname}/render/public/sql-wasm.wasm` : `${__dirname}/dist/sql-wasm.wasm`
   SQL = await initSqlJs({
-    locateFile: (file) => `${__dirname}/dist/sql-wasm.wasm`,
+    locateFile: (file) => sqlWasmDir,
   });
 
   // Check if the database file already exists
